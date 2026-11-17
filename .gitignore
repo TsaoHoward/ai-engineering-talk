@@ -8,3 +8,6 @@ components.d.ts
 
 # Windows download metadata
 *:Zone.Identifier
+
+# Generated visual acceptance captures
+/artifacts/visual-acceptance/
