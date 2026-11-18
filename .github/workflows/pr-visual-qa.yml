@@ -1,0 +1,74 @@
+name: PR build and visual acceptance
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  build-and-visual-qa:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    env:
+      SITE_BASE: ${{ format('/{0}/pr-preview/pr-{1}/', github.event.repository.name, github.event.number) }}
+    steps:
+      - name: Check out the PR merge commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for visual acceptance
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the PR site for its final Pages path
+        id: build-site
+        run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
+
+      - name: Inspect every slide and Click state
+        run: |
+          set -euo pipefail
+          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/vite-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+
+          preview_url="http://127.0.0.1:4173${SITE_BASE}"
+          ready=false
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$preview_url" >/dev/null; then
+              ready=true
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat "$RUNNER_TEMP/vite-preview.log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if [ "$ready" != true ]; then
+            cat "$RUNNER_TEMP/vite-preview.log"
+            echo "Vite preview did not become ready at $preview_url" >&2
+            exit 1
+          fi
+
+          npm run visual:acceptance -- --all --base-url "$preview_url" --router-mode hash
+
+      - name: Upload screenshots and visual report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: visual-acceptance-pr-${{ github.event.number }}
+          path: artifacts/visual-acceptance/
+          if-no-files-found: warn
+          retention-days: 14

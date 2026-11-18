@@ -1,0 +1,438 @@
+name: Trusted GitHub Pages deployment
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, closed]
+  repository_dispatch:
+    types: [m1c-pages-pr]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Main publish, preview a PR, or remove a PR preview
+        required: true
+        type: choice
+        options: [main, preview, remove]
+        default: main
+      pr_number:
+        description: Required for preview or remove
+        required: false
+        type: number
+
+permissions: {}
+
+jobs:
+  dispatch-pr-metadata:
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Dispatch only the PR number and event type to the trusted workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_ACTION: ${{ github.event.action }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Invalid pull request number" >&2
+            exit 1
+          fi
+          jq -n \
+            --argjson pr_number "$PR_NUMBER" \
+            --arg action "$PR_ACTION" \
+            '{event_type:"m1c-pages-pr",client_payload:{pr_number:$pr_number,action:$action}}' \
+            | gh api "repos/${GITHUB_REPOSITORY}/dispatches" --input -
+
+  build-main:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && inputs.operation == 'main'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    env:
+      SITE_BASE: ${{ format('/{0}/', github.event.repository.name) }}
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/heads/main
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for visual acceptance
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the formal site for its Pages path
+        id: build-site
+        run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
+
+      - name: Inspect the built formal site
+        run: |
+          set -euo pipefail
+          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/vite-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+
+          preview_url="http://127.0.0.1:4173${SITE_BASE}"
+          ready=false
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$preview_url" >/dev/null; then
+              ready=true
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat "$RUNNER_TEMP/vite-preview.log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if [ "$ready" != true ]; then
+            cat "$RUNNER_TEMP/vite-preview.log"
+            echo "Vite preview did not become ready at $preview_url" >&2
+            exit 1
+          fi
+
+          npm run visual:acceptance -- --all --base-url "$preview_url" --router-mode hash
+
+      - name: Upload formal-site screenshots and report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: visual-acceptance-main
+          path: artifacts/visual-acceptance/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload the formal site for state update
+        if: steps.build-site.outcome == 'success'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: main-site
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  resolve-pr:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'repository_dispatch' ||
+       (github.event_name == 'workflow_dispatch' && inputs.operation != 'main'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      operation: ${{ steps.resolve.outputs.operation }}
+      pr_number: ${{ steps.resolve.outputs.pr_number }}
+      head_sha: ${{ steps.resolve.outputs.head_sha }}
+      preview_url: ${{ steps.resolve.outputs.preview_url }}
+    steps:
+      - name: Resolve current PR state from GitHub
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_PR_NUMBER: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.pr_number || inputs.pr_number }}
+          REQUESTED_OPERATION: ${{ github.event_name == 'repository_dispatch' && 'auto' || inputs.operation }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$REQUESTED_PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "A valid PR number is required" >&2
+            exit 1
+          fi
+
+          pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${REQUESTED_PR_NUMBER}")"
+          head_repository="$(jq -r '.head.repo.full_name // ""' <<< "$pr_json")"
+          pr_state="$(jq -r '.state' <<< "$pr_json")"
+          head_sha="$(jq -r '.head.sha' <<< "$pr_json")"
+
+          if [[ "$head_repository" != "$GITHUB_REPOSITORY" ]]; then
+            operation=skip
+          elif [[ "$REQUESTED_OPERATION" == remove || "$pr_state" == closed ]]; then
+            operation=remove
+          elif [[ "$pr_state" == open && "$head_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            operation=preview
+          else
+            operation=skip
+          fi
+
+          owner="${GITHUB_REPOSITORY%%/*}"
+          repository="${GITHUB_REPOSITORY#*/}"
+          preview_url="https://${owner}.github.io/${repository}/pr-preview/pr-${REQUESTED_PR_NUMBER}/"
+          {
+            echo "operation=$operation"
+            echo "pr_number=$REQUESTED_PR_NUMBER"
+            echo "head_sha=$head_sha"
+            echo "preview_url=$preview_url"
+          } >> "$GITHUB_OUTPUT"
+
+  build-preview:
+    needs: resolve-pr
+    if: needs.resolve-pr.outputs.operation == 'preview'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    env:
+      SITE_BASE: ${{ format('/{0}/pr-preview/pr-{1}/', github.event.repository.name, needs.resolve-pr.outputs.pr_number) }}
+    steps:
+      - name: Check out the exact same-repository PR revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.resolve-pr.outputs.head_sha }}
+          path: source
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Install Chromium for visual acceptance
+        working-directory: source
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the PR site for its final Pages path
+        id: build-site
+        working-directory: source
+        run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
+
+      - name: Inspect every PR slide and Click state
+        working-directory: source
+        run: |
+          set -euo pipefail
+          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/vite-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+
+          preview_url="http://127.0.0.1:4173${SITE_BASE}"
+          ready=false
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$preview_url" >/dev/null; then
+              ready=true
+              break
+            fi
+            if ! kill -0 "$preview_pid" 2>/dev/null; then
+              cat "$RUNNER_TEMP/vite-preview.log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if [ "$ready" != true ]; then
+            cat "$RUNNER_TEMP/vite-preview.log"
+            echo "Vite preview did not become ready at $preview_url" >&2
+            exit 1
+          fi
+
+          npm run visual:acceptance -- --all --base-url "$preview_url" --router-mode hash
+
+      - name: Upload PR screenshots and report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: visual-acceptance-pr-${{ needs.resolve-pr.outputs.pr_number }}
+          path: source/artifacts/visual-acceptance/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload the PR site for state update
+        if: steps.build-site.outcome == 'success'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: preview-site
+          path: source/dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-main-state:
+    needs: build-main
+    if: needs.build-main.result == 'success'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    concurrency:
+      group: pages-state-${{ github.repository }}-main
+      cancel-in-progress: false
+    steps:
+      - name: Download the read-only formal-site build
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: main-site
+          path: dist
+
+      - name: Update only the formal-site root in Pages state
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: pages-state
+          folder: dist
+          clean: true
+          clean-exclude: |
+            pr-preview/**
+          force: false
+          attempt-limit: 10
+
+  publish-pr-state:
+    needs: [resolve-pr, build-preview]
+    if: >-
+      always() &&
+      needs.resolve-pr.result == 'success' &&
+      (needs.resolve-pr.outputs.operation == 'remove' ||
+       (needs.resolve-pr.outputs.operation == 'preview' && needs.build-preview.result == 'success'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: read
+    concurrency:
+      group: pages-state-${{ github.repository }}-pr-${{ needs.resolve-pr.outputs.pr_number }}
+      cancel-in-progress: false
+    outputs:
+      state_updated: ${{ steps.freshness.outputs.state_updated }}
+    steps:
+      - name: Confirm the PR and built revision are still current
+        id: freshness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.resolve-pr.outputs.pr_number }}
+          OPERATION: ${{ needs.resolve-pr.outputs.operation }}
+          EXPECTED_HEAD_SHA: ${{ needs.resolve-pr.outputs.head_sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_OPERATION: ${{ inputs.operation }}
+        run: |
+          set -euo pipefail
+          pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          head_repository="$(jq -r '.head.repo.full_name // ""' <<< "$pr_json")"
+          pr_state="$(jq -r '.state' <<< "$pr_json")"
+          head_sha="$(jq -r '.head.sha' <<< "$pr_json")"
+          state_updated=false
+
+          if [[ "$head_repository" == "$GITHUB_REPOSITORY" ]]; then
+            if [[ "$OPERATION" == preview && "$pr_state" == open && "$head_sha" == "$EXPECTED_HEAD_SHA" ]]; then
+              state_updated=true
+            elif [[ "$OPERATION" == remove && "$EVENT_NAME" == workflow_dispatch && "$MANUAL_OPERATION" == remove ]]; then
+              state_updated=true
+            elif [[ "$OPERATION" == remove && "$pr_state" == closed ]]; then
+              state_updated=true
+            fi
+          fi
+
+          if [[ "$state_updated" != true ]]; then
+            echo "PR state changed after resolution; skipping this stale state update."
+          fi
+          echo "state_updated=$state_updated" >> "$GITHUB_OUTPUT"
+
+      - name: Download the read-only PR build
+        if: needs.resolve-pr.outputs.operation == 'preview' && steps.freshness.outputs.state_updated == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: preview-site
+          path: dist
+
+      - name: Publish or update this PR preview path
+        if: needs.resolve-pr.outputs.operation == 'preview' && steps.freshness.outputs.state_updated == 'true'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: pages-state
+          folder: dist
+          target-folder: pr-preview/pr-${{ needs.resolve-pr.outputs.pr_number }}
+          force: false
+          attempt-limit: 10
+
+      - name: Prepare an empty directory for preview removal
+        if: needs.resolve-pr.outputs.operation == 'remove' && steps.freshness.outputs.state_updated == 'true'
+        run: mkdir empty
+
+      - name: Remove this PR preview path
+        if: needs.resolve-pr.outputs.operation == 'remove' && steps.freshness.outputs.state_updated == 'true'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          branch: pages-state
+          folder: empty
+          target-folder: pr-preview/pr-${{ needs.resolve-pr.outputs.pr_number }}
+          clean: true
+          force: false
+          attempt-limit: 10
+
+  deploy-pages:
+    needs: [publish-main-state, publish-pr-state]
+    if: >-
+      always() &&
+      (needs.publish-main-state.result == 'success' ||
+       (needs.publish-pr-state.result == 'success' && needs.publish-pr-state.outputs.state_updated == 'true'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages-${{ github.repository }}
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the complete Pages state
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: pages-state
+          path: site-state
+          persist-credentials: false
+
+      - name: Upload the complete site, including every open PR preview
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site-state/
+
+      - name: Deploy the complete Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  comment-pr-preview:
+    needs: [resolve-pr, publish-pr-state, deploy-pages]
+    if: >-
+      always() &&
+      needs.resolve-pr.result == 'success' &&
+      needs.publish-pr-state.result == 'success' &&
+      needs.deploy-pages.result == 'success' &&
+      needs.publish-pr-state.outputs.state_updated == 'true' &&
+      (needs.resolve-pr.outputs.operation == 'preview' || needs.resolve-pr.outputs.operation == 'remove')
+    runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add or update the PR preview link
+        if: needs.resolve-pr.outputs.operation == 'preview'
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          number: ${{ needs.resolve-pr.outputs.pr_number }}
+          header: pr-preview
+          message: |
+            ### PR preview
+
+            [Open the playable preview](${{ needs.resolve-pr.outputs.preview_url }})
+
+      - name: Update the PR preview status after cleanup
+        if: needs.resolve-pr.outputs.operation == 'remove'
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          number: ${{ needs.resolve-pr.outputs.pr_number }}
+          header: pr-preview
+          message: The PR preview path was removed.

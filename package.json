@@ -5,6 +5,9 @@
   "scripts": {
     "build": "slidev build",
     "dev": "slidev --open",
+    "dev:hash": "slidev --router-mode hash",
+    "preview": "vite preview",
+    "visual:acceptance": "node scripts/visual-acceptance.mjs",
     "export": "slidev export"
   },
   "dependencies": {
@@ -12,5 +15,9 @@
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
     "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "@slidev/parser": "53.1.0",
+    "playwright": "1.59.0"
   }
 }
