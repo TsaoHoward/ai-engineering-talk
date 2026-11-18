@@ -1,0 +1,772 @@
+/* Adapted from Slides Builder deck styles at decks/ai-engineering-talk/styles/index.css.
+   Copyright (c) 2026 Oscar Lobaton Salas; MIT license in licenses/slides-builder.MIT.
+   Chapter 1 visual rules are scoped so other slides keep their own theme styling. */
+.slidev-layout.ai-engineering-talk {
+  --deck-bg: #f8fbff;
+  --deck-panel: #ffffff;
+  --deck-panel-2: #eef5ff;
+  --deck-ink: #0f172a;
+  --deck-muted: #475569;
+  --deck-soft: #64748b;
+  --deck-line: #cbd5e1;
+  --deck-blue: #2563eb;
+  --deck-green: #16a34a;
+  --deck-amber: #d97706;
+  --deck-purple: #7c3aed;
+  --deck-cyan: #0891b2;
+  --accent-gradient: linear-gradient(100deg, #0f172a 0%, #1d4ed8 44%, #0891b2 70%, #16a34a 100%);
+  --border-gradient: linear-gradient(135deg, rgba(37, 99, 235, 0.72), rgba(124, 58, 237, 0.34), rgba(22, 163, 74, 0.52));
+  background:
+    radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.12), transparent 28%),
+    radial-gradient(circle at 92% 18%, rgba(124, 58, 237, 0.09), transparent 24%),
+    radial-gradient(circle at 78% 88%, rgba(22, 163, 74, 0.08), transparent 30%),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    var(--deck-bg);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  color: var(--deck-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.slidev-layout.ai-engineering-talk code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-table,
+.slidev-layout.ai-engineering-talk .callout-stack article,
+.slidev-layout.ai-engineering-talk .architecture-layers article {
+  border-radius: 8px;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-table {
+  display: grid;
+  overflow: hidden;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row {
+  display: grid;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row > * {
+  align-items: center;
+  display: flex;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row span {
+  color: var(--deck-ink);
+  font-weight: 800;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-head {
+  background: var(--deck-panel-2);
+}
+
+.slidev-layout.ai-engineering-talk .callout-stack,
+.slidev-layout.ai-engineering-talk .architecture-layers {
+  display: grid;
+}
+
+.slidev-layout.ai-engineering-talk .callout-stack article,
+.slidev-layout.ai-engineering-talk .architecture-layers article {
+  display: grid;
+}
+
+.slidev-layout.ai-engineering-talk .blue { --tone: var(--deck-blue); }
+.slidev-layout.ai-engineering-talk .green { --tone: var(--deck-green); }
+.slidev-layout.ai-engineering-talk .amber { --tone: var(--deck-amber); }
+.slidev-layout.ai-engineering-talk .purple { --tone: var(--deck-purple); }
+
+.slidev-layout.ai-engineering-talk {
+  align-content: start;
+  background: var(--deck-bg);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+  min-height: 100%;
+  padding: 1.8rem 3rem 1.6rem;
+}
+
+.slidev-layout.ai-engineering-talk::before {
+  display: none;
+}
+
+.slidev-layout.ai-engineering-talk .kicker {
+  color: var(--deck-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk h1 {
+  background: none;
+  color: var(--deck-ink);
+  font-size: 2.45rem;
+  line-height: 1.08;
+  margin: 0.02rem 0 0.1rem;
+  max-width: none;
+  -webkit-text-fill-color: var(--deck-ink);
+}
+
+.slidev-layout.ai-engineering-talk .order-api-request {
+  align-items: center;
+  border-bottom: 1px solid var(--deck-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  min-height: 2.65rem;
+  padding: 0.32rem 0;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-request code {
+  background: transparent;
+  border-radius: 0;
+  color: var(--deck-blue);
+  font-size: 0.96rem;
+  font-weight: 800;
+  padding: 0;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-request > span,
+.slidev-layout.ai-engineering-talk .order-api-request > strong {
+  color: var(--deck-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-request > strong {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-comparison-frame {
+  margin-top: 0.32rem;
+  position: relative;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-table {
+  align-self: stretch;
+  background: var(--deck-panel) !important;
+  border: 1px solid var(--deck-line) !important;
+  border-radius: 8px;
+  box-shadow: none !important;
+  grid-template-rows: 2.95rem repeat(3, 4.7rem);
+  margin: 0;
+  overflow: hidden;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row {
+  grid-template-columns: minmax(8.5rem, 0.7fr) repeat(2, minmax(0, 1.65fr));
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row > * {
+  border-bottom: 1px solid color-mix(in srgb, var(--deck-line) 64%, transparent);
+  border-right: 0;
+  min-height: 4.7rem;
+  padding: 0.68rem 0.92rem;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-head {
+  background: var(--deck-panel-2);
+}
+
+.slidev-layout.ai-engineering-talk .comparison-head > * {
+  min-height: 2.95rem;
+  padding-bottom: 0.42rem;
+  padding-top: 0.42rem;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-head span {
+  color: var(--deck-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-head strong {
+  color: var(--deck-ink);
+  font-size: 0.9rem;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row > span[role="rowheader"] {
+  font-size: 0.92rem;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row strong[role="cell"] {
+  color: var(--deck-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  font-weight: 680;
+  line-height: 1.38;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.slidev-layout.ai-engineering-talk .comparison-row strong[role="cell"].preferred {
+  color: var(--deck-ink);
+}
+
+.slidev-layout.ai-engineering-talk .order-api-focus-layer {
+  display: grid;
+  grid-template-rows: repeat(3, 4.7rem);
+  inset: 2.95rem 0 1px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-focus {
+  border: 2px solid var(--deck-blue);
+  border-left-width: 5px;
+  border-radius: 7px;
+  opacity: 1;
+  transition: opacity 260ms ease;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-focus.slidev-vclick-hidden,
+.slidev-layout.ai-engineering-talk .order-api-focus.slidev-vclick-prior {
+  filter: none !important;
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-footer {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: auto;
+  min-height: 3.15rem;
+  padding-top: 0.6rem;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-footer > small {
+  color: var(--deck-muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
+  max-width: 55%;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-takeaway {
+  align-items: center;
+  background: var(--deck-panel-2);
+  border-left: 4px solid var(--deck-blue);
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  min-height: 2.6rem;
+  padding: 0.42rem 0.82rem;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-takeaway > strong {
+  color: var(--deck-ink);
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.slidev-layout.ai-engineering-talk .order-api-takeaway.slidev-vclick-hidden {
+  filter: none !important;
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+@media (max-width: 900px) {
+.slidev-layout.ai-engineering-talk {
+    padding: 1.5rem;
+  }
+
+.slidev-layout.ai-engineering-talk .comparison-row {
+    grid-template-columns: 6.8rem repeat(2, minmax(0, 1fr));
+  }
+
+.slidev-layout.ai-engineering-talk .comparison-row > * {
+    padding: 0.5rem;
+  }
+
+.slidev-layout.ai-engineering-talk .comparison-row strong[role="cell"] {
+    font-size: 0.72rem;
+  }
+
+.slidev-layout.ai-engineering-talk .order-api-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+.slidev-layout.ai-engineering-talk .order-api-footer > small {
+    max-width: none;
+  }
+}
+
+
+/* Chapter 1, slide 2: reveal the project context behind a short request. */
+.slidev-layout.ai-engineering-talk .story-slide {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.62rem;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .story-heading {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.slidev-layout.ai-engineering-talk .story-heading .kicker {
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk .story-heading h1 {
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk .story-heading p {
+  color: var(--deck-muted);
+  font-size: 1rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk .context-grid {
+  display: grid;
+  flex: 1;
+  gap: 1rem;
+  grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.6fr);
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card {
+  align-content: center;
+  background: var(--deck-panel-2);
+  border: 1px solid var(--deck-line);
+  border-left: 5px solid var(--deck-blue);
+  border-radius: 8px;
+  display: grid;
+  gap: 1.2rem;
+  overflow: hidden;
+  padding: 1.6rem;
+  position: relative;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-heading,
+.slidev-layout.ai-engineering-talk .prompt-card-foot {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-heading span {
+  color: var(--deck-ink);
+  font-size: 0.84rem;
+  font-weight: 780;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-heading small {
+  background: var(--deck-panel);
+  border: 1px solid var(--deck-line);
+  border-radius: 999px;
+  color: var(--deck-muted);
+  font-size: 0.72rem;
+  padding: 0.22rem 0.56rem;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card blockquote {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--deck-ink);
+  font-size: 1.45rem;
+  font-weight: 710;
+  line-height: 1.38;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card blockquote code {
+  background: transparent;
+  color: var(--deck-blue);
+  font-size: 0.93em;
+  padding: 0;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-divider {
+  background: var(--deck-line);
+  height: 1px;
+  width: 100%;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-foot {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-foot span {
+  color: var(--deck-muted);
+  font-size: 0.86rem;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-card-foot b {
+  color: var(--deck-ink);
+  display: inline-block;
+  min-width: 4.1rem;
+}
+
+.slidev-layout.ai-engineering-talk .prompt-quote-mark {
+  color: color-mix(in srgb, var(--deck-blue) 16%, transparent);
+  font-family: Georgia, serif;
+  font-size: 15rem;
+  font-weight: 800;
+  line-height: 0.8;
+  position: absolute;
+  right: 0.35rem;
+  top: 1.3rem;
+  z-index: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-deck {
+  display: grid;
+  gap: 0.58rem;
+  grid-template-rows: auto minmax(0, 1fr) 6.2rem;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-deck-heading {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.1rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-deck-heading strong {
+  color: var(--deck-ink);
+  font-size: 1.06rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-deck-heading span {
+  color: var(--deck-muted);
+  font-size: 0.75rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section {
+  background: var(--deck-panel);
+  border: 1px solid var(--deck-line);
+  border-radius: 8px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.62rem 0.78rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section--architecture {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.34rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section-heading strong {
+  color: var(--deck-ink);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section-heading small {
+  color: var(--deck-soft);
+  font-size: 0.68rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section-body {
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-reveal {
+  margin-top: 0.12rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section .architecture-layers {
+  gap: 0.34rem;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section .architecture-layers article {
+  background: var(--deck-panel-2);
+  border: 1px solid var(--deck-line);
+  border-radius: 6px;
+  box-shadow: none;
+  gap: 0.2rem 0.55rem;
+  grid-template-columns: 4.2rem 11.8rem minmax(0, 1fr);
+  min-height: 1.7rem;
+  padding: 0.1rem 0.55rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section .architecture-layers article span {
+  font-size: 0.61rem;
+  letter-spacing: 0.06em;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section .architecture-layers article strong {
+  color: var(--deck-ink);
+  font-size: 0.82rem;
+  line-height: 1.1;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section .architecture-layers article small {
+  color: var(--deck-muted);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-pair {
+  display: grid;
+  gap: 0.58rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.slidev-layout.ai-engineering-talk .response-envelope {
+  background: transparent;
+  color: var(--deck-blue);
+  display: block;
+  font-size: 1.02rem;
+  font-weight: 780;
+  line-height: 1.3;
+  padding: 0;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-section-body .knowledge-reveal > small {
+  color: var(--deck-muted);
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.28;
+  margin-top: 0.28rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-reveal--rules > strong {
+  color: var(--deck-ink);
+  display: block;
+  font-size: 0.83rem;
+  line-height: 1.3;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-reveal--rules > small {
+  overflow-wrap: anywhere;
+}
+
+.slidev-layout.ai-engineering-talk .context-takeaway {
+  align-items: center;
+  background: var(--deck-panel-2);
+  border-left: 4px solid var(--deck-purple);
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.9rem;
+}
+
+.slidev-layout.ai-engineering-talk .context-takeaway span,
+.slidev-layout.ai-engineering-talk .context-takeaway b {
+  color: var(--deck-muted);
+  font-size: 0.86rem;
+}
+
+.slidev-layout.ai-engineering-talk .context-takeaway strong {
+  color: var(--deck-ink);
+  font-size: 0.96rem;
+}
+
+/* Chapter 1, slide 3: turn the implicit context into an inspectable contract. */
+.slidev-layout.ai-engineering-talk .contract-identity {
+  align-items: center;
+  border-bottom: 1px solid var(--deck-line);
+  display: flex;
+  gap: 0.85rem;
+  min-height: 2.5rem;
+  padding-bottom: 0.48rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-identity code {
+  background: var(--deck-panel-2);
+  color: var(--deck-blue);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.slidev-layout.ai-engineering-talk .contract-identity span {
+  color: var(--deck-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-board {
+  display: grid;
+  flex: 1;
+  gap: 0.95rem;
+  grid-template-columns: minmax(0, 1.58fr) minmax(390px, 1fr);
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-settled,
+.slidev-layout.ai-engineering-talk .contract-question,
+.slidev-layout.ai-engineering-talk .contract-acceptance {
+  background: var(--deck-panel);
+  border: 1px solid var(--deck-line);
+  border-radius: 8px;
+  min-width: 0;
+  padding: 0.9rem;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-settled {
+  display: flex;
+  flex-direction: column;
+}
+
+.slidev-layout.ai-engineering-talk .contract-column-heading {
+  align-items: baseline;
+  border-bottom: 1px solid var(--deck-line);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 0.72rem;
+  padding: 0.1rem 0.1rem 0.58rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-column-heading strong {
+  color: var(--deck-ink);
+  font-size: 0.94rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-column-heading span {
+  color: var(--deck-muted);
+  font-size: 0.74rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-stack-reveal {
+  flex: 1;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-stack.callout-stack {
+  gap: 0.72rem;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-stack.callout-stack article {
+  background: var(--deck-panel-2);
+  border: 1px solid var(--deck-line);
+  border-left: 4px solid var(--tone, var(--deck-blue));
+  border-radius: 7px;
+  box-shadow: none;
+  gap: 0.28rem 0.72rem;
+  grid-template-columns: 3.2rem 8.8rem minmax(0, 1fr);
+  min-height: 4rem;
+  padding: 0.72rem 0.82rem;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-stack.callout-stack article span {
+  color: var(--tone, var(--deck-blue));
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-stack.callout-stack article strong {
+  color: var(--deck-ink);
+  font-size: 0.94rem;
+  line-height: 1.2;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-stack.callout-stack article small {
+  color: var(--deck-muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.slidev-layout.ai-engineering-talk .work-contract-open {
+  display: grid;
+  gap: 0.95rem;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .contract-question,
+.slidev-layout.ai-engineering-talk .contract-acceptance {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk .contract-question {
+  border-top: 4px solid var(--deck-amber);
+}
+
+.slidev-layout.ai-engineering-talk .contract-acceptance {
+  border-top: 4px solid var(--deck-green);
+}
+
+.slidev-layout.ai-engineering-talk .contract-detail {
+  align-content: center;
+  display: grid;
+  flex: 1;
+  gap: 0.7rem;
+  padding: 0.2rem 0.18rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-detail > strong {
+  color: var(--deck-ink);
+  font-size: 1.18rem;
+  line-height: 1.24;
+}
+
+.slidev-layout.ai-engineering-talk .contract-detail > small {
+  color: var(--deck-muted);
+  font-size: 0.86rem;
+  line-height: 1.42;
+}
+
+.slidev-layout.ai-engineering-talk .contract-takeaway {
+  align-items: center;
+  background: var(--deck-panel-2);
+  border-left: 4px solid var(--deck-blue);
+  border-radius: 0 8px 8px 0;
+  color: var(--deck-muted);
+  display: flex;
+  gap: 0.45rem;
+  font-size: 0.87rem;
+  min-height: 2.55rem;
+  padding: 0.42rem 0.82rem;
+}
+
+.slidev-layout.ai-engineering-talk .contract-takeaway strong {
+  color: var(--deck-ink);
+  font-size: 0.92rem;
+}
+
+.slidev-layout.ai-engineering-talk .knowledge-reveal.slidev-vclick-hidden,
+.slidev-layout.ai-engineering-talk .contract-stack-reveal.slidev-vclick-hidden,
+.slidev-layout.ai-engineering-talk .contract-detail.slidev-vclick-hidden,
+.slidev-layout.ai-engineering-talk .context-takeaway.slidev-vclick-hidden,
+.slidev-layout.ai-engineering-talk .contract-takeaway.slidev-vclick-hidden {
+  filter: none !important;
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+@media (max-width: 900px) {
+.slidev-layout.ai-engineering-talk {
+    padding: 1.5rem;
+  }
+
+.slidev-layout.ai-engineering-talk .context-grid,
+.slidev-layout.ai-engineering-talk .work-contract-board {
+    grid-template-columns: 1fr;
+  }
+
+.slidev-layout.ai-engineering-talk .knowledge-pair {
+    grid-template-columns: 1fr;
+  }
+}
