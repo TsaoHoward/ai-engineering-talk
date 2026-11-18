@@ -1,0 +1,371 @@
+/* Editorial Technical prototype; every rule is limited to the two tagged slides. */
+.slidev-layout.ai-engineering-talk.editorial-prototype {
+  --editorial-bg: #f7f6f2;
+  --editorial-ink: #202c30;
+  --editorial-accent: #315d57;
+  --editorial-secondary: #64716c;
+  --editorial-line: #d5dad5;
+  background: var(--editorial-bg);
+  background-image: none;
+  color: var(--editorial-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  gap: 0;
+  padding: 1.55rem 2.5rem 1.3rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-slide {
+  color: var(--editorial-ink);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-heading {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-kicker {
+  color: var(--editorial-secondary);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-heading h1 {
+  background: none;
+  color: var(--editorial-ink);
+  font-size: 2.18rem;
+  line-height: 1.1;
+  margin: 0.04rem 0 0;
+  max-width: none;
+  -webkit-text-fill-color: var(--editorial-ink);
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-heading p {
+  color: var(--editorial-secondary);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-slide code {
+  background: transparent;
+  border-radius: 0;
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  padding: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-request {
+  align-items: center;
+  border-bottom: 1px solid var(--editorial-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.72rem;
+  min-height: 2.5rem;
+  padding: 0.35rem 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-request span {
+  color: var(--editorial-secondary);
+  font-size: 0.68rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-request code {
+  color: var(--editorial-accent);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-request strong {
+  color: var(--editorial-accent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-comparison {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-column-headings,
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage {
+  display: grid;
+  grid-template-columns: minmax(7.2rem, 0.7fr) minmax(0, 1.25fr) minmax(0, 1.25fr);
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-column-headings {
+  align-items: center;
+  border-bottom: 1px solid var(--editorial-line);
+  color: var(--editorial-secondary);
+  font-size: 0.64rem;
+  min-height: 2.15rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-column-headings strong {
+  color: var(--editorial-ink);
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage-stack {
+  display: grid;
+  flex: 1;
+  grid-template-rows: minmax(10.7rem, 1fr);
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage-stack > .slidev-vclick-target.slidev-vclick-current {
+  display: flex;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage {
+  align-items: center;
+  border-bottom: 1px solid var(--editorial-line);
+  flex: 1;
+  grid-area: 1 / 1;
+  min-width: 0;
+  opacity: 1;
+  padding: 1.15rem 0;
+  transition: opacity 220ms ease;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage-topic {
+  align-self: center;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage-topic > span {
+  color: var(--editorial-accent);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage-topic h2 {
+  color: var(--editorial-ink);
+  font-size: 0.92rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-implementation {
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.46rem;
+  min-width: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-implementation code {
+  color: var(--editorial-ink);
+  font-size: 0.76rem;
+  font-weight: 620;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-implementation--convention {
+  border-left: 2px solid var(--editorial-accent);
+  padding-left: 1rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-implementation--convention code {
+  color: var(--editorial-accent);
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-implementation small {
+  color: var(--editorial-secondary);
+  font-size: 0.62rem;
+  line-height: 1.35;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-takeaway {
+  align-items: center;
+  border-top: 2px solid var(--editorial-accent);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  min-height: 2.5rem;
+  padding-top: 0.48rem;
+  transition: opacity 220ms ease;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-takeaway.slidev-vclick-hidden {
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-takeaway span {
+  color: var(--editorial-secondary);
+  font-size: 0.64rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-takeaway strong {
+  color: var(--editorial-accent);
+  font-size: 0.93rem;
+  font-weight: 760;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-prompt {
+  align-items: center;
+  border-left: 3px solid var(--editorial-accent);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(7rem, 0.32fr) minmax(0, 1.8fr);
+  margin-top: 0.72rem;
+  padding: 0.72rem 1rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-prompt > span {
+  color: var(--editorial-secondary);
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-prompt blockquote {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--editorial-ink);
+  font-size: 1.04rem;
+  font-weight: 660;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-prompt code {
+  color: var(--editorial-accent);
+  font-size: 0.9em;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-heading {
+  align-items: baseline;
+  border-bottom: 1px solid var(--editorial-line);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.42rem 0 0.5rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-heading h2 {
+  color: var(--editorial-ink);
+  font-size: 0.83rem;
+  font-weight: 680;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-heading span {
+  color: var(--editorial-secondary);
+  font-size: 0.6rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-list {
+  display: grid;
+  flex: 1;
+  grid-template-rows: 0.9fr 0.9fr 1.2fr;
+  min-height: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-row {
+  align-items: center;
+  border-bottom: 1px solid var(--editorial-line);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(9rem, 0.55fr) minmax(0, 2fr);
+  min-height: 0;
+  padding: 0.36rem 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-label {
+  align-items: baseline;
+  display: flex;
+  gap: 0.7rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-label > span {
+  color: var(--editorial-accent);
+  font-size: 0.61rem;
+  font-weight: 700;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-label h3 {
+  color: var(--editorial-ink);
+  font-size: 0.76rem;
+  font-weight: 650;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  justify-content: center;
+  min-height: 2.7rem;
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail.slidev-vclick-hidden {
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail > code {
+  color: var(--editorial-accent);
+  font-size: 0.74rem;
+  font-weight: 640;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail small {
+  color: var(--editorial-secondary);
+  font-size: 0.61rem;
+  line-height: 1.4;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail small code {
+  color: var(--editorial-ink);
+  font-size: 0.96em;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-detail--query {
+  gap: 0.2rem;
+}
+
+.slidev-layout.ai-engineering-talk.editorial-prototype .editorial-takeaway--context {
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 900px) {
+  .slidev-layout.ai-engineering-talk.editorial-prototype {
+    padding: 1.2rem 1.35rem 1rem;
+  }
+
+  .slidev-layout.ai-engineering-talk.editorial-prototype .editorial-column-headings,
+  .slidev-layout.ai-engineering-talk.editorial-prototype .editorial-stage {
+    grid-template-columns: minmax(5rem, 0.58fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
+  }
+
+  .slidev-layout.ai-engineering-talk.editorial-prototype .editorial-context-row {
+    grid-template-columns: minmax(7.6rem, 0.6fr) minmax(0, 2fr);
+  }
+}
