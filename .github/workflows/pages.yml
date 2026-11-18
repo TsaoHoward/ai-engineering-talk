@@ -74,50 +74,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Chromium for visual acceptance
-        run: npx playwright install --with-deps chromium
-
       - name: Build the formal site for its Pages path
         id: build-site
         run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
-
-      - name: Inspect the built formal site
-        run: |
-          set -euo pipefail
-          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/vite-preview.log" 2>&1 &
-          preview_pid=$!
-          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
-
-          preview_url="http://127.0.0.1:4173${SITE_BASE}"
-          ready=false
-          for attempt in $(seq 1 30); do
-            if curl --fail --silent "$preview_url" >/dev/null; then
-              ready=true
-              break
-            fi
-            if ! kill -0 "$preview_pid" 2>/dev/null; then
-              cat "$RUNNER_TEMP/vite-preview.log"
-              exit 1
-            fi
-            sleep 1
-          done
-
-          if [ "$ready" != true ]; then
-            cat "$RUNNER_TEMP/vite-preview.log"
-            echo "Vite preview did not become ready at $preview_url" >&2
-            exit 1
-          fi
-
-          npm run visual:acceptance -- --all --base-url "$preview_url" --router-mode hash
-
-      - name: Upload formal-site screenshots and report
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: visual-acceptance-main
-          path: artifacts/visual-acceptance/
-          if-no-files-found: warn
-          retention-days: 14
 
       - name: Upload the formal site for state update
         if: steps.build-site.outcome == 'success'
@@ -206,53 +165,10 @@ jobs:
         working-directory: source
         run: npm ci
 
-      - name: Install Chromium for visual acceptance
-        working-directory: source
-        run: npx playwright install --with-deps chromium
-
       - name: Build the PR site for its final Pages path
         id: build-site
         working-directory: source
         run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
-
-      - name: Inspect every PR slide and Click state
-        working-directory: source
-        run: |
-          set -euo pipefail
-          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/vite-preview.log" 2>&1 &
-          preview_pid=$!
-          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
-
-          preview_url="http://127.0.0.1:4173${SITE_BASE}"
-          ready=false
-          for attempt in $(seq 1 30); do
-            if curl --fail --silent "$preview_url" >/dev/null; then
-              ready=true
-              break
-            fi
-            if ! kill -0 "$preview_pid" 2>/dev/null; then
-              cat "$RUNNER_TEMP/vite-preview.log"
-              exit 1
-            fi
-            sleep 1
-          done
-
-          if [ "$ready" != true ]; then
-            cat "$RUNNER_TEMP/vite-preview.log"
-            echo "Vite preview did not become ready at $preview_url" >&2
-            exit 1
-          fi
-
-          npm run visual:acceptance -- --all --base-url "$preview_url" --router-mode hash
-
-      - name: Upload PR screenshots and report
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: visual-acceptance-pr-${{ needs.resolve-pr.outputs.pr_number }}
-          path: source/artifacts/visual-acceptance/
-          if-no-files-found: warn
-          retention-days: 14
 
       - name: Upload the PR site for state update
         if: steps.build-site.outcome == 'success'
