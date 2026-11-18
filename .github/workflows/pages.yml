@@ -270,9 +270,15 @@ jobs:
     permissions:
       contents: write
     concurrency:
-      group: pages-state-${{ github.repository }}-main
+      group: pages-state-${{ github.repository }}
       cancel-in-progress: false
     steps:
+      - name: Check out the repository for the deployment action
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/heads/main
+          persist-credentials: false
+
       - name: Download the read-only formal-site build
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
@@ -302,11 +308,17 @@ jobs:
       contents: write
       pull-requests: read
     concurrency:
-      group: pages-state-${{ github.repository }}-pr-${{ needs.resolve-pr.outputs.pr_number }}
+      group: pages-state-${{ github.repository }}
       cancel-in-progress: false
     outputs:
       state_updated: ${{ steps.freshness.outputs.state_updated }}
     steps:
+      - name: Check out the repository for the deployment action
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/heads/main
+          persist-credentials: false
+
       - name: Confirm the PR and built revision are still current
         id: freshness
         env:
@@ -327,10 +339,15 @@ jobs:
           if [[ "$head_repository" == "$GITHUB_REPOSITORY" ]]; then
             if [[ "$OPERATION" == preview && "$pr_state" == open && "$head_sha" == "$EXPECTED_HEAD_SHA" ]]; then
               state_updated=true
-            elif [[ "$OPERATION" == remove && "$EVENT_NAME" == workflow_dispatch && "$MANUAL_OPERATION" == remove ]]; then
-              state_updated=true
-            elif [[ "$OPERATION" == remove && "$pr_state" == closed ]]; then
-              state_updated=true
+            elif [[ "$OPERATION" == remove ]] &&
+              { [[ "$EVENT_NAME" == workflow_dispatch && "$MANUAL_OPERATION" == remove ]] ||
+                [[ "$pr_state" == closed ]]; }; then
+              pages_state_ref="$(git ls-remote --heads origin refs/heads/pages-state)"
+              if [[ -n "$pages_state_ref" ]]; then
+                state_updated=true
+              else
+                echo "Pages state branch does not exist; skipping preview cleanup."
+              fi
             fi
           fi
 
