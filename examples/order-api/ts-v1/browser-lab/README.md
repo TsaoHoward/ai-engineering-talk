@@ -1,4 +1,6 @@
-# Static Browser MSW / Drizzle Proxy lab (Gate A)
+# Static Browser MSW / Drizzle Proxy lab (Gate A passed)
+
+**Verified:** [GitHub Actions run 44715870959](https://github.com/TsaoHoward/ai-engineering-talk/actions/runs/44715870959): original Node baseline 3/3; genuine Chromium browser Gate A 1/1, 2026-11-20. The browser test uses a Vite static preview at a GitHub Pages-like subpath; **the lab is not yet published to the actual GitHub Pages host**.
 
 **Purpose:** Demonstrate that both synthetic Order API paths can run in a GitHub Pages-compatible static page. This is a separate verification harness, not the official Slidev deck. Its two routes use the *same fixture and actual TypeScript application/DAO logic*, not hardcoded JSON responses.
 
@@ -25,5 +27,7 @@ Production build must use the same \`VITE_BASE\` value as the deployment path, a
 This is a **bounded interpreter**, not a full SQL engine. Functional tests of query results do not imply arbitrary SQL correctness. \`better-sqlite3\` is not imported into the browser lab. Runtime uses in-memory fixture rows, a real Drizzle proxy, and MSW.
 
 **Gate A pass criteria:** Chromium page loaded from a non-root base URL; worker controls the page; each route reaches both API and DB handlers; default page/filtered dates/400 and unsupported SQL verified; page reload works; no browser uncaught errors. CI artifacts must be retained for review.
+
+**Temporary source debt:** A matching Drizzle table definition was copied into this isolated browser npm package to resolve dependencies. Consolidate it into a single browser-safe source before the browser demo becomes canonical; do not duplicate query rules or fixtures.
 
 **Not yet done:** complete cross-variant behavioral matrix, automated evidence snapshots with full Request/Status/Response metadata, consumer contract tests across all cases, Slidev components, MSW in official GitHub Pages, and decision on replacing original Node code. No original-model-generated-AI claim.
