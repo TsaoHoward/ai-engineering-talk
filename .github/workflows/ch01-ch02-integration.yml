@@ -52,6 +52,15 @@ jobs:
           if [ "$ready" != true ]; then cat "$RUNNER_TEMP/slidev-preview.log"; exit 1; fi
           npm run verify:slidev-msw -- --base-url "$url"
           npm run visual:acceptance -- --all --base-url "$url" --router-mode hash
+      - name: Verify the real hosted github.io preview in Chromium
+        if: github.base_ref == 'main'
+        env:
+          REMOTE_BASE: ${{ format('https://{0}.github.io/{1}/pr-preview/pr-{2}/', github.repository_owner, github.event.repository.name, github.event.number) }}
+        run: |
+          set -euo pipefail
+          cp artifacts/slidev-msw/report.json artifacts/slidev-msw/local-report.json
+          npm run verify:slidev-msw -- --base-url "$REMOTE_BASE"
+          mv artifacts/slidev-msw/report.json artifacts/slidev-msw/hosted-report.json
       - name: Save visual and MSW acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
