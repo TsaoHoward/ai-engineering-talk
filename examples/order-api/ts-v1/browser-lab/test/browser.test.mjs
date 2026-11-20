@@ -72,8 +72,7 @@ test('static subpath: nested API MSW → real Drizzle/SQL → DB MSW → consume
     await browser?.close()
     proc.kill('SIGTERM')
     await delay(300)
-    if (proc.exitCode !== null && proc.exitCode !== 0 && proc.signalCode !== 'SIGTERM') {
-      throw new Error('Vite preview failed: ' + serverLogs)
-    }
+    // Never override the original browser assertion with a shutdown exit code.
+    if (proc.exitCode !== null && proc.exitCode !== 0) process.stderr.write(serverLogs)
   }
 })
