@@ -90,6 +90,9 @@ function responseJson(record: ViewRecord) {
     ? { ...body, data: Array.isArray(body.data) ? body.data.slice(0, 1).map(preview) : body.data }
     : { ...body, data: { ...body.data, items: body.data.items.slice(0, 1).map(preview) } }
   return JSON.stringify(projected, null, 2)
+    // Inline the one projected id/status row; leaves the actual API envelope intact.
+    .replace(/\{\n\s+"id": (\d+),\n\s+"status": "([^"]+)"\n\s+\}/g,
+      '{ "id": $1, "status": "$2" }')
 }
 </script>
 
