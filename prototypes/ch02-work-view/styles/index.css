@@ -250,3 +250,28 @@
 .slidev-layout.ch02-lab .lab-next strong { font-size: 17px; }
 .slidev-layout.ch02-lab .lab-link-line { background: #64817c; }
 .slidev-layout.ch02-lab .lab-link-line::after { border-left-color: #64817c; }
+
+/* Real Slidev screenshot QA: reserve space for the revealed contract rows.
+   The original flexed grid visually overlapped them despite a zero-overflow audit. */
+.slidev-layout.ch02-lab .lab-contract { justify-content: space-between; }
+.slidev-layout.ch02-lab .lab-contract-top {
+  flex: 0 1 136px;
+  min-height: 0;
+}
+.slidev-layout.ch02-lab .lab-contract-bottom {
+  flex: 0 0 60px;
+  min-height: 0;
+}
+.slidev-layout.ch02-lab .lab-contract-side { padding: 10px 12px; }
+.slidev-layout.ch02-lab .lab-contract-side p {
+  font-size: 14px;
+  line-height: 1.32;
+  margin-top: 6px;
+}
+.slidev-layout.ch02-lab .lab-field-label { margin-bottom: 7px; }
+/* Fit all three Click states of the closing encapsulation sequence in-frame. */
+.slidev-layout.ch02-lab .lab-encap-state { gap: 9px; }
+.slidev-layout.ch02-lab .lab-capsule { padding: 15px 22px; gap: 10px; }
+.slidev-layout.ch02-lab .lab-capsule-core { font-size: 26px; padding: 10px 24px; }
+.slidev-layout.ch02-lab .lab-capsule-contract { font-size: 14px; padding-top: 9px; }
+.slidev-layout.ch02-lab .lab-next { padding: 10px 14px; gap: 5px; }
