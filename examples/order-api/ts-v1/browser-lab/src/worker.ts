@@ -6,7 +6,7 @@ import { evaluateSql, UnsupportedSqlError, type DbCommand } from './mock-db'
 const base = new URL(import.meta.env.BASE_URL, window.location.origin)
 const address = (path: string) => new URL(path, base).href
 
-export const trace: Array<{ stage: string; detail: string }> = []
+export const trace: Array<{ stage: string; detail: string; method?: string; params?: unknown[] }> = []
 
 // No mock response is hard-coded here. The MSW DB handler invokes the bounded SQL evaluator.
 const transport: DbTransport = async (command) => {
@@ -25,11 +25,11 @@ const handlers = [
     const command = await request.json() as DbCommand
     try {
       const rows = evaluateSql(command)
-      trace.push({ stage: 'DB', detail: command.sql })
+      trace.push({ stage: 'DB', detail: command.sql, method: command.method, params: [...command.params] })
       return HttpResponse.json({ rows })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown DB error'
-      trace.push({ stage: 'DB_REJECTED', detail: message })
+      trace.push({ stage: 'DB_REJECTED', detail: message, method: command?.method, params: Array.isArray(command?.params) ? [...command.params] : [] })
       return HttpResponse.json({ error: message }, {
         status: error instanceof UnsupportedSqlError ? 422 : 500,
       })
@@ -69,11 +69,16 @@ export async function startMock() {
 export const apiUrl = (variant: Variant, endpoint = 'orders') =>
   address('mock/api/' + variant + '/' + endpoint)
 
-export async function testUnsupportedSql(): Promise<number> {
+// Test-only adapter: real network-shaped fetch through the active MSW DB handler.
+export async function probeSql(command: unknown): Promise<{ status: number; body: unknown }> {
   const response = await fetch(address('mock/db/query'), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ sql: 'DELETE FROM orders', params: [], method: 'all' }),
+    body: JSON.stringify(command),
   })
-  return response.status
+  return { status: response.status, body: await response.json() }
+}
+
+export async function testUnsupportedSql(): Promise<number> {
+  return (await probeSql({ sql: 'DELETE FROM orders', params: [], method: 'all' })).status
 }
