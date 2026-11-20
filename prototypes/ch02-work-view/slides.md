@@ -13,7 +13,6 @@ transition: fade
     <h1>同一個目標，換一種設計視角。</h1>
     <p>從交付後的系統，轉向完成系統所需的工作。</p>
   </header>
-
   <div class="lab-stage-frame" aria-label="系統模組至工作模組的三階段視角轉換">
     <div class="lab-stage" v-click="[0,1]">
       <div class="lab-stage-label"><span class="lab-dot"></span> SYSTEM VIEW <span class="lab-label-detail">交付後的系統</span></div>
@@ -26,7 +25,6 @@ transition: fade
       </div>
       <div class="lab-stage-note">不同程式模組，透過介面與依賴合作。</div>
     </div>
-
     <div class="lab-stage" v-click="[1,2]">
       <div class="lab-stage-label"><span class="lab-dot"></span> SHARED QUESTIONS <span class="lab-label-detail">抽出共同的設計問題</span></div>
       <div class="lab-principles">
@@ -36,7 +34,6 @@ transition: fade
       </div>
       <div class="lab-stage-note">換了設計對象，這三個問題仍然存在。</div>
     </div>
-
     <div class="lab-stage" v-click="2">
       <div class="lab-stage-label"><span class="lab-dot"></span> WORK VIEW <span class="lab-label-detail">完成系統的工作</span></div>
       <div class="lab-work-flow">
@@ -49,7 +46,6 @@ transition: fade
       <div class="lab-stage-note">箭頭表示交接與依賴，不代表工作只能依序執行。</div>
     </div>
   </div>
-
   <footer class="lab-footer"><span>同一支訂單查詢 API · 合成示意</span><span>01 — 視角切換</span></footer>
 </main>
 
@@ -72,11 +68,9 @@ transition: fade
     <h1>放大一項工作：實作 API。</h1>
     <p>它要接收什麼、交付什麼，又需要遵守哪些約定？</p>
   </header>
-
   <div class="lab-mini-flow" aria-label="前後工作的脈絡">
     <span>建立 Table</span><span class="lab-mini-arrow">→ Schema →</span><strong>實作 API</strong><span class="lab-mini-arrow">→ API 契約 →</span><span>開發前端</span>
   </div>
-
   <div class="lab-contract">
     <div class="lab-contract-top">
       <section class="lab-contract-side"><div class="lab-field-label">INPUT</div><strong>需求與既有環境</strong><p>訂單查詢需求<br>資料表 Schema<br>專案與 API 規範</p></section>
@@ -88,7 +82,6 @@ transition: fade
       <div class="lab-contract-detail" v-click="2"><span>ACCEPTANCE</span><strong>功能可用、整合契約符合、測試有證據</strong></div>
     </div>
   </div>
-
   <footer class="lab-footer"><span>工作契約不是多寫幾句 Prompt，而是定義可合作的邊界</span><span>02 — 工作契約</span></footer>
 </main>
 
@@ -111,7 +104,6 @@ transition: fade
     <h1>封裝：對外清楚，對內保留彈性。</h1>
     <p>定義一項工作，不代表預先決定每個實作步驟。</p>
   </header>
-
   <div class="lab-encap-frame" aria-label="同一工作從展開到封裝的畫面變化">
     <div class="lab-encap-state" v-click="[0,1]">
       <div class="lab-external"><span>EXTERNAL CONTRACT</span><strong>目標 · 輸入輸出 · 邊界 · 驗收</strong></div>
@@ -121,14 +113,12 @@ transition: fade
       </div>
       <div class="lab-encap-caption">契約是外部可依賴的部分；執行過程不必事先固定。</div>
     </div>
-
     <div class="lab-encap-state" v-click="1">
       <div class="lab-capsule"><span>WORK UNIT / IMPLEMENT API</span><div class="lab-capsule-core">實作 API</div><div class="lab-capsule-contract">對外承諾：目標 · 介面 · 限制 · 驗收</div></div>
       <div class="lab-encap-caption lab-encap-caption--prominent">封裝的是內部細節，不是把未知風險藏起來。</div>
       <div class="lab-next" v-click="2"><span>NEXT → PROMPT / SKILL</span><strong>如果執行方法可以重用，能不能再封裝一次？</strong></div>
     </div>
   </div>
-
   <footer class="lab-footer"><span>影響契約或驗收的未知事項，仍須查證與協商</span><span>03 — 封裝</span></footer>
 </main>
 
