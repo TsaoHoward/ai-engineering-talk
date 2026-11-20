@@ -51,6 +51,8 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Build static MSW lab at a GitHub Pages subpath
+        env:
+          VITE_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm run build
       - name: Verify nested API and DB MSW handlers in real Chromium
         run: npm run test:e2e
@@ -62,4 +64,5 @@ jobs:
           path: |
             examples/order-api/ts-v1/browser-lab/package-lock.json
             examples/order-api/ts-v1/browser-lab/dist/mockServiceWorker.js
+            examples/order-api/ts-v1/browser-lab/generated/browser-evidence.json
           if-no-files-found: ignore
