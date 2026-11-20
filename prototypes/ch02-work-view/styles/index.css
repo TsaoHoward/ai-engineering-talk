@@ -1,14 +1,14 @@
 /* Chapter 2 low-fidelity, isolated from the production deck.
    Warm editorial palette; no external fonts or assets. */
 .slidev-layout.ch02-lab {
-  --lab-bg: #f7f6f2;
+  --lab-bg: #ffffff;
   --lab-paper: #ffffff;
-  --lab-ink: #202c30;
-  --lab-muted: #64736e;
-  --lab-line: #d9dfd9;
-  --lab-mist: #ecf0eb;
-  --lab-pine: #315d57;
-  --lab-pine-bg: #e1ebe5;
+  --lab-ink: #122830;
+  --lab-muted: #304852;
+  --lab-line: #b5c1c4;
+  --lab-mist: #f1f5f6;
+  --lab-pine: #145a53;
+  --lab-pine-bg: #deefeb;
   background: var(--lab-bg) !important;
   color: var(--lab-ink);
   font-family: ui-sans-serif, system-ui, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
@@ -106,7 +106,7 @@
 .slidev-layout.ch02-lab .lab-principle small { font-size: 12px; margin-top: 8px; color: var(--lab-muted); }
 .slidev-layout.ch02-lab .lab-mini-flow {
   display: flex; align-items: center; justify-content: center; gap: 16px;
-  min-height: 44px; color: #8e9a93; font-size: 13px; letter-spacing: .01em;
+  min-height: 44px; color: var(--lab-muted); font-size: 15px; letter-spacing: .01em;
 }
 .slidev-layout.ch02-lab .lab-mini-flow strong {
   background: var(--lab-pine-bg); padding: 10px 19px; border-radius: 7px;
@@ -218,3 +218,35 @@
   .slidev-layout.ch02-lab .lab-stage,
   .slidev-layout.ch02-lab .lab-encap-state { transition: none; }
 }
+
+/* High-legibility adjustment: Slidev/Seriph theme dims paragraphs and small text.
+   Keep all supporting copy readable even at reduced presentation scale. */
+.slidev-layout.ch02-lab .lab-header p,
+.slidev-layout.ch02-lab .lab-contract-side p,
+.slidev-layout.ch02-lab .lab-contract-core p,
+.slidev-layout.ch02-lab .lab-stage-note,
+.slidev-layout.ch02-lab .lab-encap-caption,
+.slidev-layout.ch02-lab small,
+.slidev-layout.ch02-lab .lab-footer {
+  opacity: 1 !important;
+  -webkit-text-fill-color: currentColor;
+}
+.slidev-layout.ch02-lab .lab-header p {
+  color: var(--lab-muted) !important;
+  font-size: 18px;
+  font-weight: 560;
+}
+.slidev-layout.ch02-lab .lab-eyebrow,
+.slidev-layout.ch02-lab .lab-footer { font-size: 13px; }
+.slidev-layout.ch02-lab .lab-stage-label,
+.slidev-layout.ch02-lab .lab-field-label,
+.slidev-layout.ch02-lab .lab-contract-detail span { font-size: 13px; }
+.slidev-layout.ch02-lab .lab-node small,
+.slidev-layout.ch02-lab .lab-principle small,
+.slidev-layout.ch02-lab .lab-contract-side p { font-size: 15px; }
+.slidev-layout.ch02-lab .lab-stage-note,
+.slidev-layout.ch02-lab .lab-encap-caption { font-size: 17px; }
+.slidev-layout.ch02-lab .lab-contract-detail strong { font-size: 14px; line-height: 1.25; }
+.slidev-layout.ch02-lab .lab-next strong { font-size: 17px; }
+.slidev-layout.ch02-lab .lab-link-line { background: #64817c; }
+.slidev-layout.ch02-lab .lab-link-line::after { border-left-color: #64817c; }
