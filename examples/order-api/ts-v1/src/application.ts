@@ -39,7 +39,7 @@ export class OrderRepository {
   }
 }
 
-// Same Drizzle ORM query builder as the Node version; only SQL execution is redirected.
+// Real Drizzle ORM query builder; its generated SQL is executed by the bounded MSW DB adapter.
 export class OrderDao {
   private readonly db: ReturnType<typeof drizzle>
 
@@ -77,12 +77,14 @@ export class OrderDao {
 
 export class OrderService {
   constructor(private readonly dao: OrderDao) {}
+  // #region service-search
   async search(query: OrderQuery): Promise<OrderPage> {
     const [items, totalCount] = await Promise.all([
       this.dao.selectPage(query), this.dao.count(query),
     ])
     return { items, totalCount }
   }
+  // #endregion service-search
 }
 
 function aiResponse<T>(data: T, totalCount: number | null) {
