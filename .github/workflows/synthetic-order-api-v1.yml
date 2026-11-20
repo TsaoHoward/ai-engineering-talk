@@ -1,0 +1,36 @@
+name: Synthetic Order API v1
+
+on:
+  pull_request:
+    paths:
+      - 'examples/order-api/ts-v1/**'
+      - '.github/workflows/synthetic-order-api-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/order-api/ts-v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated example dependencies
+        run: npm install --no-audit --no-fund
+      - name: Typecheck, HTTP tests, and evidence export
+        run: npm run verify
+      - name: Upload generated API evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-order-api-ts-v1-evidence
+          path: examples/order-api/ts-v1/generated/*.json
+          if-no-files-found: ignore
