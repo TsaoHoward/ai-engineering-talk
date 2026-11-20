@@ -55,18 +55,18 @@ const handlers = [
 
 const worker = setupWorker(...handlers)
 
-let startup: Promise<void> | undefined
+let startup: Promise<unknown> | undefined
 
-export function startMock(): Promise<void> {
-  startup ??= worker.start({
+export async function startMock(): Promise<void> {
+  startup ??= Promise.resolve(worker.start({
     quiet: true,
     onUnhandledRequest: 'bypass',
     serviceWorker: {
       url: address('mockServiceWorker.js'),
       options: { scope: base.pathname },
     },
-  })
-  return startup
+  }))
+  await startup
 }
 
 export const apiUrl = (variant: Variant, endpoint = 'orders') =>
