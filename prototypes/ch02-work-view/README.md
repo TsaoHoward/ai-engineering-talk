@@ -6,16 +6,16 @@ Isolated **three-slide Slidev low-fidelity prototype** based on `docs/storyboard
 
 ```bash
 npm ci
-npm run dev:hash -- prototypes/ch02-work-view/slides.md
+npx slidev prototypes/ch02-work-view/slides.md
 ```
 
 Open the local Slidev address printed by the CLI. Build command:
 
 ```bash
-npm run build -- prototypes/ch02-work-view/slides.md
+npm run build
 ```
 
-Slidev accepts an explicit Markdown entry file. The prototype's own `styles/index.css` is scoped to `.slidev-layout.ch02-lab` so it does not affect the main deck.
+Slidev accepts an explicit Markdown entry file. The prototype's own `styles/index.css` is scoped to `.slidev-layout.ch02-lab` so it does not affect the main deck. The experiment-only `build-ch02-preview.mjs` copies the prototype's build into root `dist/` for the existing GitHub Pages workflow.
 
 ## Story / clicks
 
@@ -37,4 +37,4 @@ Use the synthetic order-query API case. Work View arrows denote **handoff/depend
 
 All text and visuals are original/synthetic, using only local CSS and system fonts.
 
-**Validation status:** HTML/CSS layout and all nine intended click states have been approximated in headless Chromium at 1600×900; an initial content overlap on slide 2 was corrected. This is **not** a real Slidev runtime, build, or click E2E test; run the commands above in an environment with installed dependencies before merging or integrating.
+**Validation status:** an early HTML/CSS approximation missed raw HTML being parsed as Markdown code; this was corrected by keeping the HTML block contiguous. The PR CI now targets the prototype source and must be reviewed for real Slidev click screenshots. Do not treat an HTML-only mockup as acceptance evidence.
