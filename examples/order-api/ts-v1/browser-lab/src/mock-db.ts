@@ -13,9 +13,22 @@ export class UnsupportedSqlError extends Error {
   }
 }
 
-const COLUMNS = 'id, customer_id, status, created_at'
 const PAGE = /^select (id, customer_id(?: as customerid)?, status, created_at(?: as createdat)?) from orders(?: where (.+?))? order by created_at desc, id desc limit \?(?: offset \?)?$/
-const COUNT = /^select count\(\*\)(?: as [a-z][a-z0-9_]*)? from orders(?: where (.+))?$/
+const COUNT = /^select count\(\*\)(?: as value)? from orders(?: where (.+))?$/
+
+// Parentheses may group Drizzle's recognized AND predicates, but may not be
+// unbalanced or empty. Flattening them is safe only within our AND-only allowlist.
+function flattenAllowedWhere(where: string): string {
+  if (/\(\s*\)/.test(where)) throw new UnsupportedSqlError('Empty WHERE grouping')
+  let depth = 0
+  for (const character of where) {
+    if (character === '(') depth++
+    if (character === ')') depth--
+    if (depth < 0) throw new UnsupportedSqlError('Unbalanced WHERE grouping')
+  }
+  if (depth !== 0) throw new UnsupportedSqlError('Unbalanced WHERE grouping')
+  return where.replace(/[()]/g, '').replace(/\s+/g, ' ').trim()
+}
 
 // This normalizes harmless whitespace/identifier quoting only; it does NOT parse arbitrary SQL.
 function normalize(sql: string): string {
@@ -35,9 +48,13 @@ function integerAt(params: unknown[], index: number, name: string): number {
 }
 
 export function evaluateSql(command: DbCommand): unknown[][] | Record<string, unknown>[] {
+  if (!command || typeof command.sql !== 'string' || !Array.isArray(command.params)
+    || !['all', 'objects'].includes(command.method)) {
+    throw new UnsupportedSqlError('Malformed SQL command')
+  }
   const normalized = normalize(command.sql)
-  if (normalized.includes(';') || !['all', 'objects'].includes(command.method)) {
-    throw new UnsupportedSqlError('Unsupported query syntax or row mode')
+  if (normalized.includes(';')) {
+    throw new UnsupportedSqlError('Unsupported query syntax')
   }
 
   const countMatch = COUNT.exec(normalized)
@@ -45,8 +62,7 @@ export function evaluateSql(command: DbCommand): unknown[][] | Record<string, un
   if (!countMatch && !pageMatch) throw new UnsupportedSqlError('Unknown SQL shape: ' + normalized)
 
   // Only three semantic predicate shapes are accepted. No joins, arbitrary WHERE, DML or SQL parser.
-  const where = (countMatch?.[1] ?? pageMatch?.[2] ?? '')
-    .replace(/[()]/g, '').trim()
+  const where = flattenAllowedWhere(countMatch?.[1] ?? pageMatch?.[2] ?? '')
   const predicates = new Set([
     '',
     'status = ?',
