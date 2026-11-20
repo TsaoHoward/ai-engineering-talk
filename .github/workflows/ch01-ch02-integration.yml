@@ -1,0 +1,64 @@
+name: Chapter 1-2 Slidev integration acceptance
+
+on:
+  pull_request:
+    branches:
+      - experiment/synthetic-order-api-ts-v1
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'slides.md'
+      - 'styles/**'
+      - 'components/**'
+      - 'scripts/**'
+      - 'examples/order-api/ts-v1/**'
+      - 'docs/**'
+      - 'outline/**'
+      - 'package.json'
+      - '.github/workflows/ch01-ch02-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-and-api:
+    runs-on: ubuntu-24.04
+    env:
+      SITE_BASE: ${{ format('/{0}/pr-preview/pr-{1}/', github.event.repository.name, github.event.number) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Slidev dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Build canonical MSW + Slidev at intended Pages base
+        run: npm run build -- --base "$SITE_BASE" --router-mode hash --out dist
+      - name: Run browser interaction and every-slide visual acceptance
+        run: |
+          set -euo pipefail
+          npm run preview -- --outDir dist --base "$SITE_BASE" --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/slidev-preview.log" 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          url="http://127.0.0.1:4173$SITE_BASE"
+          ready=false
+          for n in $(seq 1 30); do
+            if curl --fail --silent "$url" > /dev/null; then ready=true; break; fi
+            if ! kill -0 "$pid" 2>/dev/null; then cat "$RUNNER_TEMP/slidev-preview.log"; exit 1; fi
+            sleep 1
+          done
+          if [ "$ready" != true ]; then cat "$RUNNER_TEMP/slidev-preview.log"; exit 1; fi
+          npm run verify:slidev-msw -- --base-url "$url"
+          npm run visual:acceptance -- --all --base-url "$url" --router-mode hash
+      - name: Save visual and MSW acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ch01-ch02-integration-qa
+          path: |
+            artifacts/visual-acceptance/
+            artifacts/slidev-msw/
+          if-no-files-found: warn
+          retention-days: 14
