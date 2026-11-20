@@ -14,7 +14,7 @@ export class UnsupportedSqlError extends Error {
 }
 
 const COLUMNS = 'id, customer_id, status, created_at'
-const PAGE = /^select (id, customer_id(?: as customerid)?, status, created_at(?: as createdat)?) from orders(?: where (.+?))? order by created_at desc, id desc limit \? offset \?$/
+const PAGE = /^select (id, customer_id(?: as customerid)?, status, created_at(?: as createdat)?) from orders(?: where (.+?))? order by created_at desc, id desc limit \?(?: offset \?)?$/
 const COUNT = /^select count\(\*\)(?: as [a-z][a-z0-9_]*)? from orders(?: where (.+))?$/
 
 // This normalizes harmless whitespace/identifier quoting only; it does NOT parse arbitrary SQL.
@@ -57,7 +57,8 @@ export function evaluateSql(command: DbCommand): unknown[][] | Record<string, un
   const byStatus = where.includes('status = ?')
   const byDate = where.includes('created_at >= ?')
   const filterParamCount = Number(byStatus) + Number(byDate) * 2
-  const expectedCount = filterParamCount + (pageMatch ? 2 : 0)
+  const hasOffset = Boolean(pageMatch && normalized.endsWith(' offset ?'))
+  const expectedCount = filterParamCount + (pageMatch ? (hasOffset ? 2 : 1) : 0)
   if (command.params.length !== expectedCount) {
     throw new UnsupportedSqlError('Expected ' + expectedCount + ' SQL parameters')
   }
@@ -81,7 +82,7 @@ export function evaluateSql(command: DbCommand): unknown[][] | Record<string, un
   }
 
   const limit = integerAt(command.params, n++, 'limit')
-  const offset = integerAt(command.params, n, 'offset')
+  const offset = hasOffset ? integerAt(command.params, n, 'offset') : 0
   if (limit < 1 || limit > 100) throw new UnsupportedSqlError('Invalid limit')
   const selected = [...filtered]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt) || b.id - a.id)
