@@ -12,7 +12,7 @@
 
 ## 本階段決定的最小原則
 
-1. `examples/order-api/` 的需求及兩條合成實作，作為當前技術基準：AI 為 `Controller → Repository → NamedParameterJdbcTemplate`，既有專案為 `Controller → Service → Dao → MyBatis XML`；共用 `ApiResponse<T> = {code,message,data}`。
+1. `examples/order-api/` 的需求及兩條合成實作，作為當前技術基準：AI 為 `Controller → Repository → NamedParameterJdbcTemplate`，既有專案為 `Controller → Service → OrderDao → MyBatis XML`；共用 `ApiResponse<T> = {code,message,data}`。
 2. 第一章的 HTTP 200 與 Response **必須標示「合成／模擬」**，直到有真正執行 Java 的證據。MSW 回應也**不能**證明 Java 程式已正確執行。
 3. 若建立後續展示素材，以單一明示版本（例如 `order-api-demo/v1` 或 Git commit SHA）固定：Request、AI Response、預期 Response、固定的資料列及必要的錯誤案例；投影片僅引用／呈現它們。
 4. 不為了展示 HTTP 200，立即把合成片段擴充成完整 Spring Boot／DB 應用。是否真的需要可執行驗證，取決於講述需求。
