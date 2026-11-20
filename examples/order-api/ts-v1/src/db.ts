@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3'
 import { readFileSync } from 'node:fs'
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+export { ordersTable } from './schema'
 import type { Order } from './domain'
 
 /** In-memory SQLite per server, seeded from exactly one checked-in fixture. */
