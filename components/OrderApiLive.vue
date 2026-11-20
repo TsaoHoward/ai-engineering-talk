@@ -80,7 +80,13 @@ function titleFor(variant: Variant) {
   return variant === 'ai-direct' ? 'AI-direct' : 'Project-convention'
 }
 function responseJson(record: ViewRecord) {
-  return JSON.stringify(record.body, null, 2)
+  // Project the first returned row from the ACTUAL HTTP response; no duplicate
+  // fixture or second response contract is maintained for the presentation.
+  const body = record.body as { code: string; message: string; data: any; totalCount?: number }
+  const projected = record.variant === 'ai-direct'
+    ? { ...body, data: Array.isArray(body.data) ? body.data.slice(0, 1) : body.data }
+    : { ...body, data: { ...body.data, items: body.data.items.slice(0, 1) } }
+  return JSON.stringify(projected, null, 2)
 }
 </script>
 
@@ -132,6 +138,7 @@ function responseJson(record: ViewRecord) {
         </template>
         <template v-else>
           <pre class="live-json">{{ responseJson(record) }}</pre>
+          <small class="live-json-caption">顯示第一筆 · 實際回傳 {{ record.items.length }} 筆</small>
         </template>
         <div v-if="mode === 'consumer'" class="live-consumer"
           :class="record.compatible ? 'live-consumer--ok' : 'live-consumer--bad'"
