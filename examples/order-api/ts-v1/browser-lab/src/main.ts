@@ -50,7 +50,6 @@ try {
   window.__runComparison = runComparison
   window.__rejectSql = testUnsupportedSql
   window.__mockTrace = trace
-  window.__mockReady = true
   if (state) state.textContent = 'MSW browser worker active'
   const button = document.querySelector('#run')
   button?.addEventListener('click', () => {
@@ -58,6 +57,7 @@ try {
     void runComparison(select?.value ?? '?pageSize=3')
   })
   await runComparison()
+  window.__mockReady = true
 } catch (error) {
   if (state) state.textContent = 'MSW failed: ' + String(error)
   throw error
