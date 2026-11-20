@@ -22,7 +22,7 @@ export function readExistingOrdersConsumer(body: unknown): OrderPage {
   if (!record(data) || !Array.isArray(data.items)) {
     throw new ExistingConsumerContractError('Existing consumer expects data.items[]')
   }
-  if (!Number.isSafeInteger(data.totalCount) || (data.totalCount as number) < 0) {
+  if (typeof data.totalCount !== 'number' || !Number.isSafeInteger(data.totalCount) || data.totalCount < 0) {
     throw new ExistingConsumerContractError('Existing consumer expects data.totalCount')
   }
   for (const item of data.items) {
