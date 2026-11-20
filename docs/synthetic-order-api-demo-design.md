@@ -4,6 +4,10 @@
 >
 > 相關：[合成案例規格](../examples/order-api/README.md) · [細綱 v0.9 候選](../outline/outline-v0.9-candidate.md) · [第二章分鏡](./storyboards/ch02.md)
 
+> **2026-11-20 後續實作進展：**使用者進一步決定，合成案例應是**可執行、可測試的專案**，Java 只是一種強型別例子，MyBatis 只需保留 DAO 背後的資料存取角色。已建立獨立的 [TypeScript / SQLite / Drizzle 草稿 PR #10](https://github.com/TsaoHoward/ai-engineering-talk/pull/10)：兩種可啟動的 HTTP 實作、固定 42 筆資料、測試及由實際 HTTP 產生的證據；專用 CI 的 Node 22 `npm ci`、`typecheck`、3 個測試群組與 evidence export 已通過。
+>
+> **版本界線：**下方 Java + snippets + MSW 草案保留第一輪提案脈絡，但**不再是新合成案例的交付方案**。新方案先採可執行 TS 實例，ORM 是實現相同架構責任的工具，不是要重現 MyBatis。原 `outline-v0.9-candidate.md` 仍描述 Java 舊案例，**尚未改寫／採納 TS 設定**；待 PR #10 審查通過後，再統一更新敘事與投影片。
+
 ## 為什麼需要
 
 目前同一個 API 案例分別出現在 `examples/order-api/*.md`、細綱、分鏡與 Slidev。獨立複製技術文字容易造成 Response 契約、類別命名和分頁參數逐漸分歧。
