@@ -39,8 +39,8 @@ test('static subpath: nested API MSW → real Drizzle/SQL → DB MSW → consume
     assert.equal(await page.evaluate(() => Boolean(navigator.serviceWorker.controller)), true)
 
     const result = await page.evaluate(() => window.__runComparison('?pageSize=3'))
-    assert.equal(result.ai.status, 200)
-    assert.equal(result.convention.status, 200)
+    assert.equal(result.ai.status, 200, JSON.stringify(result))
+    assert.equal(result.convention.status, 200, JSON.stringify(result))
     assert.equal(result.ai.body.totalCount, 42)
     assert.equal(result.convention.body.data.totalCount, 42)
     assert.deepEqual(result.ai.body.data.map(x => x.id), [42, 35, 28])
