@@ -1,4 +1,4 @@
-import { apiUrl, startMock, testUnsupportedSql, trace } from './worker'
+import { apiUrl, startMock, testUnsupportedSql, probeSql, trace } from './worker'
 import type { Variant } from './application'
 import { readExistingOrdersConsumer, ExistingConsumerContractError } from './existing-consumer'
 
@@ -7,6 +7,7 @@ declare global {
     __mockReady?: boolean
     __runComparison?: (query?: string) => Promise<unknown>
     __rejectSql?: () => Promise<number>
+    __probeSql?: (command: unknown) => Promise<{ status: number; body: unknown }>
     __mockTrace?: typeof trace
   }
 }
@@ -52,6 +53,7 @@ try {
   await startMock()
   window.__runComparison = runComparison
   window.__rejectSql = testUnsupportedSql
+  window.__probeSql = probeSql
   window.__mockTrace = trace
   if (state) state.textContent = 'MSW browser worker active'
   const button = document.querySelector('#run')
