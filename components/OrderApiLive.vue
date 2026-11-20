@@ -83,9 +83,12 @@ function responseJson(record: ViewRecord) {
   // Project the first returned row from the ACTUAL HTTP response; no duplicate
   // fixture or second response contract is maintained for the presentation.
   const body = record.body as { code: string; message: string; data: any; totalCount?: number }
+  // Only shorten each *actual* response row for projection readability.
+  // Envelope shape, values and totalCount still come directly from HTTP.
+  const preview = (row: any) => ({ id: row.id, status: row.status })
   const projected = record.variant === 'ai-direct'
-    ? { ...body, data: Array.isArray(body.data) ? body.data.slice(0, 1) : body.data }
-    : { ...body, data: { ...body.data, items: body.data.items.slice(0, 1) } }
+    ? { ...body, data: Array.isArray(body.data) ? body.data.slice(0, 1).map(preview) : body.data }
+    : { ...body, data: { ...body.data, items: body.data.items.slice(0, 1).map(preview) } }
   return JSON.stringify(projected, null, 2)
 }
 </script>
@@ -138,7 +141,7 @@ function responseJson(record: ViewRecord) {
         </template>
         <template v-else>
           <pre class="live-json">{{ responseJson(record) }}</pre>
-          <small class="live-json-caption">顯示第一筆 · 實際回傳 {{ record.items.length }} 筆</small>
+          <small class="live-json-caption">僅投影首筆 id／status · 實際回傳 {{ record.items.length }} 筆</small>
         </template>
         <div v-if="mode === 'consumer'" class="live-consumer"
           :class="record.compatible ? 'live-consumer--ok' : 'live-consumer--bad'"
