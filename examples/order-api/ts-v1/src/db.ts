@@ -3,13 +3,6 @@ import { readFileSync } from 'node:fs'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import type { Order } from './domain'
 
-export const ordersTable = sqliteTable('orders', {
-  id: integer('id').primaryKey(),
-  customerId: integer('customer_id').notNull(),
-  status: text('status').notNull(),
-  createdAt: text('created_at').notNull(),
-})
-
 /** In-memory SQLite per server, seeded from exactly one checked-in fixture. */
 export function openSeededDatabase(): Database.Database {
   const sqlite = new Database(':memory:')
