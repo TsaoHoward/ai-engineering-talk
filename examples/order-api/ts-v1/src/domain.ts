@@ -2,7 +2,7 @@ export interface Order {
   id: number
   customerId: number
   status: string
-  createdAt: string // UTC ISO 8601; sortable text in SQLite
+  createdAt: string // UTC ISO 8601; stable lexical order in bounded mock
 }
 
 export interface OrderQuery {
