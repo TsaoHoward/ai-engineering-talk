@@ -144,7 +144,8 @@ async function main() {
     throw new Error(`--router-mode must be hash or history; got ${options.routerMode}`)
   }
 
-  const markdown = await readFile(path.join(repoRoot, 'slides.md'), 'utf8')
+  const slideSource = path.resolve(repoRoot, process.env.VISUAL_SLIDES_FILE || 'slides.md')
+  const markdown = await readFile(slideSource, 'utf8')
   const totalSlides = slideCountFromMarkdown(markdown)
   const slides = options.slide === undefined
     ? Array.from({ length: totalSlides }, (_, index) => index + 1)

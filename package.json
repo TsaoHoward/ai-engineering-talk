@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "node scripts/build-ch02-preview.mjs",
     "dev": "slidev --open",
     "dev:hash": "slidev --router-mode hash",
     "preview": "vite preview",
