@@ -13,39 +13,45 @@ transition: fade
     <h1>同一個目標，換一種設計視角。</h1>
     <p>從交付後的系統，轉向完成系統所需的工作。</p>
   </header>
-  <div class="lab-stage-frame" aria-label="系統模組至工作模組的三階段視角轉換">
-    <div class="lab-stage" v-click="[0,1]">
-      <div class="lab-stage-label"><span class="lab-dot"></span> SYSTEM VIEW <span class="lab-label-detail">交付後的系統</span></div>
-      <div class="lab-system-flow">
-        <div class="lab-node lab-system-node"><strong>Controller</strong><small>HTTP / 回應</small></div>
-        <div class="lab-link"><div class="lab-link-line"></div><small>呼叫</small></div>
-        <div class="lab-node lab-system-node"><strong>Service</strong><small>查詢邏輯</small></div>
-        <div class="lab-link"><div class="lab-link-line"></div><small>呼叫</small></div>
-        <div class="lab-node lab-system-node"><strong>DAO</strong><small>資料存取</small></div>
+  <v-switch class="lab-stage-frame" aria-label="程式模組到工作模組的三段視角轉換">
+    <template #0>
+      <div class="lab-stage">
+        <div class="lab-stage-label"><span class="lab-dot"></span> SYSTEM VIEW <span class="lab-label-detail">交付後的系統</span></div>
+        <div class="lab-system-flow">
+          <div class="lab-node lab-system-node"><strong>Controller</strong><small>HTTP / 回應</small></div>
+          <div class="lab-link"><div class="lab-link-line"></div><small>呼叫</small></div>
+          <div class="lab-node lab-system-node"><strong>Service</strong><small>查詢邏輯</small></div>
+          <div class="lab-link"><div class="lab-link-line"></div><small>呼叫</small></div>
+          <div class="lab-node lab-system-node"><strong>DAO</strong><small>資料存取</small></div>
+        </div>
+        <div class="lab-stage-note">不同程式模組，透過介面與依賴合作。</div>
       </div>
-      <div class="lab-stage-note">不同程式模組，透過介面與依賴合作。</div>
-    </div>
-    <div class="lab-stage" v-click="[1,2]">
-      <div class="lab-stage-label"><span class="lab-dot"></span> SHARED QUESTIONS <span class="lab-label-detail">抽出共同的設計問題</span></div>
-      <div class="lab-principles">
-        <div class="lab-principle"><span>01</span><strong>誰負責？</strong><small>Responsibility</small></div>
-        <div class="lab-principle"><span>02</span><strong>怎麼合作？</strong><small>Interface</small></div>
-        <div class="lab-principle"><span>03</span><strong>依賴什麼？</strong><small>Dependency</small></div>
+    </template>
+    <template #1>
+      <div class="lab-stage">
+        <div class="lab-stage-label"><span class="lab-dot"></span> SHARED QUESTIONS <span class="lab-label-detail">抽出共同的設計問題</span></div>
+        <div class="lab-principles">
+          <div class="lab-principle"><span>01</span><strong>誰負責？</strong><small>Responsibility</small></div>
+          <div class="lab-principle"><span>02</span><strong>怎麼合作？</strong><small>Interface</small></div>
+          <div class="lab-principle"><span>03</span><strong>依賴什麼？</strong><small>Dependency</small></div>
+        </div>
+        <div class="lab-stage-note">換了設計對象，這三個問題仍然存在。</div>
       </div>
-      <div class="lab-stage-note">換了設計對象，這三個問題仍然存在。</div>
-    </div>
-    <div class="lab-stage" v-click="2">
-      <div class="lab-stage-label"><span class="lab-dot"></span> WORK VIEW <span class="lab-label-detail">完成系統的工作</span></div>
-      <div class="lab-work-flow">
-        <div class="lab-node lab-work-node"><small>WORK 01</small><strong>建立 Table</strong></div>
-        <div class="lab-work-link"><span>Schema</span><div class="lab-link-line"></div></div>
-        <div class="lab-node lab-work-node lab-work-node--focus"><small>WORK 02</small><strong>實作 API</strong></div>
-        <div class="lab-work-link"><span>API 契約</span><div class="lab-link-line"></div></div>
-        <div class="lab-node lab-work-node"><small>WORK 03</small><strong>開發前端</strong></div>
+    </template>
+    <template #2>
+      <div class="lab-stage">
+        <div class="lab-stage-label"><span class="lab-dot"></span> WORK VIEW <span class="lab-label-detail">完成系統的工作</span></div>
+        <div class="lab-work-flow">
+          <div class="lab-node lab-work-node"><small>WORK 01</small><strong>建立 Table</strong></div>
+          <div class="lab-work-link"><span>Schema</span><div class="lab-link-line"></div></div>
+          <div class="lab-node lab-work-node lab-work-node--focus"><small>WORK 02</small><strong>實作 API</strong></div>
+          <div class="lab-work-link"><span>API 契約</span><div class="lab-link-line"></div></div>
+          <div class="lab-node lab-work-node"><small>WORK 03</small><strong>開發前端</strong></div>
+        </div>
+        <div class="lab-stage-note">箭頭表示交接與依賴，不代表工作只能依序執行。</div>
       </div>
-      <div class="lab-stage-note">箭頭表示交接與依賴，不代表工作只能依序執行。</div>
-    </div>
-  </div>
+    </template>
+  </v-switch>
   <footer class="lab-footer"><span>同一支訂單查詢 API · 合成示意</span><span>01 — 視角切換</span></footer>
 </main>
 
@@ -104,21 +110,31 @@ transition: fade
     <h1>封裝：對外清楚，對內保留彈性。</h1>
     <p>定義一項工作，不代表預先決定每個實作步驟。</p>
   </header>
-  <div class="lab-encap-frame" aria-label="同一工作從展開到封裝的畫面變化">
-    <div class="lab-encap-state" v-click="[0,1]">
-      <div class="lab-external"><span>EXTERNAL CONTRACT</span><strong>目標 · 輸入輸出 · 邊界 · 驗收</strong></div>
-      <div class="lab-interior">
-        <div class="lab-interior-heading"><span>IMPLEMENTATION</span><strong>實作 API</strong></div>
-        <div class="lab-internal-steps"><div>探索既有程式</div><div>選擇實作方式</div><div>測試與調整</div></div>
+  <v-switch class="lab-encap-frame" aria-label="工作契約從展開到封裝的畫面變化">
+    <template #0>
+      <div class="lab-encap-state">
+        <div class="lab-external"><span>EXTERNAL CONTRACT</span><strong>目標 · 輸入輸出 · 邊界 · 驗收</strong></div>
+        <div class="lab-interior">
+          <div class="lab-interior-heading"><span>IMPLEMENTATION</span><strong>實作 API</strong></div>
+          <div class="lab-internal-steps"><div>探索既有程式</div><div>選擇實作方式</div><div>測試與調整</div></div>
+        </div>
+        <div class="lab-encap-caption">契約是外部可依賴的部分；執行過程不必事先固定。</div>
       </div>
-      <div class="lab-encap-caption">契約是外部可依賴的部分；執行過程不必事先固定。</div>
-    </div>
-    <div class="lab-encap-state" v-click="1">
-      <div class="lab-capsule"><span>WORK UNIT / IMPLEMENT API</span><div class="lab-capsule-core">實作 API</div><div class="lab-capsule-contract">對外承諾：目標 · 介面 · 限制 · 驗收</div></div>
-      <div class="lab-encap-caption lab-encap-caption--prominent">封裝的是內部細節，不是把未知風險藏起來。</div>
-      <div class="lab-next" v-click="2"><span>NEXT → PROMPT / SKILL</span><strong>如果執行方法可以重用，能不能再封裝一次？</strong></div>
-    </div>
-  </div>
+    </template>
+    <template #1>
+      <div class="lab-encap-state">
+        <div class="lab-capsule"><span>WORK UNIT / IMPLEMENT API</span><div class="lab-capsule-core">實作 API</div><div class="lab-capsule-contract">對外承諾：目標 · 介面 · 限制 · 驗收</div></div>
+        <div class="lab-encap-caption lab-encap-caption--prominent">封裝的是內部細節，不是把未知風險藏起來。</div>
+      </div>
+    </template>
+    <template #2>
+      <div class="lab-encap-state">
+        <div class="lab-capsule"><span>WORK UNIT / IMPLEMENT API</span><div class="lab-capsule-core">實作 API</div><div class="lab-capsule-contract">對外承諾：目標 · 介面 · 限制 · 驗收</div></div>
+        <div class="lab-encap-caption lab-encap-caption--prominent">封裝的是內部細節，不是把未知風險藏起來。</div>
+        <div class="lab-next"><span>NEXT → PROMPT / SKILL</span><strong>如果執行方法可以重用，能不能再封裝一次？</strong></div>
+      </div>
+    </template>
+  </v-switch>
   <footer class="lab-footer"><span>影響契約或驗收的未知事項，仍須查證與協商</span><span>03 — 封裝</span></footer>
 </main>
 
