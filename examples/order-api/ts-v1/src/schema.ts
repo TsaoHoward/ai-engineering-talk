@@ -1,6 +1,6 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-// Same table definition used by the original Node example and the browser proxy.
+// Canonical order table schema. Used by the real Drizzle DAO in the browser application.
 export const ordersTable = sqliteTable('orders', {
   id: integer('id').primaryKey(),
   customerId: integer('customer_id').notNull(),
