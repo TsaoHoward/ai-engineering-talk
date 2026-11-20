@@ -1,6 +1,6 @@
 # Browser MSW architecture decision — bounded SQL mock (B)
 
-Status: **Gate A passed in real Chromium on 2026-11-20**, using static Vite preview at a GitHub Pages-like non-root URL. [CI evidence](https://github.com/TsaoHoward/ai-engineering-talk/actions/runs/44715870959). Gates B/C and deployment to actual GitHub Pages remain pending.
+Status: **Gates A+B passed in real Chromium on 2026-11-20**, using static Vite preview at a GitHub Pages-like non-root URL. [Gate B CI evidence](https://github.com/TsaoHoward/ai-engineering-talk/actions/runs/44719821501): Node baseline 3/3; browser lab 1/1 (8 valid query cases, 9 invalid inputs, 14 rejected SQL forms). Gate C and actual GitHub Pages/Slidev integration remain pending.
 This applies to Synthetic Order API v1 and a future GitHub Pages / Slidev integration. It does **not** replace currently verified Node/SQLite evidence until the browser equivalent passes acceptance.
 
 ## Goal
@@ -56,7 +56,7 @@ The Worker script, registration scope and URL construction must honor the curren
 
 **Gate C — maintainability and limits:** Snapshot/contract tests reject unsupported SQL and unexpected parameter shapes. Changing DAO query generation must not silently pass. No Node native `better-sqlite3` imported into the browser bundle, no SQLite server, no extra framework, and no independently maintained fake Response fixture for API success.
 
-Gate A is verified. Preserve the Node HTTP/SQLite example until Gate B/C, behavioral parity, and shared source consolidation are reviewed. The browser lab has **not** been published to the actual GitHub Pages host. Slidev visual design remains a separate stage.
+**Gate A+B verified.** Existing-Consumer contract validation and actual Request/Status/Response/SQL evidence are captured as `generated/browser-evidence.json` in the browser CI artifact. This is evidence of the bounded mock runtime, not proof of arbitrary SQL correctness. Preserve the Node HTTP/SQLite example until Gate C/source consolidation is reviewed. The browser lab has **not** been published to actual GitHub Pages; Slidev visual design remains separate.
 
 ## Scope/non-goals
 
