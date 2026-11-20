@@ -16,7 +16,7 @@ TypeScript does not implement Java's MyBatis. Drizzle fulfills the analogous res
 From this directory, independently of root Slidev:
 
 ```bash
-npm install
+npm ci
 npm run verify       # typecheck, real HTTP tests, generate evidence
 npm run dev:ai       # http://127.0.0.1:3101/api/orders
 npm run dev:convention # http://127.0.0.1:3102/api/orders
