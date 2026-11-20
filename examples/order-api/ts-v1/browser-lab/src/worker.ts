@@ -42,7 +42,7 @@ const handlers = [
         trace.push({ stage: 'API', detail: variant + '/' + resource })
         try {
           const result = await controller(request)
-          return HttpResponse.json(result.body, { status: result.status })
+          return HttpResponse.json(result.body as Record<string, unknown>, { status: result.status })
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Unhandled error'
           return HttpResponse.json({ code: 'INTERNAL_ERROR', message, data: null }, { status: 500 })
