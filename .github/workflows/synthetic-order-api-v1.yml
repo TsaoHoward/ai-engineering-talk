@@ -36,7 +36,8 @@ jobs:
           if-no-files-found: ignore
 
   browser:
-    runs-on: ubuntu-latest
+    # Playwright 1.59 Chromium does not support ubuntu-26.04 (current ubuntu-latest).
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: examples/order-api/ts-v1/browser-lab
