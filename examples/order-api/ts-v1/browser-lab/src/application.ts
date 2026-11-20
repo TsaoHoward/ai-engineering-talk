@@ -2,7 +2,7 @@ import { and, count, desc, eq, gte, lt, type SQL } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/sqlite-proxy'
 import type { ApiResponse, Order, OrderPage, OrderQuery } from '../../src/domain'
 import { InvalidQueryError, parseOrderQuery, toExclusiveUtcDate } from '../../src/domain'
-import { ordersTable } from '../../src/schema'
+import { ordersTable } from './schema'
 import type { DbCommand } from './mock-db'
 
 export type Variant = 'ai-direct' | 'project-convention'
@@ -34,7 +34,7 @@ export class OrderRepository {
         + where + ' ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?',
       params: [...params, query.pageSize, query.page * query.pageSize],
       method: 'objects',
-    }) as Order[]
+    }) as unknown as Order[]
     return { items, totalCount: countRows[0].value }
   }
 }
