@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build prototypes/ch02-work-view/slides.md",
     "dev": "slidev --open",
     "dev:hash": "slidev --router-mode hash",
     "preview": "vite preview",
