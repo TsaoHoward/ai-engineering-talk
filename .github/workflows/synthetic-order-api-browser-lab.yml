@@ -1,0 +1,40 @@
+name: Synthetic Order API Browser MSW Lab
+
+on:
+  pull_request:
+    paths:
+      - 'examples/order-api/ts-v1/**'
+      - '.github/workflows/synthetic-order-api-browser-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/order-api/ts-v1/browser-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser-lab dependencies (first feasibility spike)
+        run: npm install --no-audit --no-fund
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Build static Pages-subpath lab and generate MSW worker
+        run: npm run build
+      - name: Chromium E2E: real browser worker and nested DB calls
+        run: npm run test:e2e
+      - name: Save reproducibility inputs from experimental install
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-msw-lab-build-inputs
+          path: |
+            examples/order-api/ts-v1/browser-lab/package-lock.json
+            examples/order-api/ts-v1/browser-lab/dist/mockServiceWorker.js
+          if-no-files-found: ignore
