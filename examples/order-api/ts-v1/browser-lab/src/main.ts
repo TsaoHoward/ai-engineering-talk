@@ -1,5 +1,6 @@
 import { apiUrl, startMock, testUnsupportedSql, trace } from './worker'
 import type { Variant } from './application'
+import { readExistingOrdersConsumer, ExistingConsumerContractError } from './existing-consumer'
 
 declare global {
   interface Window {
@@ -10,35 +11,37 @@ declare global {
   }
 }
 
-function readExistingConsumer(body: unknown): number {
-  if (typeof body !== 'object' || body === null || !('data' in body)) {
-    throw new Error('Missing API response data')
-  }
-  const data: unknown = body.data
-  if (!data || typeof data !== 'object' || !('items' in data) || !Array.isArray(data.items)) {
-    throw new Error('Existing consumer requires data.items[]')
-  }
-  return data.items.length
-}
-
 async function get(variant: Variant, query: string) {
   const url = apiUrl(variant) + query
   const response = await fetch(url)
   const body: unknown = await response.json()
   let consumer: string
-  try {
-    consumer = 'compatible: ' + readExistingConsumer(body) + ' items'
-  } catch {
-    consumer = 'incompatible: expected data.items[]'
+  let consumed: { itemsCount: number; totalCount: number } | null = null
+  if (response.ok) {
+    try {
+      const page = readExistingOrdersConsumer(body)
+      consumed = { itemsCount: page.items.length, totalCount: page.totalCount }
+      consumer = 'compatible: ' + page.items.length + ' items'
+    } catch (error) {
+      if (!(error instanceof ExistingConsumerContractError)) throw error
+      consumer = 'incompatible: ' + error.message
+    }
+  } else {
+    consumer = 'not-checked: HTTP ' + response.status
   }
-  return { url, status: response.status, body, consumer }
+  return { variant, url, status: response.status, body, consumer, consumed }
 }
 
 export async function runComparison(query = '?pageSize=3') {
   trace.length = 0
   const ai = await get('ai-direct', query)
   const convention = await get('project-convention', query)
-  const result = { ai, convention, trace: [...trace] }
+  const result = {
+    sourceRevision: import.meta.env.VITE_SOURCE_SHA || 'local-unversioned',
+    provenance: 'Chromium / MSW browser worker / bounded SQL evaluator (no real database)',
+    query,
+    ai, convention, trace: trace.map(item => ({ ...item })),
+  }
   const display = document.querySelector('#output')
   if (display) display.textContent = JSON.stringify(result, null, 2)
   return result
