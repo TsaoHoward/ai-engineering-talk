@@ -1,4 +1,4 @@
 node_modules/
+dist/
 generated/
-*.sqlite
-*.db
+public/mockServiceWorker.js
