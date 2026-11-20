@@ -78,6 +78,27 @@
 | C6｜視覺風格 | 正式根目錄 `docs/slide-design-guidelines.md` 與原投影片採 Crystal；PR #8／#9 另試暖白 Editorial。已認可的是低密度、可讀性及連續轉場，**不是宣告其中一套 Palette 為全場最終規範**。 |
 | C7｜PR／CI 邊界 | PR #8 是另一套第一章實驗；PR #9 為了預覽更動實驗分支的 `package.json`、Build wrapper、QA 設定。下一輪不得直接把 PR #9 整批合併進主線，須分離可重用畫面與專為 Preview 作的變更。 |
 
+### 2026-11-20｜差異再核對後的決策狀態
+
+已將可確定的內容收進 **[細綱 v0.9 候選](../outline/outline-v0.9-candidate.md)**，並同步 [第一章分鏡 v0.7](./storyboards/ch01.md)、[第二章分鏡 v0.4](./storyboards/ch02.md)。**v0.8 保留原樣**供追溯；尚未採用任何新的正式投影片。
+
+| 差異 | 目前決策 |
+| --- | --- |
+| **C1 開場順序** | 已定：先交辦＋合成的功能成功情境，再做 Response → 架構 → Naming 比較 |
+| **C2 Response 契約** | 已定：依 `examples/order-api/`，共用外殼是 `{ code, message, data }`；AI 擴充 root `totalCount`，預期分頁資訊放在 `data` |
+| **C3 資料存取路徑** | 已定：AI 為 `Controller → OrderRepository → NamedParameterJdbcTemplate`，既有慣例為 `Controller → Service → OrderDao → MyBatis XML` |
+| **C4 工作契約位置** | 已定：第一章只提出規格落差；第二章 Work View 放大「實作 API」時才完整展開並扣回封裝 |
+| **C5 畫面編號** | 已釐清：18 個是原始內容單元，Beat／分鏡畫面／正式投影片／Click 不應共用編號 |
+| **C6 視覺風格** | **未定**：僅接受低資訊密度、清楚對比、連續圖形和有目的的揭露；Crystal／Editorial 最終選型留到整章測試 |
+| **C7 PR／CI 邊界** | **待實作整合**：PR #8／#9 都維持 Draft；PR #9 的實驗 Build wrapper／CI 調整不應直接進主線 |
+| **C8 Method 範例** | 已定：採 `OrderService` 已有的 `OrderPageDto search(OrderQueryDto query)`，不使用另造的 `PageResult<OrderDto>` |
+| **C9 分頁參數** | 已定：採 `page`／`pageSize`；不混用 `size` |
+| **C10 HTTP 200 的證據性質** | 已定：既有 Java 是非完整可執行片段；HTTP 200 只能標成**合成／模擬情境**，不可宣稱實測成功；先用固定 fixtures，再視需要加入 MSW 互動 |
+
+**新記錄的實作方向：** [固定版本合成 API 與可選 MSW 方案](./synthetic-order-api-demo-design.md)。先讓所有圖表／程式碼指向穩定案例版本，**MSW 是有互動需求才啟用的選項**；本輪未安裝或實作。
+
+**收斂層級：**上表的「已定」代表敘事／技術事實在候選內容文件中已統一；**不代表**已完成第一、二章正式 Slidev 的修改、口述驗收或資產自動化。
+
 ## 6. 設計方法：暫時保留哪些、還要驗證哪些
 
 繼續採用 **細綱 → 章節責任 → 敘事 Beat → 案例與證據 → 低保真分鏡 → Slidev 實作與驗收**，但此時仍稱為「候選工作法 v0.1」。
@@ -101,5 +122,5 @@
 ## 8. 下次開始工作時先讀什麼
 
 1. **先讀本文件**，看已確認的敘事與 C1–C7 差異。
-2. 再讀 `examples/order-api/README.md` 與兩份實作，確認案例技術設定。
-3. 然後讀 `docs/storyboards/ch01.md`、`ch02.md`，從 **工作包 A** 開始；不要直接從 PR #9 的 CSS 或 Click 繼續改。
+2. 先以 [`outline-v0.9-candidate.md`](../outline/outline-v0.9-candidate.md) 與 `examples/order-api/` 核對已決定的第一、二章內容。
+3. 進行工作包 A 的**正式差異審閱／採納**（候選文件已寫好），接著才進入工作包 B；不要直接從 PR #9 的 CSS 或 Click 繼續改。
