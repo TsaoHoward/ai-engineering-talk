@@ -14,6 +14,7 @@ jobs:
       contents: read
     env:
       SITE_BASE: ${{ format('/{0}/pr-preview/pr-{1}/', github.event.repository.name, github.event.number) }}
+      VISUAL_SLIDES_FILE: prototypes/ch02-work-view/slides.md
     steps:
       - name: Check out the PR merge commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
