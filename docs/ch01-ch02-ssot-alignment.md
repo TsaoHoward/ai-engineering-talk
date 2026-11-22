@@ -1,4 +1,6 @@
-# 第一、二章整合｜TypeScript SSOT 與敘事證據對應 v0.1
+# 第一、二章｜TypeScript SSOT 歷史對齊紀錄 v0.1
+
+> **狀態更新（2026-11-22）**：此文件記錄先前以 `data.items`／`totalCount` 回應形狀為衝突的程式與測試事實，作為歷史技術紀錄保留。現行內容細綱已改為 [v0.9.3](../outline/outline-v0.9-candidate.md)，以 `ApiResponse.message` 必須存放訊息代碼（如 `m0001`）、前端代碼表解碼為主案例。程式、測試與舊證據尚待對齊；製作視覺原型時以現行細綱及 [第一章分鏡](storyboards/ch01.md) 為敘事來源。
 
 > 2026-11-20；工作包 A（內容／案例對齊），**不是** Slidev 已完成整合的驗收報告。
 >
