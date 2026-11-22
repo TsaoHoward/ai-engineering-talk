@@ -85,17 +85,17 @@ test('Gate B: browser MSW contract, bounded DB, query matrix and reproducible ev
       for (const variant of ['ai', 'convention']) {
         const response = result[variant]
         assert.equal(response.status, 200, c.name + '/' + variant + ': ' + JSON.stringify(response))
-        const normalized = variant === 'ai'
-          ? { items: response.body.data, totalCount: response.body.totalCount }
-          : response.body.data
+        assert.equal(response.body.code, 'OK')
+        assert.equal(response.body.message, 'm0000')
+        const normalized = response.body.data
         assert.equal(normalized.totalCount, c.total, c.name + '/' + variant)
         assert.deepEqual(normalized.items.slice(0, c.ids.length).map(x => x.id), c.ids, c.name + '/' + variant)
         if (c.count !== undefined) assert.equal(normalized.items.length, c.count, c.name)
       }
-      assert.deepEqual(result.ai.body.data, result.convention.body.data.items, c.name + ': same filtered items')
-      assert.equal(result.ai.consumed, null, c.name + ': legacy consumer must reject AI-direct')
-      assert.match(result.ai.consumer, /^incompatible:/, c.name)
-      assert.equal(result.convention.consumed.totalCount, c.total)
+      assert.deepEqual(result.ai.body, result.convention.body, c.name + ': identical success contract and data')
+      assert.equal(result.ai.consumed.totalCount, c.total, c.name + ': AI-direct consumer')
+      assert.equal(result.convention.consumed.totalCount, c.total, c.name + ': convention consumer')
+      assert.match(result.ai.consumer, /^compatible:/, c.name)
       assert.match(result.convention.consumer, /^compatible:/, c.name)
       assert.equal(result.trace.filter(x => x.stage === 'API').length, 2, c.name)
       assert.equal(result.trace.filter(x => x.stage === 'DB').length, 4, c.name)
@@ -114,11 +114,40 @@ test('Gate B: browser MSW contract, bounded DB, query matrix and reproducible ev
       assert.equal(result.convention.status, 400, c.name)
       assert.equal(result.ai.body.code, 'INVALID_QUERY', c.name)
       assert.equal(result.convention.body.code, 'INVALID_QUERY', c.name)
+      assert.equal(result.ai.body.data, null, c.name)
+      assert.equal(result.convention.body.data, null, c.name)
+      assert.equal(typeof result.ai.body.message, 'string')
+      assert.notEqual(result.ai.body.message, 'm0001', c.name + ': AI-direct uses readable detail')
+      assert.equal(result.convention.body.message, 'm0001', c.name + ': convention uses catalog code')
       assert.equal(result.trace.filter(x => x.stage === 'DB').length, 0, c.name + ': no DB calls')
-      assert.match(result.ai.consumer, /^not-checked:/)
-      assert.match(result.convention.consumer, /^not-checked:/)
+      assert.equal(result.ai.consumed, null, c.name + ': old front end cannot resolve raw text')
+      assert.match(result.ai.consumer, /^incompatible: Unknown message code:/)
+      assert.equal(result.convention.consumed.displayMessage, '查詢條件不合法', c.name)
+      assert.match(result.convention.consumer, /^compatible: message code resolved/)
       evidence.push({ name: c.name, expectedStatus: 400, ...result })
     }
+
+    const auxiliary = await page.evaluate(async () => {
+      const base = window.location.href
+      const read = async (variant, resource) => {
+        const response = await fetch(new URL('mock/api/' + variant + '/' + resource, base))
+        return { status: response.status, body: await response.json() }
+      }
+      return {
+        status: [await read('ai-direct', 'status'), await read('project-convention', 'status')],
+        notFound: [await read('ai-direct', 'missing'), await read('project-convention', 'missing')],
+      }
+    })
+    for (const result of auxiliary.status) {
+      assert.equal(result.status, 200)
+      assert.equal(result.body.message, 'm0000')
+    }
+    for (const result of auxiliary.notFound) {
+      assert.equal(result.status, 404)
+      assert.equal(result.body.code, 'NOT_FOUND')
+    }
+    assert.equal(auxiliary.notFound[0].body.message, 'Not found')
+    assert.equal(auxiliary.notFound[1].body.message, 'm0002')
 
     for (const command of rejectedSql) {
       const reply = await page.evaluate(query => window.__probeSql(query), command)
