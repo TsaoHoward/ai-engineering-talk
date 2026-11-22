@@ -24,6 +24,14 @@ export interface ApiResponse<T> {
   data: T
 }
 
+// Established API-to-UI message contract. Error category remains in 'code'.
+export const MESSAGE_CODES = {
+  success: 'm0000',
+  invalidQuery: 'm0001',
+  notFound: 'm0002',
+  internalError: 'm0003',
+} as const
+
 export class InvalidQueryError extends Error {
   constructor(message: string) {
     super(message)
