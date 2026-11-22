@@ -2,23 +2,22 @@
 
 > 用模組化思維理解 AI 協作、軟體工程與工程師成長
 
-- 版本：v0.9.2 候選（2026-11-22；延續 v0.9.1，修正第三至六章與 TypeScript SSOT 不一致的技術敘述）
-- 狀態：六章內容保留既有敘事，第一、二章已完成案例對齊；第三至六章已修正已識別的 TypeScript 技術不一致，具體 Skill／Workflow／部署故事素材仍待確認；正式 Slidev 與真實 GitHub Pages 尚待整合驗收
+- 版本：v0.9.3 候選（2026-11-22）
+- 狀態：內容細綱；已調整核心案例，程式與分鏡素材仍需對齊
 - 對象：新進軟體工程師
 - 暫定時間：35–40 分鐘
-- 貫穿案例：新增訂單查詢 API，支援訂單狀態、日期區間與分頁查詢
-- 內容結構：六章、18 個原始內容單元（不是正式投影片數量；分鏡 Beat、Click、實際張數各自獨立）
+- 貫穿案例：新增訂單查詢 API，支援狀態、UTC 日期區間與分頁
+- 內容結構：六章、18 個內容單元；不預設實際投影片張數
 
 ## 核心主張
 
-AI 能執行許多超出個人知識與經驗範圍的工作，但產出結果不代表成果能可靠交付。有效委派與交付仍需理解責任、介面、限制、依賴及驗收方式。這些不是為 AI 特別發明的要求，而是軟體工程原本就需要的知識。傳統新人逐步從局部工作學習這些能力；AI 可能讓新人更早嘗試超出其原本職責的工作，使原本可逐漸累積的工程知識提前成為門檻。AI 同時也能反過來輔助探索與學習。
+AI 能執行許多超出個人知識與經驗範圍的工作，但程式能執行，不代表成果可以可靠交付。委派和交付需要理解責任、介面、限制、依賴及驗收；這些都是軟體工程原有的知識。AI 讓人更早接觸超出原本經驗範圍的工作，也使工程知識的重要性更早浮現；AI 同時能幫助我們探索與學習。
 
-**貫穿設計原則：一個需求、兩種視角、同一套模組化思維。**
+**貫穿方法：同一個需求，兩個視角，一套模組化思維。**
 
-- **System View**：最後交付的系統，如何拆成有責任、介面、依賴的模組。
-- **Work View**：完成系統的工作，如何拆成可委派、組合、驗收的工作單元。
-- 兩者是思考原則的類比，不是一對一的技術映射。
-- 每次切換概念，盡量重用同一案例、圖形與節點，透過放大、縮小、替換連線來敘事。
+- **System View**：交付後的系統如何以責任、介面與依賴組合。
+- **Work View**：完成系統的工作如何定義、委派、交接與驗收。
+- 盡量重用同一個案例及圖形，隨著論述擴大視角。
 
 ---
 
@@ -26,33 +25,27 @@ AI 能執行許多超出個人知識與經驗範圍的工作，但產出結果�
 
 ### 01｜交辦一支 API，功能看起來可用
 
-以**原創合成**情境引入：新增 `GET /api/orders`，支援狀態、UTC 日期區間、分頁與總筆數。先展示簡短交辦 Prompt，再呈現有明確 Mock 標籤的 API Client HTTP 200 和查詢結果。
+需求：新增訂單查詢 API，支援狀態、UTC 日期區間、分頁與總筆數。
 
-**執行證據的界線**：現在有一份[可在瀏覽器執行的 TypeScript 合成案例](../examples/order-api/ts-v1/README.md)；其 Chromium 測試確實使用 MSW API Handler → 真正的 Controller／Repository 或 Service／DAO／Drizzle → MSW DB Handler／有限 SQL 模擬執行，並檢查 HTTP Status 與結果。這能稱為**瀏覽器 Mock API 的實測**，但不是部署在真實 API Server 或 SQL Database 的驗證，也不是特定 AI 模型實際產出的紀錄。敘事上的 `GET /api/orders` 需區分於演示用 `<site-base>/mock/api/{variant}/orders`。
+展示簡短的交辦 Prompt，以及合成 API 的執行結果，建立「功能已能運作」的起點。
 
-### 02｜功能可用，不代表符合專案的交付契約
+### 02｜功能可用，仍可能不符合既有契約
 
-從同一份合成成果，由外而內依序檢查 **Response → 架構 → Naming**；三者不是等重的獨立技術教學。
+**核心例子：專案規定 `ApiResponse.message` 存放訊息代碼（如 `m0001`），前端依預載代碼表取得顯示文字；AI-direct 卻直接填入人類可讀的錯誤訊息。**
 
-| 面向 | AI-direct（人為合成的對照） | Project-convention（同一合成專案的既有慣例） |
-| --- | --- | --- |
-| **Response／Consumer** | `aiResponse` 回傳 `{code,message,data:items[],totalCount}`，頁面資料位於 root | `response` 回傳 `{code,message,data:{items,totalCount}}`，保留 `ApiResponse<T>` 外殼 |
-| **資料存取** | `createController → OrderRepository → parameterized SQL → DbTransport` | `createController → OrderService → OrderDao → Drizzle ORM (sqlite-proxy) → DbTransport` |
-| **Naming** | 以 `OrderRepository` 直接承接查詢 | 明確區分 `OrderService`、`OrderDao`；兩種版本共用 `OrderQuery`／`OrderPage` 型別 |
+對照原本的錯誤回應與前端訊息處理方式，讓觀眾看見同一欄位背後的隱含契約，以及整合時產生的問題。
 
-兩條路徑都由**同一個 MSW DB Handler** 以 42 筆固定資料執行受限 SQL 語意。分頁參數為 `page=0`、`pageSize=20`，排序 `created_at DESC, id DESC`；日期依 UTC 日曆日轉半開區間。
+接著補充兩種實作在責任分層與 Naming 上的差異：AI-direct 使用 `OrderRepository` 與參數化 SQL；符合專案慣例的版本使用 `OrderService → OrderDao → Drizzle`。這些差異用來說明既有規範如何影響交付，而非獨立的技術優劣比較。
 
-此案例中，不相容的具體原因不是「JSON 多一個 root 欄位就必然壞掉」，而是既有 Consumer `readExistingOrdersConsumer` 會讀取 `data.items`、`data.totalCount`：AI-direct 的 Response 無法滿足，符合慣例的 Response 可以。**程式實際使用不同回應工廠，並沒有實際修改同一個共用 `ApiResponse<T>` 定義**；簡報不得把假設的共用型別修改說成已發生的程式事實。
+**重點**：完成一項功能，還需要與既有系統的約定相容。
 
-Repository／原生 SQL 並非技術錯誤；問題在於工程師是否掌握此專案既有的整合契約與責任分工。所有具體證據與限制參見[第一、二章 SSOT 對應](../docs/ch01-ch02-ssot-alignment.md)。
+### 03｜我原本知道的背景，沒有交代清楚
 
-### 03｜為什麼我會預期另一種交付？
+回看交辦 Prompt 與實際驗收依據：訊息代碼規則、前端解碼方式、責任分工、命名規範、修改邊界和測試。
 
-回頭對照最初交辦內容與剛才驗收依賴的判斷依據：既有 Consumer／Response、責任分層、Naming、查詢語意和測試。
+**收束**：交辦時描述的是功能，交付時依賴的卻包含既有專案規格。
 
-**收束**：我交辦的是功能，驗收卻依賴尚未完整提供或確認的既有規格。不了解既有系統就直接盲寫，人類工程師也可能遇到同樣落差。第一章**不先完整列出工作契約模型**，亦不把答案簡化成 Prompt 更長。
-
-**轉場**：我們剛剛拿來判斷可否交付的依據，其實就是工程師每天使用的「規格」。
+**轉場**：這些判斷依據，就是工程師日常工作使用的規格。
 
 ---
 
@@ -60,39 +53,33 @@ Repository／原生 SQL 並非技術錯誤；問題在於工程師是否掌握�
 
 ### 04｜規格如何支援模組合作？
 
-從真實案例的 TypeScript 方法簽章開始：
+從 TypeScript 方法簽章切入：
 
 ```ts
 async search(query: OrderQuery): Promise<OrderPage>
 ```
 
-此為 `src/application.ts` 中 `OrderService` 的**實際方法簽章**，不是示意的 Java DTO／Interface。接著引出其他規格來源：`OrderQuery`、`OrderPage` 型別、`OrderDao` 建構子依賴、`ApiResponse<T>`、既有 Consumer、測試與專案文件。簽章呈現局部輸入／輸出，但**不等於完整的行為契約**。
+搭配 `OrderQuery`、`OrderPage`、`ApiResponse<T>`、Constructor、既有 Consumer 與測試，說明模組如何藉由規格合作。
 
-回用第一章的 System View：`createController → OrderService → OrderDao → Drizzle → DbTransport → MSW DB Handler`。觀眾應理解 Responsibility、Interface、Dependency、Encapsulation；不需額外講解 OOP 語法。底層是**有限 SQL Mock**，而不是真資料庫。
+回看 `createController → OrderService → OrderDao → Drizzle → DbTransport`，引出 Responsibility、Interface、Dependency、Encapsulation。
 
-### 05｜如果設計的不是 Code，而是工作？
+### 05｜如果拆分的不是 Code，而是工作呢？
 
-以同一組圖形，轉換設計對象：
+將設計對象從系統模組切換為工作單元：
 
-1. **System View**：交付後的系統中，Controller／Service／DAO 如何合作。
-2. **共同設計問題**：誰負責？怎麼合作？依賴什麼？
-3. **Work View**：`建立 Table／設計 Schema → 實作 API → 開發前端`，用 Schema／API 契約等**交接物**標示工作依賴。
+`設計 Schema／資料規則 → 實作 API → 前端整合`
 
-兩者不是節點一對一映射；Work View 是一般軟體工程工作的概念示意，**不是宣稱這份 Browser MSW 案例部署了實際資料表**，也不是固定不能並行的時間順序。
-
-放大「實作 API」工作單元：
+用 Schema、API 契約等交接物標示依賴；放大「實作 API」：
 
 | 面向 | 具體內容 |
 | --- | --- |
-| Input | 訂單查詢需求、Schema、既有 Consumer／API 契約、相關程式與規範 |
-| Output | 可整合的 TypeScript API 變更、測試與交付說明 |
-| Responsibility | 完成訂單查詢與分頁功能 |
-| Constraints | 沿用此專案的 Service／DAO 分工與共用回應契約，維持改動邊界 |
-| Acceptance | 行為與既有 Consumer 相容、MSW／Chromium 測試證據通過，並說明 Mock SQL 限制 |
+| Input | 需求、Schema、既有 API／訊息代碼規範、相關程式 |
+| Output | API 變更、測試與交付說明 |
+| Responsibility | 完成訂單查詢功能 |
+| Constraints | 維持既有契約、責任分工與修改邊界 |
+| Acceptance | 功能符合要求、前端整合與測試通過 |
 
-**章末封裝**：對外約定清楚，內部方法保留實作彈性；影響契約或驗收的未知事項仍須查證／協商。
-
-**轉場至第三章**：如果同類工作反覆出現，怎樣把可重用的執行方法封裝為 Skill？
+**結論**：工作和程式模組都需要清楚的責任、介面、依賴與驗收。
 
 ---
 
@@ -102,26 +89,26 @@ async search(query: OrderQuery): Promise<OrderPage>
 
 原始：`幫我新增一支訂單查詢 API，支援日期、狀態與分頁。`
 
-改善：提供現有 TypeScript 專案的需求、相關原始碼與規格，包括 `OrderQuery`／`OrderPage`、`ApiResponse<T>`、既有 `readExistingOrdersConsumer` 與測試。要求沿用此專案 `createController → OrderService → OrderDao → Drizzle ORM` 的責任分工與命名；維持 `{code,message,data}` 回應外殼，將 `items` 與 `totalCount` 放在 `data` 內以符合既有 Consumer；遵守修改邊界，執行 Browser MSW／Chromium 驗證，並回報未確認事項及受限 SQL Mock 的驗證界線。
+改善：提供需求、相關程式及規範，要求沿用既有 TypeScript Service／DAO／Drizzle 分工；`ApiResponse.message` 必須使用前端可識別的訊息代碼；遵守修改邊界，執行測試並回報未確認事項。
 
-**案例界線**：這是工作契約的示意改善版本，並非曾交給特定 AI 模型實際執行且經比較驗證的 Prompt。
-
-**重點**：不是純粹把 Prompt 寫長，而是把隱含的工作契約顯性化。
+**重點**：把原本隱含的交付契約變成可以使用與查證的資訊。
 
 ### 07｜每次都重新交代，不是很麻煩嗎？
 
-- **每次變動**：具體需求、修改範圍、當次輸入、特殊限制。
-- **可以重用**：工作程序、檢查方法、產出格式、專案規範。
+- **每次不同**：功能需求、輸入、修改範圍與特殊限制。
+- **可以重用**：專案規範、工作程序、檢查方法與產出格式。
 
-借用 Abstraction、Encapsulation、Reuse：分離變動與共通部分。
+用 Abstraction、Encapsulation、Reuse 分離變動與共通部分。
 
 ### 08｜將重複程序封裝成 Skill
 
-用 Matt Pocock Skills 作例子，示意 Implement Skill：讀取需求／背景 → 確認範圍和未決事項 → 實作 → 測試 → 回報證據與限制。每次另外提供當次任務。
+以 Matt Pocock Skills 為例，展示 Implement Skill：
 
-Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只是 Prompt 模板。長期專案規範可能適合獨立文件，Skill 依需引用。
+`讀取需求／背景 → 確認範圍與未決事項 → 實作 → 測試 → 回報證據及限制`
 
-**轉場**：即使 Implement Skill 很完整，需求與設計從哪裡來？成果又交給誰？
+每次任務另外提供當次需求；共通執行方法透過 Skill 重用。
+
+**轉場**：一個 Implement Skill 可以完成工作的一段，但它所需要的需求、設計與驗收從哪裡來？
 
 ---
 
@@ -129,23 +116,25 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 ### 09｜一個 Skill 不是整個系統
 
-保留 `Implement API` 節點，往上追問需求／設計／契約，往下追問測試／部署／交付。OOP 類比：一個 Class 實作完整，不代表整個系統已完成。
+保留 `Implement API` 節點，向上延伸需求、設計與契約，向下延伸測試、部署與交付。
 
 ### 10｜Input 從哪裡來？
 
-需求分析（條件、分頁行為、驗收）→ 系統設計（API 契約、分層、資料模型）→ 程式實作。**上游工作 Output 常成為下游 Input。**
+需求分析（條件、分頁行為、驗收）→ 系統設計（API 契約、資料模型、責任分工）→ 程式實作。
+
+**上游工作的 Output，經常就是下游工作的 Input。**
 
 ### 11｜把視角拉遠：SDLC
 
-需求 → 設計 → 實作 → 測試 → 部署 → 維運。這是理解常見工作活動與交接的地圖，不主張必須線性執行，也不代表一個活動只能有一個產物。
+需求 → 設計 → 實作 → 測試 → 部署 → 維運。
+
+以同一組工作節點逐漸展開整個交付過程。
 
 ### 12｜Whole Picture 是理解依賴，不只記順序
 
-在同一張圖上添加跨節點依賴、回饋：驗收條件同時作用於設計／實作／測試；既有 Consumer 對 `data.items`、`data.totalCount` 的回應契約影響整合；測試可能回到需求／設計；部署問題可能要求重新調整。
+在全場共用的工作圖上增加跨節點依賴與回饋：訊息代碼契約同時關係到 API 設計、實作、前端整合與測試；測試結果也可能要求回頭調整設計。
 
-**結論**：定義介面讓工作能拆分，理解依賴讓工作能組合。
-
-**轉場**：知道依賴後，開始判斷順序、並行、回饋與粒度如何調整。
+**結論**：定義介面讓工作可以拆分；理解依賴讓工作可以組合。
 
 ---
 
@@ -153,37 +142,36 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 ### 13｜同一組工作，可以有不同安排方式
 
-使用**相同**的工作單元，示範三種不同尺度的調整：
+- **Waterfall**：以階段式交付作為基本參照。
+- **Agile**：縮小交付粒度，例如先狀態查詢，再日期篩選，最後分頁。
+- **TDD**：放大實作工作內部，先定義失敗測試，再實作及重構。
 
-- Waterfall：相對階段式的交付安排，作為基本參照。
-- Agile：縮小交付粒度（先狀態查詢，再日期篩選，最後分頁），取得增量回饋。
-- TDD：放大實作內部，先定義失敗測試，再實作通過與重構；並非把整個測試階段提前。
-
-這些不是同層級、可直接互換的三套方法。
+透過相同工作單元說明順序、粒度與回饋方式的調整。
 
 ### 14｜從 Skills 組合成 Workflow
 
-具體演示一套工作流：`需求釐清 → Spec → Tickets → Implement → Review / Verify`。
+展示：`需求釐清 → Spec → Tickets → Implement → Review / Verify`。
 
-**Skill**：某類工作如何執行。**Workflow**：不同工作如何協作（順序、依賴、人工決策、交接、驗收、上游回饋）。查詢 API 需求模糊時增加探索；高風險時增加驗證。
+- Skill：某類工作如何執行。
+- Workflow：工作之間如何排序、交接、組合與驗收。
+
+以訂單 API 的需求、規格、實作與驗收產物標示交接關係。
 
 ### 15｜能拆分，不代表應該無限拆分
 
-用同一支 API 的架構設計作三種對照：
+同一個 API，對照三種責任分工：
 
-1. 全部寫在單一 Method。
-2. 拆成十層、二十個介面。
-3. 依實際需求採取適當的 `createController → OrderService → OrderDao` 責任分工，並透過 Drizzle／`DbTransport` 存取資料（參照目前的 Project-convention 合成案例）。
+1. 全部集中於單一 Method。
+2. 過度拆分為大量層次與介面。
+3. 依需求採取適當的 Controller／Service／DAO 分工。
 
-**案例界線**：第一、二種是刻意設置的架構取捨概念示例，並非專案另外維護的兩套可執行程式。第三種參照現有 TypeScript 合成案例；具體分層不是所有專案的唯一正解。
+對應 AI 工作安排：
 
-對應 AI Workflow：
+1. 一個 Prompt 包辦全部。
+2. 每個小步驟都拆成 Skill、交接與批准。
+3. 依複雜度、風險與依賴安排工作及驗收。
 
-1. 一個 Prompt 包辦需求、設計、實作、測試。
-2. 每個小步驟都設 Skill、交接、人工批准。
-3. 按複雜度、風險、依賴選擇適當分工與驗收。
-
-**結論**：好的 Workflow 和好的系統架構一樣，需要 Cohesion／Coupling／Interface／Composition 的取捨。拆得太少責任模糊，太多則協作與整合成本過高；MVC 只是此情境下的一種合理方案，不是永遠最佳。
+**結論**：好的 Workflow 與系統架構都要取捨 Cohesion、Coupling、Interface 與 Composition。
 
 ---
 
@@ -191,57 +179,47 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 ### 16｜前面每一次放大視角，都是一次成長
 
-重用全場圖形，回顧：寫 API → 模組分工 → 工作契約 → Skill → 上下游依賴 → Workflow。每次為了解決委派問題放大視角，都暴露更大範圍的工程知識和責任；成長不是自動發生。
+重用全場圖形，回顧：
+
+`寫 API → 模組分工 → 工作契約 → Skill → 上下游依賴 → Workflow`
+
+視角擴大，代表開始承擔更大範圍的工程判斷。
 
 ### 17｜AI 降低執行門檻，卻讓認知門檻提前出現
 
-回到開場的訂單查詢 API **人為合成對照**：AI-direct 版本在 Browser MSW 情境中能完成查詢並回傳 HTTP 200，但回應資料形狀無法滿足既有 Consumer 對 `data.items`／`data.totalCount` 的要求；其架構與命名也不同於此合成專案設定的慣例。因此，局部功能可用不代表能直接整合與交付。**AI-direct 並非特定 AI 模型的實測輸出**，且 `OrderRepository`／參數化 SQL 本身不是技術錯誤。**這些工程知識不是為了改善 AI 輸出才需要，而是完成工程工作本身就必須具備的。**
+回到開場：一支 API 能執行，但若不知道 `message` 是前端訊息代碼契約，就可能在整合時出現問題。
 
-傳統新人：透過局部任務、指導、Code Review、逐步擴大的責任，漸進且零碎地接觸需求、設計、測試、整合與交付。
+傳統新人透過局部任務、指導與 Review，逐步接觸架構、規格與交付；AI 讓人更早嘗試超出原有經驗範圍的工作。
 
-AI 協作：更早嘗試超出新人認知與職責範圍的工作；若想可靠委派、判斷和交付，原本可逐步累積的工程知識就提前變成門檻。
-
-**核心句**：AI 降低工作的執行門檻，卻不會自動降低完成與交付這項工作所需的工程知識。
+**核心句**：AI 降低工作的執行門檻，卻不會自動降低可靠完成與交付所需的工程知識。
 
 ### 18｜AI 反過來幫助跨越門檻
 
-Vue 部署事件（唯一短暫離開查詢 API 的故事）：部署後無法連線 → AI 問部署方式 → 自己不知道 → 反問如何查證 → 查建置／部署 Log、追蹤 Apache 設定 → 找到問題並理解部署流程。
+Vue 部署事件：部署後無法連線 → AI 追問部署方式 → 自己不清楚 → 與 AI 一起查建置／部署 Log 和 Apache 設定 → 找出問題並理解部署流程。
 
-AI 可協助提問、解釋、規劃調查與探索，但需用文件、程式、Log、測試和真實環境驗證。
+AI 可以幫助提問、解釋與探索；透過文件、程式、Log、測試和環境逐步建立自己的判斷。
 
-**循環**：委派 → 發現認知缺口 → AI 輔助探索 → 建立理解和判斷 → 擴大可掌握的工作範圍。
+**循環**：委派 → 發現認知缺口 → AI 輔助探索 → 建立理解 → 擴大可掌握的工作範圍。
 
-**收尾**：AI 能完成的事情可能遠超過我的認知；若無法定義工作、理解依賴和判斷成果，這些能力難以真正利用。為了掌握 AI 能力，我必須擴大認知範圍；而 AI 本身也能協助跨越這道門檻。
+**收尾**：要充分利用 AI 的能力，工程師需要擴大自己定義、整合與判斷工作的能力；AI 也可以成為學習這些能力的工具。
 
 ---
 
-## 視覺與編輯設計原則
+## 視覺與編輯方向
 
-1. 第一章先以**明示為 Browser MSW／合成的實測 HTTP 200** 建立共同需求，再以 Response → Consumer → 架構 → Naming 由外而內檢查；不得將 Mock 結果宣稱為真實 API Server／Database 實測或真實 AI 模型輸出。
-2. 同一個查詢 API 案例貫穿第 1–5 章；第 6 章回收其全貌，只在最後用 Vue 部署經驗作第二個短例子。
-3. 維持 System View 與 Work View 兩個鏡頭，以相同模組化語言連結；不要將 Class 和 Skill 物件化為一對一等價。
-4. 圖形應盡量重用，後續畫面透過 zoom、highlight、連線變更、增減工作節點呈現認知範圍擴張。
-5. 保留第 15 張：一個 Method／20 個介面／合宜分層，類比一個 Prompt／過度切碎的 Skills／合宜 Workflow。
-6. 第 16–18 張**以回收前文為主**，不是額外插入獨立的職涯或方法論課程。
-7. Waterfall、Agile、TDD 是工作組織方式的短例子，避免另開方法論比較章。
-8. AI 可執行不等於可交付，AI 輔助完成工作不等於已建立個人理解與判斷。
+- 第一章：交辦 → API 功能可用 → `message` 訊息代碼契約 → 既有規範落差。
+- 第一至五章重用訂單 API 案例；第六章回收圖形，最後用 Vue 部署故事收尾。
+- System View 與 Work View 使用連續的視覺語言，透過聚焦、縮放與連線呈現視角擴張。
+- 第 15 單元保留「拆分不足／過度拆分／適當拆分」的對照。
 
-## 待補素材／開發任務
+## 尚待準備的素材
 
-- [x] 可執行合成程式、唯一 Schema／Fixture、Browser MSW／Chromium 測試已在 `examples/order-api/ts-v1/` 收斂為 SSOT；第一、二章內容已對齊。
-- [ ] 把同 Commit 的程式片段與 `generated/browser-evidence.json` 真正引入 Slidev Build；仍須完成真實 GitHub Pages Preview 驗收。
-- [ ] 一個實際使用過的 Skill，呈現從重複規範到可重用指引的拆分。
-- [ ] 一個真實 Workflow 調整案例，最好可對應新增 API 的例子。
-- [ ] 系統／工作兩種視角可重用的視覺元件和視覺樣式。
-- [ ] 每頁講者備註、時間控制與過渡句。
-- [ ] 最終輸出與投影環境測試。
+- [ ] 將現有 TypeScript 合成案例的錯誤回應、前端訊息代碼表與相關測試對齊本版 `message` 契約，取代舊的分頁 Response 形狀衝突。
+- [ ] 第一、二章既有分鏡的案例內容對齊本版；保留已確認的觀看節奏與視覺安排。
+- [ ] 選定可展示的 Skill 與 Workflow 交接範例。
+- [ ] 確認 Vue 部署故事的可公開內容。
+- [ ] 製作並驗收視覺原型、完整投影片與投影效果。
 
-## v0.9.2 候選的變更界線
+## 文件定位
 
-第一、二章沿用 v0.9.1 已對齊的 TypeScript SSOT、Browser MSW、既有 Consumer 契約、Drizzle Proxy、方法簽章與驗證界線，詳見[第一、二章 SSOT 對應](../docs/ch01-ch02-ssot-alignment.md)。本次僅修正 06、12、15、17 的技術用語、證據性質與案例邊界；不改動六章順序、核心論述或已有分鏡。
-
-08／09 的 Skill 範例、14 的 Workflow 交接案例、18 的 Vue 部署故事仍待補充或確認素材；本版不是整份簡報的最終定稿。
-
-## 版本控制原則
-
-此檔是 **內容與敘事的基準規格**，不是投影片原始碼，也不強制每頁必須只顯示該條目全部文字。後續修改可在投影片內迭代；若改動核心論點、章節安排、案例或結論，需同步修訂此檔並更新版本。
+這份細綱負責**內容與敘事**。程式如何執行、Mock 與測試的技術邊界由案例文件記錄；畫面配置、揭露順序及元件由分鏡和投影片決定。涉及核心論點或案例的變更，再回寫本細綱。
