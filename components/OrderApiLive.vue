@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { readExistingOrdersConsumer } from '../examples/order-api/ts-v1/src/existing-consumer'
+import { readExistingOrdersConsumer, readExistingErrorConsumer, ExistingConsumerContractError } from '../examples/order-api/ts-v1/src/existing-consumer'
 
 type ViewMode = 'single' | 'compare' | 'consumer'
 type Variant = 'ai-direct' | 'project-convention'
@@ -14,9 +14,7 @@ type ViewRecord = {
   compatible: boolean
   consumerExplanation: string
 }
-const props = withDefaults(defineProps<{ mode?: ViewMode }>(), {
-  mode: 'compare',
-})
+const props = withDefaults(defineProps<{ mode?: ViewMode }>(), { mode: 'compare' })
 const statusFilter = ref('')
 const pageSize = ref('3')
 const loading = ref(true)
@@ -39,32 +37,38 @@ async function run() {
   error.value = ''
   try {
     const api = await ensureRuntime()
-    const query = new URLSearchParams({ pageSize: pageSize.value })
-    if (statusFilter.value) query.set('status', statusFilter.value)
+    // Single mode demonstrates successful queries. Compare/consumer modes
+    // exercise an actual invalid UTC date through both API implementations.
+    const query = props.mode === 'single'
+      ? new URLSearchParams({ pageSize: pageSize.value })
+      : new URLSearchParams({ fromDate: '2026-02-30', toDate: '2026-03-01' })
+    if (props.mode === 'single' && statusFilter.value) query.set('status', statusFilter.value)
     const variants: Variant[] = props.mode === 'single'
       ? ['ai-direct'] : ['ai-direct', 'project-convention']
     const records: ViewRecord[] = []
     for (const variant of variants) {
       const response = await fetch(api.apiUrl(variant) + '?' + query)
-      const body: any = await response.json()
-      if (!response.ok) throw new Error(variant + ': HTTP ' + response.status)
-      const data = variant === 'ai-direct'
-        ? { items: body.data, totalCount: body.totalCount }
-        : body.data
+      const body: unknown = await response.json()
+      let items: OrderItem[] = []
+      let totalCount = 0
       let compatible = false
       let consumerExplanation = ''
       try {
-        readExistingOrdersConsumer(body)
+        if (response.ok) {
+          const data = readExistingOrdersConsumer(body)
+          items = data.items
+          totalCount = data.totalCount
+          consumerExplanation = '正常回應符合既有 Consumer'
+        } else {
+          consumerExplanation = readExistingErrorConsumer(body)
+        }
         compatible = true
-        consumerExplanation = '可讀取 data.items / data.totalCount'
-      } catch {
-        consumerExplanation = '無法讀取 data.items / data.totalCount'
+      } catch (cause) {
+        if (!(cause instanceof ExistingConsumerContractError)) throw cause
+        consumerExplanation = cause.message
       }
-      records.push({
-        variant, status: response.status, body,
-        items: data.items, totalCount: data.totalCount,
-        compatible, consumerExplanation,
-      })
+      records.push({ variant, status: response.status, body,
+        items, totalCount, compatible, consumerExplanation })
     }
     results.value = records
     executed.value = true
@@ -76,24 +80,9 @@ async function run() {
 }
 onMounted(() => { void run() })
 
-function titleFor(variant: Variant) {
-  return variant === 'ai-direct' ? 'AI-direct' : 'Project-convention'
-}
-function responseJson(record: ViewRecord) {
-  // Project the first returned row from the ACTUAL HTTP response; no duplicate
-  // fixture or second response contract is maintained for the presentation.
-  const body = record.body as { code: string; message: string; data: any; totalCount?: number }
-  // Only shorten each *actual* response row for projection readability.
-  // Envelope shape, values and totalCount still come directly from HTTP.
-  const preview = (row: any) => ({ id: row.id, status: row.status })
-  const projected = record.variant === 'ai-direct'
-    ? { ...body, data: Array.isArray(body.data) ? body.data.slice(0, 1).map(preview) : body.data }
-    : { ...body, data: { ...body.data, items: body.data.items.slice(0, 1).map(preview) } }
-  return JSON.stringify(projected, null, 2)
-    // Inline the one projected id/status row; leaves the actual API envelope intact.
-    .replace(/\{\n\s+"id": (\d+),\n\s+"status": "([^"]+)"\n\s+\}/g,
-      '{ "id": $1, "status": "$2" }')
-}
+const titleFor = (variant: Variant) =>
+  variant === 'ai-direct' ? 'AI-direct' : 'Project-convention'
+const responseJson = (record: ViewRecord) => JSON.stringify(record.body, null, 2)
 </script>
 
 <template>
@@ -104,7 +93,7 @@ function responseJson(record: ViewRecord) {
         <code>/api/orders</code>
         <span class="live-mock-tag">BROWSER MSW · SYNTHETIC</span>
       </div>
-      <div class="live-controls">
+      <div v-if="mode === 'single'" class="live-controls">
         <label>狀態
           <select v-model="statusFilter" aria-label="Order status" data-testid="demo-status">
             <option value="">全部</option>
@@ -122,6 +111,7 @@ function responseJson(record: ViewRecord) {
         </label>
         <button type="button" @click="run" :disabled="loading" data-testid="demo-run">送出查詢</button>
       </div>
+      <span v-else class="live-mock-tag">ERROR CASE · INVALID UTC DATE</span>
     </div>
 
     <p v-if="error" class="live-error" data-testid="demo-error">Mock API 無法啟動：{{ error }}</p>
@@ -131,29 +121,28 @@ function responseJson(record: ViewRecord) {
         :data-testid="'demo-' + record.variant">
         <header class="live-result-head">
           <strong>{{ titleFor(record.variant) }}</strong>
-          <span class="live-status" :data-testid="'status-' + record.variant">{{ record.status }} OK</span>
+          <span class="live-status" :data-testid="'status-' + record.variant">HTTP {{ record.status }}</span>
         </header>
         <template v-if="mode === 'single'">
           <div class="live-stats"><strong>{{ record.totalCount }}</strong><span>筆符合條件</span><small>本頁 {{ record.items.length }} 筆</small></div>
           <table class="live-table">
             <thead><tr><th>ORDER ID</th><th>STATUS</th><th>CREATED AT (UTC)</th></tr></thead>
-            <tbody><tr v-for="row in record.items" :key="row.id">
-              <td>#{{ row.id }}</td><td>{{ row.status }}</td><td>{{ row.createdAt.slice(0, 10) }}</td>
+            <tbody><tr v-for="item in record.items" :key="item.id">
+              <td>#{{ item.id }}</td><td>{{ item.status }}</td><td>{{ item.createdAt.slice(0, 10) }}</td>
             </tr></tbody>
           </table>
         </template>
         <template v-else>
           <pre class="live-json">{{ responseJson(record) }}</pre>
-          <small class="live-json-caption">僅投影首筆 id／status · 實際回傳 {{ record.items.length }} 筆</small>
         </template>
         <div v-if="mode === 'consumer'" class="live-consumer"
           :class="record.compatible ? 'live-consumer--ok' : 'live-consumer--bad'"
           :data-testid="'consumer-' + record.variant">
-          <strong>{{ record.compatible ? 'Consumer 相容' : 'Consumer 不相容' }}</strong>
+          <strong>{{ record.compatible ? '代碼可解碼' : '代碼無法解碼' }}</strong>
           <small>{{ record.consumerExplanation }}</small>
         </div>
       </article>
     </div>
-    <footer class="live-provenance">實際執行：Browser MSW API → TypeScript → SQL / Drizzle → MSW DB（42 筆合成資料，非真實資料庫）</footer>
+    <footer class="live-provenance">實際執行：Browser MSW API → TypeScript → SQL / Drizzle → MSW DB（42 筆合成資料）</footer>
   </section>
 </template>
