@@ -2,8 +2,8 @@
 
 > 用模組化思維理解 AI 協作、軟體工程與工程師成長
 
-- 版本：v0.9.1 候選（2026-11-20；以 v0.9 敘事為基礎，將第一、二章技術事實對齊 TypeScript SSOT）
-- 狀態：第一、二章內容／案例已完成工作包 A 對齊；正式 Slidev 與真實 GitHub Pages 尚待整合驗收；第三至六章保留原有敘事，個別舊技術詞彙尚未同步
+- 版本：v0.9.2 候選（2026-11-22；延續 v0.9.1，修正第三至六章與 TypeScript SSOT 不一致的技術敘述）
+- 狀態：六章內容保留既有敘事，第一、二章已完成案例對齊；第三至六章已修正已識別的 TypeScript 技術不一致，具體 Skill／Workflow／部署故事素材仍待確認；正式 Slidev 與真實 GitHub Pages 尚待整合驗收
 - 對象：新進軟體工程師
 - 暫定時間：35–40 分鐘
 - 貫穿案例：新增訂單查詢 API，支援訂單狀態、日期區間與分頁查詢
@@ -102,7 +102,9 @@ async search(query: OrderQuery): Promise<OrderPage>
 
 原始：`幫我新增一支訂單查詢 API，支援日期、狀態與分頁。`
 
-改善：提供需求與相關程式碼，明確要求沿用 Controller / Service / DAO / MyBatis 架構、Naming，不修改共用 `ApiResponse`，控制修改範圍，執行測試並回報未確認事項。
+改善：提供現有 TypeScript 專案的需求、相關原始碼與規格，包括 `OrderQuery`／`OrderPage`、`ApiResponse<T>`、既有 `readExistingOrdersConsumer` 與測試。要求沿用此專案 `createController → OrderService → OrderDao → Drizzle ORM` 的責任分工與命名；維持 `{code,message,data}` 回應外殼，將 `items` 與 `totalCount` 放在 `data` 內以符合既有 Consumer；遵守修改邊界，執行 Browser MSW／Chromium 驗證，並回報未確認事項及受限 SQL Mock 的驗證界線。
+
+**案例界線**：這是工作契約的示意改善版本，並非曾交給特定 AI 模型實際執行且經比較驗證的 Prompt。
 
 **重點**：不是純粹把 Prompt 寫長，而是把隱含的工作契約顯性化。
 
@@ -139,7 +141,7 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 ### 12｜Whole Picture 是理解依賴，不只記順序
 
-在同一張圖上添加跨節點依賴、回饋：驗收條件同時作用於設計／實作／測試；共用回傳型別影響整合；測試可能回到需求／設計；部署問題可能要求重新調整。
+在同一張圖上添加跨節點依賴、回饋：驗收條件同時作用於設計／實作／測試；既有 Consumer 對 `data.items`、`data.totalCount` 的回應契約影響整合；測試可能回到需求／設計；部署問題可能要求重新調整。
 
 **結論**：定義介面讓工作能拆分，理解依賴讓工作能組合。
 
@@ -171,7 +173,9 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 1. 全部寫在單一 Method。
 2. 拆成十層、二十個介面。
-3. 依問題採取合適的 MVC／Service／DAO 等責任分層。
+3. 依實際需求採取適當的 `createController → OrderService → OrderDao` 責任分工，並透過 Drizzle／`DbTransport` 存取資料（參照目前的 Project-convention 合成案例）。
+
+**案例界線**：第一、二種是刻意設置的架構取捨概念示例，並非專案另外維護的兩套可執行程式。第三種參照現有 TypeScript 合成案例；具體分層不是所有專案的唯一正解。
 
 對應 AI Workflow：
 
@@ -191,7 +195,7 @@ Skill 可以包含文件、工具與多個步驟，不等同 Class，也不只�
 
 ### 17｜AI 降低執行門檻，卻讓認知門檻提前出現
 
-回到開場的查詢 API：AI 寫出 Code，卻違反 Naming／架構／共用契約，因此無法交付。**這些知識不是為了改善 AI 輸出才需要，而是完成工程工作本身就必須具備的。**
+回到開場的訂單查詢 API **人為合成對照**：AI-direct 版本在 Browser MSW 情境中能完成查詢並回傳 HTTP 200，但回應資料形狀無法滿足既有 Consumer 對 `data.items`／`data.totalCount` 的要求；其架構與命名也不同於此合成專案設定的慣例。因此，局部功能可用不代表能直接整合與交付。**AI-direct 並非特定 AI 模型的實測輸出**，且 `OrderRepository`／參數化 SQL 本身不是技術錯誤。**這些工程知識不是為了改善 AI 輸出才需要，而是完成工程工作本身就必須具備的。**
 
 傳統新人：透過局部任務、指導、Code Review、逐步擴大的責任，漸進且零碎地接觸需求、設計、測試、整合與交付。
 
@@ -232,11 +236,11 @@ AI 可協助提問、解釋、規劃調查與探索，但需用文件、程式�
 - [ ] 每頁講者備註、時間控制與過渡句。
 - [ ] 最終輸出與投影環境測試。
 
-## v0.9 候選的變更界線
+## v0.9.2 候選的變更界線
 
-本版本更新第一、二章案例的技術事實與證據性質：TypeScript SSOT／Browser MSW、真實 Consumer 契約、Drizzle Proxy、Method 簽章與模擬資料庫的驗收限制；仍沿用已確認的開場與跨章節奏。對照紀錄見[第一、二章 SSOT 對應](../docs/ch01-ch02-ssot-alignment.md)。第三至六章原有技術詞彙待逐章核對，不作全場已對齊之宣稱。
+第一、二章沿用 v0.9.1 已對齊的 TypeScript SSOT、Browser MSW、既有 Consumer 契約、Drizzle Proxy、方法簽章與驗證界線，詳見[第一、二章 SSOT 對應](../docs/ch01-ch02-ssot-alignment.md)。本次僅修正 06、12、15、17 的技術用語、證據性質與案例邊界；不改動六章順序、核心論述或已有分鏡。
 
-第三至六章仍沿用 v0.8 的敘事內容，尚未逐章進行同等驗證；本版不是全場定稿。
+08／09 的 Skill 範例、14 的 Workflow 交接案例、18 的 Vue 部署故事仍待補充或確認素材；本版不是整份簡報的最終定稿。
 
 ## 版本控制原則
 
