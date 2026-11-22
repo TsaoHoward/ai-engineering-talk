@@ -1,7 +1,7 @@
 import { and, count, desc, eq, gte, lt, type SQL } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/sqlite-proxy'
 import type { ApiResponse, Order, OrderPage, OrderQuery } from './domain'
-import { InvalidQueryError, parseOrderQuery, toExclusiveUtcDate } from './domain'
+import { InvalidQueryError, MESSAGE_CODES, parseOrderQuery, toExclusiveUtcDate } from './domain'
 import { ordersTable } from './schema'
 import type { DbCommand } from './mock-db'
 
@@ -87,11 +87,12 @@ export class OrderService {
   // #endregion service-search
 }
 
-function aiResponse<T>(data: T, totalCount: number | null) {
-  return { code: 'OK', message: 'success', data, totalCount }
-}
 function response<T>(data: T): ApiResponse<T> {
-  return { code: 'OK', message: 'success', data }
+  return { code: 'OK', message: MESSAGE_CODES.success, data }
+}
+
+function errorResponse(variant: Variant, code: string, detail: string, messageCode: string) {
+  return { code, message: variant === 'ai-direct' ? detail : messageCode, data: null }
 }
 
 export function createController(variant: Variant, execute: DbTransport) {
@@ -104,22 +105,18 @@ export function createController(variant: Variant, execute: DbTransport) {
       const url = new URL(request.url)
       if (url.pathname.endsWith('/status')) {
         const data = { service: 'synthetic-order-api', variant }
-        return { status: 200, body: variant === 'ai-direct'
-          ? aiResponse(data, null) : response(data) }
+        return { status: 200, body: response(data) }
       }
       if (!url.pathname.endsWith('/orders')) {
-        return { status: 404, body: { code: 'NOT_FOUND', message: 'Not found', data: null } }
+        return { status: 404, body: errorResponse(variant, 'NOT_FOUND', 'Not found', MESSAGE_CODES.notFound) }
       }
       const query = parseOrderQuery(url.searchParams)
-      if (repository) {
-        const page = await repository.search(query)
-        return { status: 200, body: aiResponse(page.items, page.totalCount) }
-      }
+      if (repository) return { status: 200, body: response(await repository.search(query)) }
       if (service) return { status: 200, body: response(await service.search(query)) }
       throw new Error('No active variant')
     } catch (error) {
       if (error instanceof InvalidQueryError) {
-        return { status: 400, body: { code: 'INVALID_QUERY', message: error.message, data: null } }
+        return { status: 400, body: errorResponse(variant, 'INVALID_QUERY', error.message, MESSAGE_CODES.invalidQuery) }
       }
       throw error // DB/ORM failures must not become a fake HTTP success
     }
