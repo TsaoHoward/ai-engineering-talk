@@ -50,6 +50,14 @@
 6. 展示頁面與測試從同一個來源執行；不再保留舊分頁 Response 差異的展示或測試主張。
 7. 分鏡只引用確實存在的結果；若展示值以測試證據為準，需註明 source revision。
 
+## 案例驗收證據（2026-11-22）
+
+- Draft PR：[#13](https://github.com/TsaoHoward/ai-engineering-talk/pull/13)，base 為 `integration/ch01-ch02-ts-ssot`。
+- Browser SSOT CI：[Run 45010340268](https://github.com/TsaoHoward/ai-engineering-talk/actions/runs/45010340268)，tested source revision `57d41e0e3c49cd4e20f45cef5d599460441f9ca7`。
+- Node 22、TypeScript typecheck、Vite build、Chromium E2E 通過；測試輸出 8 組正常、9 組無效輸入、14 組 SQL 拒絕；無失敗。
+- 另在 E2E 內檢查兩種正常回應與既有成功 Consumer 均一致、9 種錯誤的前端訊息查表差異、HTTP 404 代碼以及 Worker reload。
+- 驗收範圍限 Browser MSW 合成 API；正式 Slidev 連續視覺、完整 GitHub Pages Preview、投影與講述仍待另一個工作包驗收。
+
 ## 凍結與後續設計界線
 
 - 本輪僅調整 `examples/order-api/ts-v1/`、必要的展示 Consumer、來源文件與檢查；不擴充新查詢功能、不重構 MSW、不製作正式投影片。
