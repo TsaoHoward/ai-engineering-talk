@@ -1,6 +1,6 @@
 import { apiUrl, startMock, testUnsupportedSql, probeSql, trace } from './worker'
 import type { Variant } from './application'
-import { readExistingOrdersConsumer, ExistingConsumerContractError } from './existing-consumer'
+import { readExistingOrdersConsumer, readExistingErrorConsumer, ExistingConsumerContractError } from './existing-consumer'
 
 declare global {
   interface Window {
@@ -17,7 +17,7 @@ async function get(variant: Variant, query: string) {
   const response = await fetch(url)
   const body: unknown = await response.json()
   let consumer: string
-  let consumed: { itemsCount: number; totalCount: number } | null = null
+  let consumed: { itemsCount?: number; totalCount?: number; displayMessage?: string } | null = null
   if (response.ok) {
     try {
       const page = readExistingOrdersConsumer(body)
@@ -28,7 +28,14 @@ async function get(variant: Variant, query: string) {
       consumer = 'incompatible: ' + error.message
     }
   } else {
-    consumer = 'not-checked: HTTP ' + response.status
+    try {
+      const displayMessage = readExistingErrorConsumer(body)
+      consumed = { displayMessage }
+      consumer = 'compatible: message code resolved'
+    } catch (error) {
+      if (!(error instanceof ExistingConsumerContractError)) throw error
+      consumer = 'incompatible: ' + error.message
+    }
   }
   return { variant, url, status: response.status, body, consumer, consumed }
 }
