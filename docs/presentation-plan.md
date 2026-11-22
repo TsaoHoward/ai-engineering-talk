@@ -75,7 +75,7 @@
 
 ## Confirmed Slide Sequence｜32 頁
 
-以下順序完全採用附件中的第二輪收斂結果。每頁的 Evidence 欄只整理已存在的來源或明確標記待確認事項；不新增案例證據、不複製 PR #13 的技術案例全文。
+以下 32 頁順序是經人工確認的 Step 3 第二輪結果。每頁的 Evidence 欄只整理已存在的來源或明確標記待確認事項；不新增案例證據、不複製 PR #13 的技術案例全文。
 
 ### Opening
 
@@ -477,7 +477,7 @@
 
 | 來源 | 用途 | Revision／狀態 |
 | --- | --- | --- |
-| 本次訊息附件：Step 3 第二輪結構審查結果（完整 32 頁版本） | 32 頁順序、合併／刪除決策、每頁 intent／type／spine／transition、18 單元對照 | 本次人工核准輸入；不另推導新頁面 |
+| Step 3 第二輪人工審查決策 | 32 頁順序、合併／刪除決策、每頁 intent／type／spine／transition、18 單元對照 | 結果已完整保存在本文件；不另推導新頁面 |
 | `outline/outline-v0.9-candidate.md` | v0.9.3 內容細綱、六章／18 單元、核心案例與待補素材 | `41248a191ad0a879d037580a3ae6c9e8db4be3f1` |
 | `docs/storyboards/ch01.md` | 第一章六個低保真畫面、message-code 案例焦點、Evidence 原則 | `41248a191ad0a879d037580a3ae6c9e8db4be3f1` |
 | `docs/storyboards/ch02.md` | 第二章規格／模組／Work View／工作契約的敘事與 Evidence | `41248a191ad0a879d037580a3ae6c9e8db4be3f1` |
@@ -493,13 +493,22 @@
 | PR #13 的 `examples/order-api/ts-v1/` | Order API 的唯一可執行／可測試合成案例來源；後續應引用同一 Source Revision 的 code／evidence | 以 PR #13 head 為準；`generated/browser-evidence.json` 為測試產物，不在本文件內重建 |
 | `outline/outline-v0.9-candidate.md` | 內容細綱 SSOT；不由本文件取代 | 與本文件分工不同 |
 | PR #13 | 技術案例 SSOT；不由本文件複製或改寫 | 與本文件分工不同 |
-| 本文件 `docs/presentation-plan.md` | 已確認的製作規劃與 Slide Sequence SSOT | 本次新增；尚未 Commit |
+| 本文件 `docs/presentation-plan.md` | 已確認的製作規劃與 Slide Sequence SSOT | 由 Git commit 與 PR #14 追蹤版本 |
 
-### 工作樹追溯
+「Step 3 第二輪人工審查決策」的結果已完整保存在本文件，包括：
 
-- 本次任務開始時工作樹 HEAD：`2ac999a3859430eb37ce0ec425c4160352167a57`（branch `experiment/synthetic-order-api-ts-v1`）。
-- 任務開始時已有未追蹤 `temp.md`；本次不修改、不納入本文件內容，也不清理。
-- 本次不修改 PR #13、不建立 PR、不合併、不修改 `outline/`、Storyboard、`slides.md`、程式碼或 CI。
+- 32 頁 Slide Sequence
+- 34 → 32 頁收斂決策
+- 六章／18 個內容單元對照
+
+後續新 Session 不應依賴無法從 Repository 讀取的聊天附件。
+
+### Git 版本追溯
+
+- Planning PR：#14
+- Target branch：`integration/ch01-ch02-ts-ssot`
+- Initial baseline commit：`a6caa14`
+- 後續修改由 Git 歷史追溯。
 
 ## 尚未解決的素材與驗收問題
 
@@ -528,5 +537,5 @@
 ## 與原始第二輪結果的差異
 
 - **頁面順序與頁數：無差異。** 仍為 32 頁，保留六章、18 個內容單元；Slide 18／20 合併、原 Slide 29 刪除並由新 Slide 28 承擔入口／回顧功能，均照原始第二輪結果。
-- **本文件新增的整理：** 為每頁補上 Evidence／素材需求；補上已確認／暫定／待確認的狀態標記；補上規劃來源、PR #13 的只讀 revision 與 Git 工作樹追溯。
+- **本文件新增的整理：** 為每頁補上 Evidence／素材需求；補上已確認／暫定／待確認的狀態標記；補上規劃來源、PR #13 的只讀 revision 與 Git 版本追溯。
 - **本文件沒有做的事：** 沒有重新設計 Story Spine、改寫 Ending、增刪或重排 32 頁、補造技術證據、進入 Step 4、開始視覺設計，或操作 PR #13。
