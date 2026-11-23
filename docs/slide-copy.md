@@ -288,3 +288,89 @@
 - **Evidence／來源連結**：[核准的 Slide Sequence／Slide 18](./presentation-plan.md) · [v0.9.3 第三章](../outline/outline-v0.9-candidate.md)
 - **主要訊息**：Skill 封裝單一工作方法；完整交付仍需要其他工作與上下游組合。
 - **Transition**：從單一工作單元切換到上下游與整體交付。
+
+## Step 4 第四輪｜Slide 19–23
+
+- **狀態**：第四輪人工審查通過
+- **保存範圍**：Slide 19–23
+
+## Slide 19｜從單一 Skill 拉遠到整體交付
+
+- **Headline**：從單一 Skill 拉遠到整體交付
+- **Body／主要文字**：
+
+  第四章｜從工作介面到 Whole Picture：SDLC
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 19](./presentation-plan.md) · [Slide 18](./slide-copy.md) · [第四章細綱](../outline/outline-v0.9-candidate.md)
+- **主要訊息**：視角從單一 Skill 的能力邊界，切換到完整交付中的上下游工作。
+- **Transition**：如果 Skill 只完成一段工作，這段工作的需求與設計輸入從哪裡來？
+
+## Slide 20｜上游工作的 Output，常常就是下游工作的 Input
+
+- **Headline**：上游工作的 Output，常常就是下游工作的 Input
+- **Body／主要文字**：
+
+  **共同背景：訂單查詢 API**
+
+  **需求分析**
+  Output：查詢條件／分頁規則／驗收需求
+
+  ↓ 交接為下游 Input
+
+  **系統設計**
+  Output：API 契約／Schema・資料規則／責任分層
+
+  ↓ 交接為下游 Input
+
+  **程式實作**
+  Input：需求分析與系統設計的成果
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 20](./presentation-plan.md) · [v0.9.3 第四章](../outline/outline-v0.9-candidate.md) · [第二章 Storyboard](./storyboards/ch02.md) · [`domain.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/domain.ts) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`schema.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/schema.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **限制備註**：箭頭表示工作依賴，不表示固定的時間順序。Work View 與本頁交接關係是概念示意；PR #13 的程式與測試可提供交接物素材，但不證明實際執行過這套完整 SDLC。
+- **主要訊息**：工作之間透過交接物互相依賴；上游產出會成為下游工作的前提。
+- **Transition**：如果把這些工作放回完整交付範圍，還有哪些主要活動需要被看見？
+
+## Slide 21｜SDLC 是理解交付活動的地圖
+
+- **Headline**：SDLC 是理解交付活動的地圖
+- **Body／主要文字**：
+
+  `需求 → 設計 → 實作 → 測試 → 部署 → 維運`
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 21](./presentation-plan.md) · [v0.9.3 第四章](../outline/outline-v0.9-candidate.md) · [Order API README（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/README.md)
+- **限制備註**：SDLC 是理解交付活動與交接的地圖，不主張所有專案都必須依固定線性流程執行。本頁不宣稱 PR #13 已提供真實部署或維運證據；其案例使用 Browser MSW 與受限 SQL evaluator，不是真實 API Server 或資料庫執行證據。
+- **主要訊息**：用六個主要活動放大整個軟體交付範圍。
+- **Transition**：看見活動全貌之後，下一步不是只記住順序，而是理解它們如何互相依賴。
+
+## Slide 22｜Whole Picture 不只是記順序，而是理解依賴
+
+- **Headline**：Whole Picture 不只是記順序，而是理解依賴
+- **Body／主要文字**：
+
+  **同一項契約，跨越不同工作**
+
+  `ApiResponse.message`
+  **不是自由文字，而是前端可識別的訊息代碼**
+
+  - **API 設計**：定義 `message` 的語意
+  - **API 實作**：查詢錯誤時依既有規則回傳 `m0001`
+  - **前端 Consumer**：依預載代碼表顯示「查詢條件不合法」
+  - **測試**：驗證 Response 與 Consumer 相容
+
+  `↺ 測試結果可能要求回頭調整設計（概念示意）`
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 22](./presentation-plan.md) · [v0.9.3 第四章](../outline/outline-v0.9-candidate.md) · [PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`domain.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/domain.ts) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`message-catalog.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/message-catalog.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **限制備註**：PR #13 可驗證 `ApiResponse.message` 的訊息代碼、Consumer 解析與測試相容性；「設計 → 實作 → Consumer → 測試」的跨工作關係與測試回饋箭頭是概念示意，不是 PR #13 實際 SDLC 歷程的證據。案例使用 Browser MSW 與受限 SQL evaluator，不新增真實 API Server、資料庫或部署證據。
+- **主要訊息**：同一項契約會跨越設計、實作、Consumer 與測試；理解依賴才能組合工作。
+- **Transition**：理解依賴之後，還要決定這些工作要如何安排與組合。
+
+## Slide 23｜從理解依賴到安排工作
+
+- **Headline**：從理解依賴到安排工作
+- **Body／主要文字**：
+
+  第五章｜Workflow：組合、調整與取捨
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 23](./presentation-plan.md) · [第五章細綱](../outline/outline-v0.9-candidate.md)
+- **主要訊息**：完成第四章轉場，將焦點交給下一章的工作安排問題。
+- **Transition**：同一組工作，可以有不同安排方式。
