@@ -105,3 +105,105 @@
 - **Evidence／來源連結**：回收 [PR #13 的 Order API 案例來源](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) 與 Slide 4–6 已展示的 [`application.ts`](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts)、[`existing-consumer.ts`](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts)、[`browser.test.mjs`](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)。
 - **主要訊息**：可交付的判斷依賴可追溯的既有規格，不只依賴功能描述。
 - **Transition**：接下來把這些既有約定命名為工程師日常使用的規格，回到模組合作。
+
+## Step 4 第二輪｜Slide 8–13
+
+- **狀態**：第二輪人工審查通過
+- **保存範圍**：Slide 8–13
+
+## Slide 8｜從交付落差到規格與模組
+
+- **Headline**：從交付落差到規格與模組
+- **Body／主要文字**：
+
+  第二章｜工作拆分如同模組設計
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 8](./presentation-plan.md)
+- **主要訊息**：從「結果是否可交付」轉向「工程師如何合作」。
+- **Transition**：第一章留下的合作前提，其實就是工程師日常使用的規格。
+
+## Slide 9｜規格不只存在於規格書
+
+- **Headline**：規格不只存在於規格書
+- **Body／主要文字**：
+
+  ```ts
+  export class OrderService {
+    constructor(private readonly dao: OrderDao) {}
+    async search(query: OrderQuery): Promise<OrderPage> {
+      const [items, totalCount] = await Promise.all([
+        this.dao.selectPage(query), this.dao.count(query),
+      ])
+      return { items, totalCount }
+    }
+  }
+  ```
+
+  型別、建構子、既有 Consumer 與測試都是規格線索；簽章只描述局部，完整行為仍需查證。
+
+- **Evidence／來源連結**：[PR #13｜Order API](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`domain.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/domain.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **主要訊息**：合作所需的規格分散在型別、程式、Consumer 與測試中。
+- **Transition**：沿著實際呼叫鏈，看這些模組如何分工合作。
+
+## Slide 10｜模組靠責任、介面與依賴合作
+
+- **Headline**：模組靠責任、介面與依賴合作
+- **Body／主要文字**：
+
+  **Project-convention 路徑**：`createController → OrderService → OrderDao → Drizzle (sqlite-proxy) → DbTransport`
+
+  - `createController`：解析 Request 並回傳 `ApiResult`。
+  - `OrderService`：組合 DAO 的 `selectPage` 與 `count`。
+  - `OrderDao`：使用 Drizzle 建立查詢。
+  - `DbTransport` 將 SQL／參數交給 Browser MSW DB Handler，再由受限 SQL evaluator 回應（Mock）。
+
+- **Evidence／來源連結**：[`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`README.md`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/README.md) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **證據限制**：這是案例採用的合理分層，不表示模組分層越多越好；Browser MSW 與受限 SQL evaluator 是 Mock，不是真實資料庫。
+- **主要訊息**：模組透過清楚的責任、介面與依賴合作，並封裝內部實作。
+- **Transition**：如果合作對象從程式模組換成工作單元，會看到什麼？
+
+## Slide 11｜System View 可以切換成 Work View
+
+- **Headline**：System View 可以切換成 Work View
+- **Body／主要文字**：
+
+  **System View**
+
+  `createController → OrderService → OrderDao`
+
+  **Work View**
+
+  `建立 Table → 實作 API → 開發前端`
+
+- **Evidence／來源連結**：[第二章 Storyboard](./storyboards/ch02.md) · [v0.9.3 細綱](../outline/outline-v0.9-candidate.md) · [核准的 Slide Sequence](./presentation-plan.md) · [`README.md`（PR #13 revision e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/README.md) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **限制備註**：Work View 是概念性的工作交接示意，不代表固定時間順序；Runtime Class 與工作節點並非一對一對應。PR #13 使用 Browser MSW 與 Mock，沒有實際建立資料庫 Table。Work View 的交接物為 Schema／資料規則及 API 契約，供後續視覺設計參考。
+- **主要訊息**：從程式模組的合作視角，切換到完成系統的工作交接視角。
+- **Transition**：再放大中間的「實作 API」：這項工作需要哪些約定？
+
+## Slide 12｜一項工作也需要完整工作契約
+
+- **Headline**：一項工作也需要完整工作契約
+- **Body／主要文字**：
+
+  | 面向 | 訂單查詢 API 工作 |
+  | --- | --- |
+  | **Input** | 訂單查詢需求、Schema／相關程式、既有 API 與訊息代碼規範 |
+  | **Output** | API 變更、必要測試、交付說明 |
+  | **Responsibility** | 完成訂單查詢功能 |
+  | **Constraints** | 遵守既有分層、命名、訊息契約與修改邊界 |
+  | **Acceptance** | 功能、Consumer 整合契約與測試證據符合要求 |
+
+- **Evidence／來源連結**：[核准的 Slide Sequence](./presentation-plan.md) · [第二章 Storyboard](./storyboards/ch02.md) · [v0.9.3 細綱](../outline/outline-v0.9-candidate.md) · [`domain.ts`（PR #13 revision e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/domain.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **主要訊息**：工作需要清楚約定輸入、產出、責任、限制與驗收。
+- **Transition**：契約列清楚後，是否還要預先決定每個實作步驟？
+
+## Slide 13｜對外清楚，對內保留實作彈性
+
+- **Headline**：對外清楚，對內保留實作彈性
+- **Body／主要文字**：
+
+  執行者可自行安排步驟與工具；影響介面或驗收的未知，先查證或協商。
+
+- **Evidence／來源連結**：[第二章 Storyboard](./storyboards/ch02.md) · [核准的 Slide Sequence／Slide 13](./presentation-plan.md)
+- **主要訊息**：契約界定交付邊界，同時保留執行者處理內部細節的空間。
+- **Transition**：接著看如何把可重用的執行方法封裝成 Skill。
