@@ -458,3 +458,108 @@
 - **限制備註**：Controller／Service／DAO 是案例中的合理設計示例，不是所有專案的唯一最佳解；本頁比較的是分工與工作安排的取捨，不宣稱存在固定的最佳層數或介面數量。
 - **主要訊息**：好的系統分工與 Workflow 都要依複雜度、風險、依賴與協作成本安排適當的拆分。
 - **Transition**：`寫 API → 模組 → 工作契約 → Skill → Workflow`
+
+## Step 4 第六輪｜Slide 28–32
+
+- **狀態**：第六輪人工審查通過
+- **保存範圍**：Slide 28–32
+
+## Slide 28｜寫 API → 模組 → 工作契約 → Skill → Workflow
+
+- **Headline**：寫 API → 模組 → 工作契約 → Skill → Workflow
+- **Body／主要文字**：
+
+  **System View**
+
+  `Controller → Service → DAO`
+
+  **Work View**
+
+  `工作契約 → Skill → 上下游依賴 → Workflow`
+
+  視角擴大，代表開始承擔更大範圍的工程判斷。
+
+- **Evidence／講述提示**：
+
+  - `System View` 表示系統模組如何合作。
+  - `Work View` 表示完成系統的工作如何定義與組合。
+  - 不將「寫 API」誤認成 `System View` 的模組節點。
+  - 本頁不新增其他工程概念。
+
+- **主要訊息**：每次放大視角，都代表開始承擔更大範圍的工程判斷。
+- **Transition**：從視角擴張回看 AI 如何改變執行與認知門檻。
+
+## Slide 29｜AI 降低執行門檻，卻讓認知門檻提前出現
+
+- **Headline**：AI 降低執行門檻，卻讓認知門檻提前出現
+- **Body／主要文字**：
+
+  能執行，不等於能交付。
+
+- **Evidence／講述提示**：
+
+  - 可執行的 API，仍可能不符合既有的 `ApiResponse.message` 契約。
+  - `AI-direct`：`"fromDate and toDate must be supplied together"` → `Unknown message code`
+  - `Project-convention`：`"m0001"` → `查詢條件不合法`
+  - 本頁使用 PR #13 的原創／合成案例；`AI-direct` 與 `Project-convention` 是人為設計的對照，不是真實 AI 模型評測結果。
+
+- **Evidence／來源連結**：[PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`message-catalog.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/message-catalog.ts)
+- **證據限制**：案例執行於 Browser MSW 與受限 SQL evaluator；不將合成案例描述為真實 AI 模型輸出或模型評測。
+- **主要訊息**：AI 能產生 Code，但不會自動補足可靠交付所需的工程知識。
+- **Transition**：AI 降低執行門檻，也可以協助工程師發現並跨越認知缺口。
+
+## Slide 30｜AI 也可以協助跨越認知門檻
+
+- **Headline**：AI 也可以協助跨越認知門檻
+- **Body／主要文字**：
+
+  **一次 Vue 專案的部署問題**
+
+  1. Vue 專案部署後，網頁無法連線。
+  2. AI 追問部署方式。
+  3. 發現自己不清楚建置與部署流程。
+  4. 透過 AI 協助檢查 Log 與 Web Server 設定。
+  5. 排除問題，也逐步建立對部署流程的理解。
+
+  **主要訊息**：
+
+  AI 不只協助執行工作，也能透過提問與查證，幫助工程師發現認知缺口並建立理解。
+
+- **Evidence／講述提示**：
+
+  - 本頁為匿名化的個人經驗敘事。
+  - 不提供內部 CI/CD、系統名稱、實際環境、設定檔或原始 Log。
+  - 不新增未確認的故障原因、解決命令或具體技術結論。
+  - 不將敘事描述為可獨立重現的技術實驗。
+  - `委派 → 發現認知缺口 → AI 輔助探索 → 建立理解 → 擴大可掌握的工作範圍` 作為 Evidence／講述脈絡，不在 Body 重複展示。
+
+- **Evidence／來源連結**：[第六章細綱／18](../outline/outline-v0.9-candidate.md)
+- **證據限制**：本頁不提供可公開查證的內部技術紀錄；內容只保存已確認的匿名敘事方向。
+- **主要訊息**：AI 可以透過提問與查證，協助工程師發現認知缺口並建立理解。
+- **Transition**：回收前五章的五個視角，落到最後的 Ending。
+
+## Slide 31｜Recap：五個視角的推進
+
+- **Headline**：Recap：五個視角的推進
+- **Body／主要文字**：
+
+  1. 可執行不等於可交付。
+  2. 規格與模組支援工程協作。
+  3. 工作契約可以封裝成 Skill。
+  4. Skill 必須放在上下游與 SDLC 中理解。
+  5. Workflow 需要依風險／依賴／成本取捨。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 31](./presentation-plan.md#slide-31recap五個視角的推進)
+- **主要訊息**：前五章各自回收一個核心結論。
+- **Transition**：以已核准的 Ending 結束全場。
+
+## Slide 32｜Ending：擴大定義、整合與判斷工作的能力
+
+- **Headline**：Ending：擴大定義、整合與判斷工作的能力
+- **Body／主要文字**：
+
+  「要充分利用 AI 的能力，工程師需要擴大自己定義、整合與判斷工作的能力；AI 也可以成為學習這些能力的工具。」
+
+- **Evidence／來源連結**：[核准的 Step 2 Ending](./presentation-plan.md#ending必須保留原文)
+- **主要訊息**：保留已核准的結尾，不新增第二個結論或 Q&A 頁。
+- **Transition**：結束。
