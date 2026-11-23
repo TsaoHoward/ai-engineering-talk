@@ -1,8 +1,9 @@
 import type { Order, OrderPage } from './domain'
+import { MESSAGE_CODES } from './domain'
+import { resolveMessageCode } from './message-catalog'
 
-// An established, synthetic front-end contract: the Consumer expects a
-// paginated payload inside the unchanged shared {code, message, data} envelope.
-// This is NOT a requirement for every HTTP consumer or every project.
+// Existing synthetic consumer: success data is a page, errors use a
+// preloaded message-code table. Both variants are evaluated by the same code.
 export class ExistingConsumerContractError extends Error {
   constructor(message: string) {
     super(message)
@@ -15,7 +16,7 @@ function record(value: unknown): value is Record<string, unknown> {
 }
 
 export function readExistingOrdersConsumer(body: unknown): OrderPage {
-  if (!record(body) || body.code !== 'OK' || !('data' in body)) {
+  if (!record(body) || body.code !== 'OK' || body.message !== MESSAGE_CODES.success || !('data' in body)) {
     throw new ExistingConsumerContractError('Expected success envelope { code, message, data }')
   }
   const data = body.data
@@ -32,4 +33,16 @@ export function readExistingOrdersConsumer(body: unknown): OrderPage {
     }
   }
   return { items: data.items as Order[], totalCount: data.totalCount as number }
+}
+
+export function readExistingErrorConsumer(body: unknown): string {
+  if (!record(body) || typeof body.code !== 'string' || body.code === 'OK'
+    || typeof body.message !== 'string') {
+    throw new ExistingConsumerContractError('Expected error envelope { code, message, data }')
+  }
+  const display = resolveMessageCode(body.message)
+  if (display === undefined) {
+    throw new ExistingConsumerContractError('Unknown message code: ' + body.message)
+  }
+  return display
 }

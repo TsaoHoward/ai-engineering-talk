@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { setupWorker } from 'msw/browser'
 import { createController, type Variant, type DbTransport } from './application'
+import { MESSAGE_CODES } from './domain'
 import { evaluateSql, UnsupportedSqlError, type DbCommand } from './mock-db'
 
 const base = new URL(import.meta.env.BASE_URL, window.location.origin)
@@ -37,7 +38,7 @@ const handlers = [
   }),
   ...(['ai-direct', 'project-convention'] as const).flatMap((variant: Variant) => {
     const controller = createController(variant, transport)
-    return ['orders', 'status'].map(resource =>
+    return ['orders', 'status', 'missing'].map(resource =>
       http.get(address('mock/api/' + variant + '/' + resource), async ({ request }) => {
         trace.push({ stage: 'API', detail: variant + '/' + resource })
         try {
@@ -45,7 +46,9 @@ const handlers = [
           return HttpResponse.json(result.body as Record<string, unknown>, { status: result.status })
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Unhandled error'
-          return HttpResponse.json({ code: 'INTERNAL_ERROR', message, data: null }, { status: 500 })
+          return HttpResponse.json({ code: 'INTERNAL_ERROR',
+            message: variant === 'ai-direct' ? message : MESSAGE_CODES.internalError,
+            data: null }, { status: 500 })
         }
       }))
   }),
