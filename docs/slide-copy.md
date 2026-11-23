@@ -207,3 +207,84 @@
 - **Evidence／來源連結**：[第二章 Storyboard](./storyboards/ch02.md) · [核准的 Slide Sequence／Slide 13](./presentation-plan.md)
 - **主要訊息**：契約界定交付邊界，同時保留執行者處理內部細節的空間。
 - **Transition**：接著看如何把可重用的執行方法封裝成 Skill。
+
+## Step 4 第三輪｜Slide 14–18
+
+- **狀態**：第三輪人工審查通過
+- **保存範圍**：Slide 14–18
+
+## Slide 14｜把工作契約交給 AI
+
+- **Headline**：把工作契約交給 AI
+- **Body／主要文字**：
+
+  第三章｜從 Prompt 到 Skill：封裝工作
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 14](./presentation-plan.md) · [Slide 12–13 工作契約](./slide-copy.md)
+- **主要訊息**：從工作契約切換到 AI 協作介面。
+- **Transition**：對照原始 Prompt 與改善後的工作要求。
+
+## Slide 15｜Prompt 可以把隱含契約變成明確資訊
+
+- **Headline**：Prompt 可以把隱含契約變成明確資訊
+- **Body／主要文字**：
+
+  **原始交辦**
+
+  `幫我新增一支訂單查詢 API，支援日期、狀態與分頁。`
+
+  **改善後的工作要求**
+
+  1. 先讀取既有程式與專案規範。
+  2. 沿用既有 `Controller／Service／DAO／Drizzle` 分層。
+  3. `ApiResponse.message` 使用前端可識別的訊息代碼。
+  4. 遵守修改邊界，執行測試並回報未確認事項。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 15](./presentation-plan.md) · [v0.9.3 第三章](../outline/outline-v0.9-candidate.md) · [PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`domain.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/domain.ts) · [`message-catalog.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/message-catalog.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **限制備註**：`m0000`、`m0001` 的具體細節留在 Evidence，不放入 Body；本頁是 Prompt 改寫範例，不宣稱曾由真實 AI 模型執行或驗證。
+- **主要訊息**：把原本隱含的交付契約變成可以使用與查證的資訊。
+- **Transition**：分離每次任務的變動內容與可重用方法。
+
+## Slide 16｜每次任務不同，但執行方法可以重用
+
+- **Headline**：每次任務不同，但執行方法可以重用
+- **Body／主要文字**：
+
+  | 每次任務不同 | 可以重用 |
+  | --- | --- |
+  | 功能需求、輸入、修改範圍與特殊限制 | 專案規範、工作程序、檢查方法與產出格式 |
+
+  用 `Abstraction`、`Encapsulation`、`Reuse` 分離變動與共通部分。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 16](./presentation-plan.md) · [v0.9.3 第三章](../outline/outline-v0.9-candidate.md)
+- **主要訊息**：每次任務提供變動的需求；共通的執行方法透過 Skill 重用。
+- **Transition**：具體展示可重用程序的形狀。
+
+## Slide 17｜Skill 封裝一類工作的執行程序
+
+- **Headline**：Skill 封裝一類工作的執行程序
+- **Body／主要文字**：
+
+  **Implement Skill｜公開來源**
+
+  1. **開始**：依 Spec 或 Ticket 執行；Ticket 參照不明確時先確認。
+  2. **實作**：適用時，在預先約定的 seam 使用 TDD。
+  3. **檢查**：定期執行 Typecheck 與個別測試；最後執行完整測試。
+  4. **完成**：完成後進行 Code Review，並 commit 到目前分支。
+
+- **Evidence／來源連結**：[Implement Skill（固定 revision `6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394`）](https://github.com/mattpocock/skills/blob/6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394/skills/engineering/implement/SKILL.md) · [Source Commit](https://github.com/mattpocock/skills/commit/6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394) · [MIT License](https://github.com/mattpocock/skills/blob/6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394/LICENSE)
+- **說明**：`讀取 → 確認 → 實作 → 測試 → 回報` 是本簡報的概念抽象，不是公開 Implement Skill 的原始程序；該 Skill 沒有承諾「回報證據及限制」。
+- **限制備註**：本頁整理公開文件所承諾的工作程序，不代表本簡報已執行該 Skill、完成任何測試，或具備完整交付系統。
+- **主要訊息**：公開 Skill 將一類工作的執行程序整理成可重用指引。
+- **Transition**：一個 Skill 可以封裝一段工作方法，但仍有清楚的能力邊界。
+
+## Slide 18｜Skill 是有邊界的工作單元，不是完整交付系統
+
+- **Headline**：Skill 是有邊界的工作單元，不是完整交付系統
+- **Body／主要文字**：
+
+  Skill 可以封裝一段可重用的工作方法，但不會自動提供需求、設計、驗收或上下游依賴。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 18](./presentation-plan.md) · [v0.9.3 第三章](../outline/outline-v0.9-candidate.md)
+- **主要訊息**：Skill 封裝單一工作方法；完整交付仍需要其他工作與上下游組合。
+- **Transition**：從單一工作單元切換到上下游與整體交付。
