@@ -3,12 +3,15 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "node scripts/build-with-order-api.mjs",
     "dev": "slidev --open",
     "dev:hash": "slidev --router-mode hash",
     "preview": "vite preview",
     "visual:acceptance": "node scripts/visual-acceptance.mjs",
-    "export": "slidev export"
+    "export": "slidev export",
+    "predev": "node scripts/prepare-slidev-msw.mjs",
+    "predev:hash": "node scripts/prepare-slidev-msw.mjs",
+    "verify:slidev-msw": "node scripts/verify-slidev-msw.mjs"
   },
   "dependencies": {
     "@slidev/cli": "^53.1.0",

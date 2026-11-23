@@ -1,3 +1,5 @@
+@import './chapter-integration.css';
+
 /* Adapted from Slides Builder deck styles at decks/ai-engineering-talk/styles/index.css.
    Copyright (c) 2026 Oscar Lobaton Salas; MIT license in licenses/slides-builder.MIT.
    Chapter 1 visual rules are scoped so other slides keep their own theme styling. */

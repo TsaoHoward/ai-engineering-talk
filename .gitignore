@@ -11,3 +11,6 @@ components.d.ts
 
 # Generated visual acceptance captures
 /artifacts/visual-acceptance/
+
+# MSW generated from canonical Order API at build/dev time
+/public/mockServiceWorker.js
