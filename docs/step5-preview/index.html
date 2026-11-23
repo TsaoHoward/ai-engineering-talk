@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Engineering Talk · Step 5 Preview · Slides 3–5</title>
+    <style>
+      :root {
+        --bg: #f8fbff;
+        --panel: #ffffff;
+        --panel-blue: #eef5ff;
+        --text: #0f172a;
+        --secondary: #475569;
+        --quiet: #64748b;
+        --line: #cbd5e1;
+        --blue: #2563eb;
+        --blue-dark: #1d4ed8;
+        --green: #16a34a;
+        --green-soft: #effcf3;
+        --amber: #d97706;
+        --amber-soft: #fff8eb;
+        --shadow: 0 22px 56px rgba(30, 64, 175, 0.13);
+        --sans: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC",
+          "PingFang TC", "Microsoft JhengHei", sans-serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: #0b1220;
+      }
+
+      body {
+        display: grid;
+        justify-items: center;
+        gap: 32px;
+        margin: 0;
+        padding: 28px 0 72px;
+        background: #0b1220;
+        color: var(--text);
+        font-family: var(--sans);
+      }
+
+      .preview-nav {
+        display: flex;
+        width: 1600px;
+        align-items: center;
+        justify-content: space-between;
+        color: #dbeafe;
+        font-size: 18px;
+        letter-spacing: 0.02em;
+      }
+
+      .preview-nav strong {
+        color: #ffffff;
+        font-weight: 650;
+      }
+
+      .preview-nav a {
+        color: #bfdbfe;
+        text-decoration: none;
+      }
+
+      .preview-nav a + a {
+        margin-left: 24px;
+      }
+
+      .slide {
+        position: relative;
+        width: 1600px;
+        height: 900px;
+        overflow: hidden;
+        padding: 62px 84px 56px;
+        background: var(--bg);
+        box-shadow: var(--shadow);
+      }
+
+      .slide::after {
+        position: absolute;
+        right: 84px;
+        bottom: 36px;
+        width: 84px;
+        height: 3px;
+        background: var(--blue);
+        content: "";
+      }
+
+      .slide-label {
+        color: var(--blue);
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .slide-number {
+        position: absolute;
+        right: 84px;
+        top: 62px;
+        color: #bfdbfe;
+        font-family: var(--mono);
+        font-size: 22px;
+        letter-spacing: 0.08em;
+      }
+
+      .slide h1,
+      .slide h2,
+      .slide p {
+        margin: 0;
+      }
+
+      .slide h1 {
+        color: var(--text);
+        font-size: 47px;
+        font-weight: 560;
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+        text-wrap: balance;
+      }
+
+      .mono {
+        font-family: var(--mono);
+      }
+
+      .quiet {
+        color: var(--quiet);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 5px 13px;
+        border: 1px solid #bfdbfe;
+        border-radius: 999px;
+        background: var(--panel-blue);
+        color: var(--blue-dark);
+        font-family: var(--mono);
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+      }
+
+      .tag.green {
+        border-color: #bbf7d0;
+        background: var(--green-soft);
+        color: #15803d;
+      }
+
+      .tag.amber {
+        border-color: #fed7aa;
+        background: var(--amber-soft);
+        color: #b45309;
+      }
+
+      .hairline {
+        border: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      /* Slide 03 — question / full statement */
+      .slide-question {
+        display: grid;
+        place-items: center;
+        padding: 80px 120px;
+      }
+
+      .slide-question .slide-label {
+        position: absolute;
+        top: 62px;
+        left: 84px;
+      }
+
+      .question-content {
+        width: 1220px;
+        padding-bottom: 16px;
+        text-align: center;
+      }
+
+      .question-content h1 {
+        margin-top: 22px;
+        font-size: 105px;
+        font-weight: 520;
+        letter-spacing: -0.055em;
+        line-height: 1.02;
+      }
+
+      .question-rule {
+        width: 124px;
+        height: 6px;
+        margin: 46px auto 0;
+        border-radius: 999px;
+        background: var(--blue);
+      }
+
+      .question-content .quiet {
+        margin-top: 30px;
+        font-size: 21px;
+        letter-spacing: 0.04em;
+      }
+
+      /* Slide 04 — code / data / static evidence panel */
+      .slide-code-data h1 {
+        max-width: 1000px;
+        margin-top: 18px;
+      }
+
+      .slide-code-data .slide-number {
+        top: 61px;
+      }
+
+      .provenance-pill {
+        position: absolute;
+        top: 125px;
+        right: 84px;
+      }
+
+      .code-data-grid {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 34px;
+        height: 620px;
+        margin-top: 42px;
+      }
+
+      .brief-card,
+      .evidence-panel {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      .brief-card {
+        display: flex;
+        flex-direction: column;
+        padding: 34px 36px;
+      }
+
+      .card-kicker {
+        color: var(--blue);
+        font-family: var(--mono);
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .brief-card h2 {
+        margin-top: 22px;
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.16;
+      }
+
+      .brief-card .brief-copy {
+        margin-top: 20px;
+        color: var(--secondary);
+        font-size: 25px;
+        line-height: 1.55;
+      }
+
+      .query-block {
+        margin-top: auto;
+        padding-top: 28px;
+        border-top: 1px solid var(--line);
+      }
+
+      .query-block .quiet {
+        font-size: 18px;
+        font-weight: 650;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .query-value {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 13px 17px;
+        border-radius: 8px;
+        background: var(--panel-blue);
+        color: var(--blue-dark);
+        font-family: var(--mono);
+        font-size: 32px;
+        font-weight: 650;
+      }
+
+      .evidence-panel {
+        padding: 30px 34px 26px;
+        border-color: #93c5fd;
+        box-shadow: inset 0 4px 0 var(--blue);
+      }
+
+      .evidence-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+      }
+
+      .evidence-head h2 {
+        font-size: 21px;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .evidence-head .quiet {
+        margin-top: 7px;
+        font-size: 18px;
+      }
+
+      .response-summary {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        gap: 22px;
+        margin-top: 28px;
+      }
+
+      .status-card {
+        display: flex;
+        min-height: 120px;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 22px;
+        border-radius: 10px;
+        background: var(--panel-blue);
+      }
+
+      .status-card .status {
+        color: var(--blue-dark);
+        font-family: var(--mono);
+        font-size: 42px;
+        font-weight: 750;
+        letter-spacing: -0.04em;
+      }
+
+      .status-card .status-note {
+        margin-top: 6px;
+        color: var(--secondary);
+        font-size: 18px;
+      }
+
+      .response-fields {
+        display: grid;
+        align-content: center;
+        gap: 12px;
+        padding: 12px 0;
+        font-family: var(--mono);
+        font-size: 24px;
+      }
+
+      .response-fields strong {
+        color: var(--blue-dark);
+        font-weight: 700;
+      }
+
+      .response-data {
+        margin-top: 25px;
+        padding: 22px 25px 24px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fbfdff;
+      }
+
+      .response-data .data-label {
+        color: var(--quiet);
+        font-family: var(--mono);
+        font-size: 19px;
+        font-weight: 700;
+      }
+
+      .data-columns {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 24px;
+        margin-top: 16px;
+      }
+
+      .data-item {
+        display: grid;
+        gap: 7px;
+      }
+
+      .data-item .quiet {
+        font-family: var(--mono);
+        font-size: 19px;
+      }
+
+      .data-value {
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .variant-strip {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 23px;
+      }
+
+      .variant-strip .quiet {
+        margin-left: auto;
+        font-size: 18px;
+      }
+
+      .evidence-footnote {
+        margin-top: 19px;
+        color: var(--quiet);
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      /* Slide 05 — framework / contract comparison */
+      .slide-framework h1 {
+        max-width: 990px;
+        margin-top: 18px;
+      }
+
+      .revision-tag {
+        position: absolute;
+        top: 127px;
+        right: 84px;
+        color: var(--quiet);
+        font-family: var(--mono);
+        font-size: 19px;
+        font-weight: 650;
+        letter-spacing: 0.03em;
+      }
+
+      .shared-input {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 34px;
+        margin-top: 38px;
+        padding: 20px 25px;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        background: var(--panel-blue);
+      }
+
+      .input-block,
+      .error-envelope {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .input-block .small-label,
+      .error-envelope .small-label {
+        color: var(--blue-dark);
+        font-family: var(--mono);
+        font-size: 17px;
+        font-weight: 750;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .input-value {
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 27px;
+        font-weight: 650;
+      }
+
+      .input-note {
+        color: var(--amber);
+        font-size: 20px;
+        font-weight: 650;
+      }
+
+      .error-envelope {
+        justify-content: end;
+      }
+
+      .error-envelope .http {
+        color: var(--amber);
+        font-family: var(--mono);
+        font-size: 31px;
+        font-weight: 750;
+      }
+
+      .error-envelope .envelope-value {
+        color: var(--secondary);
+        font-family: var(--mono);
+        font-size: 19px;
+        white-space: nowrap;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 34px;
+        margin-top: 28px;
+      }
+
+      .variant-card {
+        min-height: 254px;
+        padding: 24px 28px 25px;
+        border: 1px solid var(--line);
+        border-top: 5px solid var(--blue);
+        border-radius: 12px;
+        background: var(--panel);
+      }
+
+      .variant-card.convention {
+        border-color: #bbf7d0;
+        border-top-color: var(--green);
+      }
+
+      .variant-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .variant-name {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+
+      .message-line {
+        margin-top: 22px;
+      }
+
+      .message-line .small-label,
+      .consumer-result .small-label {
+        color: var(--quiet);
+        font-family: var(--mono);
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .message-value {
+        margin-top: 10px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 21px;
+        line-height: 1.35;
+      }
+
+      .consumer-result {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 36px;
+        align-items: center;
+        min-height: 184px;
+        margin-top: 28px;
+        padding: 24px 29px;
+        border: 2px solid var(--blue);
+        border-radius: 12px;
+        background: #f6faff;
+      }
+
+      .consumer-result h2 {
+        margin-top: 11px;
+        color: var(--blue-dark);
+        font-size: 31px;
+        font-weight: 650;
+        letter-spacing: -0.035em;
+        line-height: 1.12;
+      }
+
+      .consumer-outcomes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .outcome {
+        min-height: 103px;
+        padding: 16px 19px;
+        border-radius: 9px;
+        background: var(--amber-soft);
+      }
+
+      .outcome.compatible {
+        background: var(--green-soft);
+      }
+
+      .outcome .outcome-label {
+        color: #b45309;
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 750;
+        letter-spacing: 0.05em;
+      }
+
+      .outcome.compatible .outcome-label {
+        color: #15803d;
+      }
+
+      .outcome .outcome-value {
+        margin-top: 8px;
+        color: var(--text);
+        font-size: 23px;
+        font-weight: 650;
+        line-height: 1.25;
+      }
+
+      .slide-framework .footer-note {
+        position: absolute;
+        bottom: 37px;
+        left: 84px;
+        color: var(--quiet);
+        font-family: var(--mono);
+        font-size: 17px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="preview-nav" aria-label="Preview navigation">
+      <strong>AI Engineering Talk · Step 5 Visual Design Preview</strong>
+      <span>
+        <a href="#slide-03">Slide 03</a>
+        <a href="#slide-04">Slide 04</a>
+        <a href="#slide-05">Slide 05</a>
+      </span>
+    </header>
+
+    <main>
+      <section id="slide-03" class="slide slide-question" aria-label="Slide 3 — Question">
+        <div class="slide-label">Opening · Question</div>
+        <div class="slide-number">03 / 32</div>
+        <div class="question-content">
+          <h1>能執行，是否就代表能交付？</h1>
+          <div class="question-rule" aria-hidden="true"></div>
+          <p class="quiet">Question</p>
+        </div>
+      </section>
+
+      <section id="slide-04" class="slide slide-code-data" aria-label="Slide 4 — Code and Data">
+        <div class="slide-label">Chapter 01 · Functional Path</div>
+        <div class="slide-number">04 / 32</div>
+        <h1>交辦一支訂單查詢 API，功能確實能跑</h1>
+        <div class="tag provenance-pill">BROWSER MSW · SYNTHETIC</div>
+
+        <div class="code-data-grid">
+          <article class="brief-card">
+            <div class="card-kicker">Brief</div>
+            <h2>新增訂單查詢 API</h2>
+            <p class="brief-copy">
+              支援狀態、UTC 日期區間、分頁與總筆數。
+            </p>
+            <div class="query-block">
+              <div class="quiet">請求 Query</div>
+              <div class="query-value">?pageSize=3</div>
+            </div>
+          </article>
+
+          <article class="evidence-panel" aria-label="Static success evidence panel">
+            <div class="evidence-head">
+              <div>
+                <h2>Success Response</h2>
+                <div class="quiet">同一個查詢，兩種實作回傳同一組成功資料</div>
+              </div>
+              <div class="tag green">STATIC EVIDENCE</div>
+            </div>
+
+            <div class="response-summary">
+              <div class="status-card">
+                <div class="status">HTTP 200</div>
+                <div class="status-note">功能路徑成功</div>
+              </div>
+              <div class="response-fields">
+                <div><strong>code</strong>: "OK"</div>
+                <div><strong>message</strong>: "m0000"</div>
+              </div>
+            </div>
+
+            <div class="response-data">
+              <div class="data-label">data</div>
+              <div class="data-columns">
+                <div class="data-item">
+                  <div class="quiet">items</div>
+                  <div class="data-value">[42, 35, 28]</div>
+                </div>
+                <div class="data-item">
+                  <div class="quiet">totalCount</div>
+                  <div class="data-value">42</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="variant-strip">
+              <span class="tag">AI-direct</span>
+              <span class="tag green">Project-convention</span>
+              <span class="quiet">同一個查詢都回傳這組成功資料</span>
+            </div>
+
+            <p class="evidence-footnote">
+              合成案例：Browser MSW 中的受限執行路徑；不是外部 API Server 或真實資料庫執行證據。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="slide-05" class="slide slide-framework" aria-label="Slide 5 — Framework">
+        <div class="slide-label">Chapter 01 · Existing UI Contract</div>
+        <div class="slide-number">05 / 32</div>
+        <h1><span class="mono">message</span> 不是自由文字，而是既有 UI 契約</h1>
+        <div class="revision-tag">PR #13 · e8ae8ad3</div>
+
+        <div class="shared-input">
+          <div class="input-block">
+            <span class="small-label">Shared input</span>
+            <span class="input-value">?fromDate=2026-01-01</span>
+            <span class="input-note">缺少 toDate</span>
+          </div>
+          <div class="error-envelope">
+            <span class="small-label">Response</span>
+            <span class="http">HTTP 400</span>
+            <span class="envelope-value">code: "INVALID_QUERY" · data: null</span>
+          </div>
+        </div>
+
+        <div class="comparison-grid">
+          <article class="variant-card">
+            <div class="variant-head">
+              <div class="variant-name">AI-direct</div>
+              <div class="tag amber">message · detail</div>
+            </div>
+            <div class="message-line">
+              <div class="small-label">message</div>
+              <div class="message-value">"fromDate and toDate must be supplied together"</div>
+            </div>
+          </article>
+
+          <article class="variant-card convention">
+            <div class="variant-head">
+              <div class="variant-name">Project-convention</div>
+              <div class="tag green">message · code</div>
+            </div>
+            <div class="message-line">
+              <div class="small-label">message</div>
+              <div class="message-value">"m0001"</div>
+            </div>
+          </article>
+        </div>
+
+        <section class="consumer-result" aria-label="Existing Consumer parsing result">
+          <div>
+            <div class="small-label">Primary focus</div>
+            <h2>既有 Consumer<br />的解析結果</h2>
+          </div>
+          <div class="consumer-outcomes">
+            <div class="outcome">
+              <div class="outcome-label">AI-direct · incompatible</div>
+              <div class="outcome-value">無法解析：Unknown message code</div>
+            </div>
+            <div class="outcome compatible">
+              <div class="outcome-label">Project-convention · compatible</div>
+              <div class="outcome-value">解析成功：查詢條件不合法</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer-note">案例來源：PR #13 · 指定 revision e8ae8ad3 · Browser MSW 合成案例</div>
+      </section>
+    </main>
+  </body>
+</html>
