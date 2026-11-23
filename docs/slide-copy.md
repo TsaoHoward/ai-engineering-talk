@@ -374,3 +374,87 @@
 - **Evidence／來源連結**：[核准的 Slide Sequence／Slide 23](./presentation-plan.md) · [第五章細綱](../outline/outline-v0.9-candidate.md)
 - **主要訊息**：完成第四章轉場，將焦點交給下一章的工作安排問題。
 - **Transition**：同一組工作，可以有不同安排方式。
+
+## Step 4 第五輪｜Slide 24–27
+
+- **狀態**：第五輪人工審查通過
+- **保存範圍**：Slide 24–27
+
+## Slide 24｜同一組工作，可以有不同安排方式
+
+- **Headline**：同一組工作，可以有不同安排方式
+- **Body／主要文字**：
+
+  **共同 Work View**
+
+  `建立 Table → 實作 API → 開發前端`
+
+  | 安排方式 | 如何安排同一組工作 |
+  | --- | --- |
+  | **Waterfall** | 以階段式交付作為基本參照。 |
+  | **Agile** | 縮小交付粒度，例如先狀態查詢，再日期篩選與分頁。 |
+  | **TDD** | 放大 `實作 API` 內部，使用失敗測試 → 實作 → 重構的循環。 |
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 24](./presentation-plan.md) · [第五章細綱／13](../outline/outline-v0.9-candidate.md) · [第二章 Storyboard](./storyboards/ch02.md) · [PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`README.md`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/README.md)
+- **限制備註**：Waterfall、Agile、TDD 在此是安排順序、交付粒度與工作內部回饋的概念對照，不是同層級、可直接互換的完整 Workflow。Work View 是概念示意，不宣稱 PR #13 建立真實 Table，也不宣稱案例實際採用了這三種工作安排。
+- **主要訊息**：同一組工作可以依交付粒度、順序與回饋方式採取不同安排。
+- **Transition**：如果要組合多項工作，Skill 與 Workflow 分別描述什麼？
+
+## Slide 25｜Skill 描述「怎麼做」，Workflow 描述「怎麼組合」
+
+- **Headline**：Skill 描述「怎麼做」，Workflow 描述「怎麼組合」
+- **Body／主要文字**：
+
+  **Skill**：回用 Slide 17 的 `Implement Skill`，描述單一工作的執行方法。
+
+  **Workflow**：`需求釐清 → Spec → Tickets → Implement → Review / Verify`
+
+  Workflow 關注工作之間的排序、交接、組合與驗收。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 25](./presentation-plan.md) · [第五章細綱／14](../outline/outline-v0.9-candidate.md) · [Slide 17／Implement Skill](./slide-copy.md)
+- **限制備註**：這是一個可調整的工作骨架，不是只能線性執行的固定腳本。本頁不重複 Slide 17 的 Implement Skill 詳細程序。
+- **主要訊息**：Skill 描述單一工作的做法；Workflow 描述多項工作如何組合與交付。
+- **Transition**：工作組合之後，還要看交接產物是否能被使用、查證與驗收。
+
+## Slide 26｜Workflow 的品質取決於交接與驗收
+
+- **Headline**：Workflow 的品質取決於交接與驗收
+- **Body／主要文字**：
+
+  `需求釐清 → Spec → Tickets → Implement → Review / Verify`
+
+  **交接內容**
+
+  - **Spec**：已確認的需求、API 契約與限制。
+  - **Tickets**：工作範圍與驗收條件。
+  - **Implement**：實作結果與測試證據。
+  - **Review／Verify**：對照既有契約，確認成果。
+
+  **工作產出應能供下游使用，並且可以查證與驗收。**
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 26](./presentation-plan.md) · [第五章細綱／14](../outline/outline-v0.9-candidate.md) · [PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts) · [`existing-consumer.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/existing-consumer.ts) · [`browser.test.mjs`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/test/browser.test.mjs)
+- **限制備註**：本頁是概念示意，不宣稱 PR #13 實際執行過完整 Workflow，也不捏造 Spec、Ticket、Review、Verify 的真實紀錄。PR #13 的程式、Consumer 與測試只能支持案例契約及技術事實，不能證明上述 Workflow 已被執行。
+- **主要訊息**：Workflow 的品質取決於工作之間可使用、可查證與可驗收的交接。
+- **Transition**：工作可以拆開，但拆分本身也需要取捨。
+
+## Slide 27｜能拆分，不代表應該無限拆分
+
+- **Headline**：能拆分，不代表應該無限拆分
+- **Body／主要文字**：
+
+  **系統分工與 AI 工作安排**
+
+  | | 系統分工 | AI 工作安排 |
+  | --- | --- | --- |
+  | **拆分不足** | 全部集中於單一 `Method`。 | 一個 Prompt 包辦全部。 |
+  | **過度拆分** | 過度拆分為大量層次與介面。 | 每個小步驟都拆成 Skill、交接與批准。 |
+  | **合宜分工** | 依需求採取適當的 `Controller／Service／DAO` 分工。 | 依複雜度、風險與依賴安排工作及驗收。 |
+
+  **取捨概念**：`Cohesion`、`Coupling`、`Interface`、`Composition`。
+
+  拆分要同時考慮責任清晰度、介面與組合方式，以及協作成本。
+
+- **Evidence／來源連結**：[核准的 Slide Sequence／Slide 27](./presentation-plan.md) · [第五章細綱／15](../outline/outline-v0.9-candidate.md) · [PR #13｜Order API message-code contract](https://github.com/TsaoHoward/ai-engineering-talk/pull/13) · [`application.ts`（e8ae8ad3）](https://github.com/TsaoHoward/ai-engineering-talk/blob/e8ae8ad3d419cf51927d69b598ea4e00ad6cf329/examples/order-api/ts-v1/src/application.ts)
+- **限制備註**：Controller／Service／DAO 是案例中的合理設計示例，不是所有專案的唯一最佳解；本頁比較的是分工與工作安排的取捨，不宣稱存在固定的最佳層數或介面數量。
+- **主要訊息**：好的系統分工與 Workflow 都要依複雜度、風險、依賴與協作成本安排適當的拆分。
+- **Transition**：`寫 API → 模組 → 工作契約 → Skill → Workflow`
