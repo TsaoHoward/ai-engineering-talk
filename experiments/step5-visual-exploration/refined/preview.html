@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slide 5 Refined Visual Prototype</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { margin: 0; min-height: 100vh; background: #e9f0f8; color: #0f172a; }
+    main { width: min(1240px, calc(100vw - 32px)); margin: 24px auto 40px; }
+    .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .toolbar h1 { margin: 0 auto 0 0; font-size: 18px; font-weight: 650; }
+    button { border: 1px solid #94a3b8; border-radius: 7px; background: #fff; color: #0f172a; padding: 8px 13px; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { border-color: #2563eb; outline: 2px solid #bfdbfe; outline-offset: 1px; }
+    #state-label { min-width: 76px; text-align: center; font-size: 14px; color: #475569; }
+    figure { margin: 0; background: #fff; border: 1px solid #cbd5e1; border-radius: 9px; overflow: hidden; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); }
+    img { display: block; width: 100%; height: auto; }
+    figcaption { padding: 10px 12px; border-top: 1px solid #cbd5e1; color: #475569; font-size: 13px; }
+    .hint { margin: 12px 0 0; color: #64748b; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="toolbar" aria-label="Refined state controls">
+      <h1>Slide 5 Refined Visual Prototype</h1>
+      <button id="previous" type="button">← Previous</button>
+      <span id="state-label" aria-live="polite">State 1 / 3</span>
+      <button id="next" type="button">Next →</button>
+    </div>
+    <figure>
+      <img id="frame" src="state-1.png" alt="共同錯誤條件；兩種 message 尚未揭露">
+      <figcaption id="caption">先固定錯誤輸入與共同 HTTP response；不提前揭露相容性結論。</figcaption>
+    </figure>
+    <p class="hint">使用 ← / → 鍵或上方按鈕切換。State 編號與控制只在畫布外顯示。</p>
+  </main>
+  <script>
+    const frames = [
+      {src: 'state-1.png', alt: '共同錯誤條件；兩種 message 尚未揭露', caption: '先固定錯誤輸入與共同 HTTP response；不提前揭露相容性結論。'},
+      {src: 'state-2.png', alt: '兩種實作的 message 值', caption: '同一 response 條件下，揭露完整 detail 字串與 m0001；兩側維持中性處理。'},
+      {src: 'state-3.png', alt: '共用 Consumer 查表與兩個獨立結果', caption: '兩個 response 各自進入共用查表規則，再各自呈現查無代碼與解析成功。'},
+    ]
+    let index = 0
+    const frame = document.querySelector('#frame')
+    const label = document.querySelector('#state-label')
+    const caption = document.querySelector('#caption')
+    function show(next) {
+      index = (next + frames.length) % frames.length
+      frame.src = frames[index].src
+      frame.alt = frames[index].alt
+      label.textContent = `State ${index + 1} / ${frames.length}`
+      caption.textContent = frames[index].caption
+    }
+    document.querySelector('#previous').addEventListener('click', () => show(index - 1))
+    document.querySelector('#next').addEventListener('click', () => show(index + 1))
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(index - 1)
+      if (event.key === 'ArrowRight') show(index + 1)
+    })
+  </script>
+</body>
+</html>

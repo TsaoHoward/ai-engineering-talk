@@ -89,6 +89,44 @@
 - 本輪只完成可觀看 wireframe 與自動化溢位／尺寸檢查；視覺層級、揭露節奏與
   是否通過仍交由人工審查，不在此自行宣告通過。
 
+## Step 5C｜Visual Refinement
+
+依 Option A wireframe 將 Slide 5 精緻化為亮室投影用的 Crystal Light 原型；不改變
+三個 state 的揭露順序、左右比較方向或主要座標。可重現來源與 PNG 位於
+`refined/`，預覽控制留在畫布外。
+
+### 設計決策與人工修正
+
+- 使用 `#f8fbff` 背景、`#eef5ff` 共用條件帶、`#0f172a` 主要文字與 `#2563eb`
+  結構強調；只在 State 3 結果揭露使用 amber `#d97706` 與 green `#16a34a`。
+- 標題採 44px／48px 行距；案例與 message 使用可讀的 monospace，主要內容維持
+  約 22–30px；以 88px 外距、112px 共用條件帶、兩側 592px lane 保持穩定節奏。
+- 移除 State 1 的空白 message 虛線框；State 2 保留完整英文 detail 與 `m0001`，
+  換行仍屬同一字串，兩側不提前使用成功／失敗色彩。
+- State 3 以兩條獨立箭頭連到同一個共用 Consumer，再分別連到兩個結果；主要
+  文字是「依 message 查詢既有代碼表」，`resolveMessageCode(message)` 只作次要
+  證據。左側顯示「查無對應代碼」及「例外前綴 · Unknown message code: …」，
+  右側顯示解析成功後的「查詢條件不合法」，避免把前綴誤稱為完整 UI 結果。
+- 移除無分組功能的框線與中央分隔線；保留共用條件／Consumer 的淡藍分組帶，並
+  降低 PR SHA 的權重。Footer 保留 synthetic case、Chromium / Browser MSW、
+  bounded SQL evaluator、fixed fixtures 與非真實 API／資料庫限制。
+
+### Duarte 自我檢查
+
+- Contrast：共同條件、兩條 message 路徑與 State 3 結果焦點清楚；body/caption
+  使用深色文字，結果色彩只在揭露時出現。
+- Whitespace：State 1 的保留空間不再顯示佔位符；State 2 留白讓 message 差異
+  成為唯一任務；State 3 的 Consumer 與結果有明確呼吸區。
+- Hierarchy：標題 → 共同 response → 兩側 message → 共用查表 → 各自結果。
+- Unity：三個 state 共用相同標題、lane、message 座標與 footer，不因揭露重排。
+- Flow：State 3 的左右箭頭保留兩條 response 的獨立因果路徑，未合併成一條資料流。
+
+### 尚待確認
+
+- 需由人工在實際亮室／投影環境確認中文標題、英文 detail 字串與 footer 的遠距可讀性。
+- 需由人工確認 State 3 的「共用規則、獨立結果」是否在講述節奏中一眼可辨；本輪
+  自動檢查不取代視覺審查。
+
 ## 方法參考
 
 - [Assertion–Evidence Approach](https://www.assertion-evidence.com/)
