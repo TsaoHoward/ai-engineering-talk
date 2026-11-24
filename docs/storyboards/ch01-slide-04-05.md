@@ -54,8 +54,8 @@ Slide 5：共同錯誤輸入 → message 分歧 → 既有 Consumer 相容性分
 
 | 層級 | 必須保留的內容 | 視覺處理與出現時機 |
 | --- | --- | --- |
-| **Primary** | 交辦：新增訂單查詢 API；請求 `?pageSize=3`；`HTTP 200`；`code: "OK"`；`message: "m0000"`；訂單 ID `[42, 35, 28]`；`totalCount: 42` | 依 Reveal Sequence 先後出現。一次只讓「交辦／query」或「成功 response」成為大焦點。成功 response 的 `HTTP 200` 與資料結果是本頁最強的視覺重量。 |
-| **Supporting** | 支援狀態、UTC 日期區間、分頁與總筆數；同一個查詢在 AI-direct 與 Project-convention 都回傳同一組成功資料 | 第一個 state 只保留一行交辦上下文；第二個 state 之後才以小型 variant label 說明兩種實作的共同結果，不與 response 競爭。 |
+| **Primary** | 交辦：新增訂單查詢 API；請求 `?pageSize=3`；**AI-direct 與 Project-convention 取得同一組成功資料**；訂單 ID `[42, 35, 28]`；`totalCount: 42` | 依 Reveal Sequence 先後出現。一次只讓「交辦／query」或「兩種實作的共同成功結果」成為大焦點；`HTTP 200`、`code: "OK"`、`message: "m0000"` 是支撐共同結果的 compact envelope，不各自形成焦點。 |
+| **Supporting** | 支援狀態、UTC 日期區間、分頁與總筆數；`HTTP 200`、`code: "OK"`、`message: "m0000"` 作為共同成功資料的 response evidence | 第一個 state 只保留一行交辦上下文；第二個 state 以 compact envelope 與小型 variant label 支撐共同結果，不與主焦點競爭。 |
 | **Evidence／Metadata** | `SYNTHETIC · BROWSER MSW`；`STATIC EVIDENCE`；Chromium、受限 SQL evaluator、固定 fixtures；不是外部 API Server，也不是真實資料庫執行證據；PR #13 與固定 revision／source links | provenance 以小型固定標籤或 footer 保留；限制說明只在最後一個 state 展開成可讀的兩至三行，不放大成第二個主卡片。revision 與 source links 保持可追溯，但不佔主要閱讀路徑。 |
 | **Spoken／Deferred** | 為什麼「成功」仍不能直接推論「可交付」；Browser MSW／合成案例的限制如何影響證據強度；下一頁會檢查錯誤 response 與 Consumer | 由講者在第三個 state 說明；畫面只保留一句收束語與必要 limitation，不放 SQL evaluator 的細節或完整測試矩陣。 |
 
@@ -77,48 +77,53 @@ Slide 5：共同錯誤輸入 → message 分歧 → 既有 Consumer 相容性分
 - **銜接下一個 state**：講者指出「現在看它實際回傳什麼」，交辦卡被取代或
   收縮成 response 上方的一條 query breadcrumb。
 
-#### State 2｜成功回應成為唯一主焦點
+#### State 2｜兩種實作取得同一組成功資料
 
-- **觀眾此刻應理解的事情**：同一個 `?pageSize=3` 確實得到成功回應，而且
-  成功資料的形狀清楚可讀。
-- **主要視覺焦點**：中央或偏右的大型 success response；視覺重量依序是
-  `HTTP 200` → `code: "OK"`／`message: "m0000"` → `[42, 35, 28]`／`42`。
+- **觀眾此刻應理解的事情**：同一個 `?pageSize=3` 在 AI-direct 與
+  Project-convention 都取得同一組成功資料；此刻的重點是兩種實作的結果相同，
+  不是逐一閱讀 response envelope 的欄位。
+- **主要視覺焦點**：一個共同成功結果 composition：
+  `AI-direct + Project-convention` 兩個小型來源標籤匯聚到同一組
+  `order IDs [42, 35, 28]`／`totalCount: 42`。兩種實作與共同資料是唯一主焦點。
 - **顯示哪些資訊**：
   - 上方以小字保留 query breadcrumb：`?pageSize=3`。
-  - 以一個 response composition 顯示 `HTTP 200`、`code: "OK"`、
-    `message: "m0000"`。
-  - 將 `data` 拆成兩個大而少量的值：`order IDs [42, 35, 28]` 與
+  - 以一個 compact response envelope 支撐結果：`HTTP 200 · code: "OK" ·
+    message: "m0000"`；三個欄位同列、同層級，不個別放大。
+  - 將共同 `data` 拆成兩個清楚但同屬一組的值：`order IDs [42, 35, 28]` 與
     `totalCount: 42`。
 - **保留、淡化、隱藏或取代**：
   - State 1 的 capability sentence 被隱藏或降成很小的 brief label；不讓它
     與 response 同時爭取閱讀焦點。
-  - `AI-direct` 與 `Project-convention` 先不做兩張並列卡片，只在 response
-    下方留一行小型提示：「同一個查詢，兩種實作回傳同一組成功資料」。
+  - `AI-direct` 與 `Project-convention` 不做兩張並列 response 卡片；以兩個
+    小型來源標籤指向同一個成功資料組，直接表達「同一個查詢，兩種實作回傳
+    同一組成功資料」。
+  - `HTTP 200`、`code`、`message` 只作為共同結果的支撐證據，保持 compact，
+    不各自形成競爭焦點。
   - `STATIC EVIDENCE` 可作為 response 的小型標籤；長 limitation 仍先隱藏。
-- **銜接下一個 state**：講者確認「能跑」已成立，再問「這組結果的證據邊界
-  是什麼，以及是否已驗證交付相容性？」response 詳細欄位被壓縮成摘要。
+- **銜接下一個 state**：講者確認「兩種實作都得到同一組成功資料」已成立，再
+  問「這項成功的證據邊界是什麼，以及是否已驗證交付相容性？」共同結果被收束
+  成一句結論。
 
 #### State 3｜把成功結果放回證據邊界
 
 - **觀眾此刻應理解的事情**：成功結果是有效的案例證據，但證明範圍只到合成的
   functional path；它不能自動證明真實 API Server、真實資料庫或完整交付契約。
-- **主要視覺焦點**：一句收束語：**功能路徑成功，交付條件仍待驗證。** 收束語
-  下方保留精簡 success summary，而不是再展開完整 response。
+- **主要視覺焦點**：一句收束語：**功能路徑成功，交付條件仍待驗證。** 這句話
+  本身就是 End State 的主畫面，不再與 response 欄位並列。
 - **顯示哪些資訊**：
-  - `HTTP 200 · OK · m0000` 與 `[42, 35, 28] · totalCount: 42` 的單行摘要。
-  - 小型 `AI-direct`、`Project-convention` labels，旁邊只保留「同一組成功
-    資料」的語意。
+  - 小型 `AI-direct + Project-convention` labels，旁邊只保留「同一個查詢取得
+    同一組成功資料」的語意；不重複 `HTTP 200`、`code`、`message` 或 data 欄位。
   - 可讀但低權重的 Evidence Limit：Chromium 內 Browser MSW 的合成案例，
     底層為受限 SQL evaluator 與固定 fixtures；不是外部 API Server，也不是
     真實資料庫執行證據。
 - **保留、淡化、隱藏或取代**：
-  - State 2 的完整 status card、field stack、data card 全部由 summary 取代，
-    不再讓數字與限制文字形成多個同等大的區塊。
+  - State 2 的共同資料 composition、status、field 與 data 欄位全部被結論取代，
+    不再重複大量 response 資訊。
   - provenance／revision 維持在 footer 或 metadata，不在主畫面重複 PR #13
     的連結文字。
   - 「下一頁檢查 `message` 與既有 Consumer」是講者的 transition，不需要再
     變成一個新卡片。
-- **銜接下一頁**：從「成功 response 的摘要」切到同一案例的錯誤 query；Slide 5
+- **銜接下一頁**：從「功能路徑成功」的結論切到同一案例的錯誤 query；Slide 5
   將 response 中唯一尚未被驗證的相容性問題放大為 `message` contract。
 
 ### D. End State
@@ -128,19 +133,16 @@ Slide 5：共同錯誤輸入 → message 分歧 → 既有 Consumer 相容性分
 ```text
 功能路徑成功，交付條件仍待驗證。
 
-HTTP 200 · code: "OK" · message: "m0000"
-order IDs [42, 35, 28] · totalCount: 42
-
-AI-direct + Project-convention：同一組成功資料
+AI-direct + Project-convention：同一個查詢取得同一組成功資料
 Evidence limit：Browser MSW 合成案例；非外部 API Server／真實資料庫證據
 ```
 
 它不會重新變得擁擠，原因是：
 
 1. 交辦的完整說明已在 State 1 完成任務，不在 End State 重複。
-2. response 的欄位細節已在 State 2 完成任務，End State 只留下足以支撐結論的
-   摘要。
-3. 兩個實作名稱只作為共同結果的 metadata；不是兩張新的比較卡片。
+2. response 的欄位細節已在 State 2 完成任務，End State 不重複任何 response
+   欄位。
+3. 兩個實作名稱只保留共同結果的語意；不是兩張新的比較卡片。
 4. evidence limitation 是一個短 footer，而不是與成功 response 並列的第二個
    故事。
 
@@ -148,8 +150,9 @@ Evidence limit：Browser MSW 合成案例；非外部 API Server／真實資料�
 
 - **資訊順序**：交辦／query → 成功 response → 成功證據的邊界，順序單一且
   不需要觀眾自行在左右欄來回拼接。
-- **競爭焦點**：每個 state 只有一個大焦點；`HTTP 200`、結果數字、限制說明
-  不會同時被做成三個大型 card。
+- **競爭焦點**：State 2 以「兩種實作取得同一組成功資料」為唯一焦點，
+  `HTTP 200`、`code`、`message` 只作 compact 支撐；State 3 只保留功能成功／
+  交付條件待驗證的收束語，不重複大量 response 欄位。
 - **講者配合**：三個 state 對應「交辦」「它能跑」「但先不要把它當完整交付」
   三個口語節拍；state 間可用取代式 reveal，講者不必等待畫面累積完所有欄位。
 - **不必要細節**：本頁不展示 SQL、資料庫 schema、完整 test matrix 或內部
@@ -228,21 +231,25 @@ Evidence limit：Browser MSW 合成案例；非外部 API Server／真實資料�
 #### State 3｜讓既有 Consumer 成為裁判
 
 - **觀眾此刻應理解的事情**：相同 error code 不保證 UI 相容性；既有 Consumer
-  依 `message` 的既有語意解析，因此兩條路徑的可用結果不同。
-- **主要視覺焦點**：`既有 Consumer` 的兩個明確結果：
-  - AI-direct → **無法解析：`Unknown message code`**
-  - Project-convention → **解析成功：查詢條件不合法**
+  依 `message` 的既有語意解析，因此要看完整的「message 值 → Consumer 結果」
+  因果對應。
+- **主要視覺焦點**：`既有 Consumer` 的兩條明確因果鏈：
+  - AI-direct：**自由文字（`"fromDate and toDate must be supplied together"`）**
+    → Consumer **無法解析：`Unknown message code`**
+  - Project-convention：**`"m0001"`** → Consumer **解析成功：查詢條件不合法**
 - **顯示哪些資訊**：
   - 頂部只保留共同比較基準的 slim strip：`?fromDate=2026-01-01`、
     `HTTP 400`、`INVALID_QUERY`。
-  - 每個 outcome 上方保留一個小型上游 chip：AI-direct 的 detail、
-    Project-convention 的 `m0001`。
+  - 每個 outcome 保留一個可讀的上游 message 值，並以箭頭直接連到 Consumer
+    結果：自由文字 → `Unknown message code`；`m0001` → 「查詢條件不合法」。
   - 以一個共同標題「既有 Consumer」把兩個結果收束成同一個驗收點。
 - **保留、淡化、隱藏或取代**：
-  - State 2 的完整 message card 被取代為小型 chip；完整英文 detail 已在前一
-    state 完成證據任務，不再佔主畫面。
+  - State 2 的兩張完整 message card 被取代為兩條精簡因果鏈；但不得把
+    AI-direct 的自由文字 detail 壓縮成只有「detail」的抽象標籤，完整文字與
+    `"m0001"` 都要保留在可讀範圍內。
   - `Unknown message code` 與「查詢條件不合法」是最後一個 state 的最大文字，
-    但兩者放在同一個 consumer layer，避免觀眾把差異誤讀成兩個獨立案例。
+    但兩者分別接在對應的 message 值之後，讓觀眾看見因果，不把差異誤讀成兩個
+    獨立案例。
   - catalog 的完整代碼表、Consumer 原始碼、source links 不在畫面展開。
 - **銜接下一頁**：講者將「既有 UI contract」往內部追問：除了 message，命名、
   責任與分層是否也存在同樣的既有約定？交給 Slide 6。
@@ -256,18 +263,21 @@ Evidence limit：Browser MSW 合成案例；非外部 API Server／真實資料�
 ?fromDate=2026-01-01（缺少 toDate） · HTTP 400 · INVALID_QUERY · data: null
 
 message 分歧
-AI-direct：detail 文字       Project-convention："m0001"
-       ↓                              ↓
-既有 Consumer
-Unknown message code       查詢條件不合法（解析成功）
+AI-direct：
+  message = 自由文字（"fromDate and toDate must be supplied together"）
+  → 既有 Consumer：無法解析（Unknown message code）
+
+Project-convention：
+  message = "m0001"
+  → 既有 Consumer：解析成功（查詢條件不合法）
 ```
 
 它不會重新變得擁擠，原因是：
 
 1. 共同輸入與 envelope 只留一條 slim context strip，不重複出現在兩張完整卡片
    裡。
-2. 完整英文 detail 只在 State 2 出現；End State 使用上游 chip 保留其角色，
-   把最大視覺重量留給 Consumer 的相容性結果。
+2. 完整英文 detail 與 `"m0001"` 都在 End State 保留，並各自直接連到對應的
+   Consumer 結果；這保留因果而不需要恢復兩張完整 response card。
 3. `code: "INVALID_QUERY"` 與 `data: null` 只作共同基準，不與
    `Unknown message code`／「查詢條件不合法」競爭。
 4. 結論是單一因果：**同一錯誤輸入 → message 語意不同 → 既有 Consumer 結果
@@ -278,15 +288,16 @@ Unknown message code       查詢條件不合法（解析成功）
 - **資訊順序**：共同輸入／共同 envelope → `message` 分歧 → Consumer 解析結果；
   觀眾不需同時閱讀整張 response table 才能理解因果。
 - **競爭焦點**：每個 state 只有一個閱讀任務；State 2 不顯示 outcome，State 3
-  不再顯示完整 message cards，避免 raw detail、code 與結果同時搶焦點。
+  只保留兩條「message 值 → Consumer 結果」因果鏈，不恢復原本同時並列的完整
+  response cards。
 - **講者配合**：三個 state 對應「一樣的錯誤」「差在 message」「Consumer
   判定相容性」；講者可以在每次轉場時說出因果，而不是指著靜態表格逐格解讀。
 - **不必要細節**：不展示完整 catalog、Consumer 原始碼、完整測試程式或架構
   chain；它們保留在 Evidence／source links，不擴張本頁範圍。
 - **正確性**：保留缺少 `toDate` 的 exact input、`HTTP 400`、`INVALID_QUERY`、
-  `data: null`、AI-direct 的 exact detail、Project-convention 的 `"m0001"`、
-  `Unknown message code`、`查詢條件不合法`，以及 PR #13 固定 revision 與
-  Browser MSW 合成案例限制；沒有把案例改寫成一般化的 AI 品質評比。
+  `data: null`、AI-direct 的自由文字 exact detail → `Unknown message code`、
+  Project-convention 的 `"m0001"` → `查詢條件不合法`，以及 PR #13 固定 revision
+  與 Browser MSW 合成案例限制；沒有把案例改寫成一般化的 AI 品質評比。
 
 ---
 
@@ -298,7 +309,7 @@ Unknown message code       查詢條件不合法（解析成功）
 | **Slide 4 焦點** | 交辦、query、status、response fields、資料、兩種實作、provenance 與 limitation 同時可見 | 先看交辦／query，再看成功 response，最後才看兩種實作共同結果與 evidence boundary。 |
 | **Slide 4 收束** | 成功結果與 limitation 在同一個 panel 內並列，主訊息需由觀眾自行推論 | 以「功能路徑成功，交付條件仍待驗證」作收束；詳細 response 被摘要化，為 Slide 5 留出問題入口。 |
 | **Slide 5 焦點** | 觀眾需在兩張 response card 與底部 outcome 區來回比對 | 先固定共同 error envelope，再單獨放大 `message` 分歧，最後讓 Consumer outcome 成為裁判。 |
-| **Slide 5 比較方式** | detail、code、Consumer result 同時出現，容易形成多個水平閱讀起點 | message 值在 State 2 出現一次；State 3 只保留小型上游 chip，將最大重量移到 incompatible／compatible 結果。 |
+| **Slide 5 比較方式** | detail、code、Consumer result 同時出現，容易形成多個水平閱讀起點 | State 2 先只比較兩個 message 值；State 3 保留「自由文字 → 無法解析」與「`m0001` → 解析成功」的兩條因果鏈，將最大重量放在相容性結果。 |
 | **Evidence 位置** | provenance、revision、限制與主要內容靠近，容易被誤看成同等重要 | Evidence／metadata 仍保留，但以 tag、footer、slim context 或 source note 降低視覺權重；必要事實不刪除。 |
 | **講者節奏** | 靜態畫面需要講者自行指出「先看哪裡」 | 每頁 3 個 state 對應清楚口語節拍，並以取代式 reveal 支援逐步說明。 |
 
