@@ -1,0 +1,7 @@
+Source: https://github.com/rhuss/cc-slidev
+Revision: 99fdefe12c835f85907e801f5f0167c138971cd5
+Fetched: 2026-11-24
+
+This directory preserves the upstream README and MIT LICENSE for the four
+vendored, project-scoped Agent Skills. Claude Code commands, hooks, agents,
+and unrelated skills are intentionally not installed.

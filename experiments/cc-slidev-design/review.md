@@ -1,0 +1,59 @@
+# cc-slidev Slide 6 實驗紀錄
+
+## 範圍
+
+本實驗只設計 Slide 6，沒有修改正式 Slidev 入口、Slide Copy、案例 SSOT、`presentation-creator`、PR #16 或 PR #17。原型引用 PR #13 固定 revision `e8ae8ad3d419cf51927d69b598ea4e00ad6cf329` 的合成案例，並重用既有 `components/ArchitectureLayers.vue`；該元件沒有被修改。
+
+## Skill 相容性
+
+- 上游來源：[`rhuss/cc-slidev`](https://github.com/rhuss/cc-slidev)，revision `99fdefe12c835f85907e801f5f0167c138971cd5`。
+- 安裝的四個專案層級 Skill：`cc-slidev-diagram-design`、`cc-slidev-visual-design`、`cc-slidev-slide-quality`、`cc-slidev-slidev-mastery`。
+- 必要 reference：`cc-slidev-shared-references/design-constraints.md` 與 `cc-slidev-shared-references/presentation-best-practices.md`。
+- 保留上游 `README.md`、MIT `LICENSE` 與 `UPSTREAM-COMMIT.txt`；上游 Claude Code commands、hooks、agents 與無關 Skill 沒有安裝。
+- 相容性調整：補齊 Agent Skills YAML frontmatter，將 Skill 名稱加上 `cc-slidev-` 避免與既有名稱衝突，並把 `${CLAUDE_PLUGIN_ROOT}/references/...` 改為專案內可解析的相對路徑。設計方法與指引內容沒有自行改寫。
+- 尚未支援：目前 Codex Session 的 Skill catalog 不會在同一 Session 即時熱載入新目錄，可能需要重新開啟 Session 才能以名稱自動發現；本次已確認檔案結構與相對 reference 可讀取。Slidev 內建 `slidev export --format png` 需要 `playwright-chromium`，專案現有的是 `playwright`，因此沒有新增依賴，而是使用現有 Playwright Chromium 擷取 PNG。
+
+## 設計過程
+
+實際使用了既有 `presentation-creator` 的視覺系統與輸出限制，並使用四個 cc-slidev Skill 作為設計檢查框架：
+
+- `diagram-design`：把 Slide 6 判斷為「兩條實作路徑共享一條執行鐵軌」的架構／關係圖；因此沒有硬套 Mermaid 或 PlantUML，而是用現有元件與自訂路徑卡片表達責任邊界。
+- `visual-design`：要求一個 assertion title、明確視覺層級、可讀字級、對比與不依賴單一色彩傳遞語意。原型沿用專案的 crystal-light 藍色系，色彩只作為路徑與 rail 的輔助，文字和位置仍承擔主要語意。
+- `slide-quality`：以一個核心訊息、有限視覺群組、閱讀順序、留白、對比與可揭露性檢查三個 State；特別檢查了 1600×900 截圖、溢出與瀏覽器錯誤。
+- `slidev-mastery`：使用 Slidev Markdown、`canvasWidth: 1600`、專案既有 Vue 元件與專案現有 Playwright；沒有引入新的大型框架。
+
+仍由 Agent 自行推導的決策包括：
+
+- 核心訊息是「功能相同不代表交付相容；命名、責任與依賴分層也是契約」。
+- 以左右兩個 path panel 對比 `AI-direct` 與 `Project-convention`，再以水平 shared rail 把兩者接回真實合成案例的 Browser MSW、受限 evaluator 與 fixtures。
+- 使用三個獨立 Slidev page 作為 State，而不是依賴 `v-click`。這讓每個 State 都能獨立輸出、依序預覽與人工比較；它們仍只屬於實驗原型，不會進入正式簡報。
+- 重用 `ArchitectureLayers.vue` 作為 shared rail 的資料驅動卡片；原型的 CSS 只負責本實驗的排列、字級與視覺主題。
+
+## 設計結果
+
+視覺表達選擇「雙路徑 + 共用執行鐵軌」：先讓觀眾比較兩種責任分層，再揭示它們其實共享同一個合成執行環境，最後收束到交付相容性的判斷。這比逐段列出程式碼更能保留案例中的責任邊界，也避免把 Browser MSW 誤讀成真實外部資料庫。
+
+閱讀順序是：
+
+1. Assertion title 與副標說明比較問題。
+2. 左右 path panel 說明責任分層差異，藍色 focus node 標記主要差異。
+3. Shared rail 說明兩條路徑共用的執行限制與證據邊界。
+4. Takeaway 將架構觀察轉成驗收原則。
+
+優勢是資訊取捨明確、可逐步揭露、保留真實案例的資料流語意，並且直接重用既有 component。限制是為了在一張 16:9 投影片內容納完整命名，部分 path node 仍偏密；四張 shared rail card 也需要觀眾先理解 label，再讀 detail。這是本實驗刻意保留給人工視覺審查的取捨。
+
+## `slide-quality` 人工審查
+
+以 State 2（完整揭露）為主檢查，State 0/1 也逐一檢查：
+
+- 通過：單一核心訊息、assertion title、兩條路徑的語意順序、共享 rail 的視覺分組、1600×900 畫布、正常文字對比、非色彩單獨傳遞語意、無水平／垂直溢出。
+- 通過：State 0 → State 1 → State 2 的揭露順序；每個 State 都能獨立閱讀，沒有必須依靠動畫才能理解的關鍵內容。
+- 注意：完整 State 的資訊密度接近上限，`POST /mock/db/query`、`SQL evaluator` 等技術命名需要投影片講者口頭補充。
+- 注意：此評估是人工視覺判斷，不以自動化檢查結果取代；PNG 與瀏覽器檢查只作為技術驗收證據。
+
+## 技術驗收
+
+- `../../node_modules/.bin/slidev build slides.md --out preview --without-notes`：成功。
+- Playwright 使用專案既有 Chromium 擷取 `exports/slide-6-state-{0,1,2}.png`：三張均為 1600×900。
+- 三個 State：無 console/page error，`scrollWidth` 與 `clientWidth` 相同，`scrollHeight` 與 `clientHeight` 相同。
+- 沒有執行正式簡報入口或其他投影片的修改；工作樹中的正式 tracked 檔案沒有變更。
