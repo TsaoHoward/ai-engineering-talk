@@ -57,3 +57,27 @@
 - Playwright 使用專案既有 Chromium 擷取 `exports/slide-6-state-{0,1,2}.png`：三張均為 1600×900。
 - 三個 State：無 console/page error，`scrollWidth` 與 `clientWidth` 相同，`scrollHeight` 與 `clientHeight` 相同。
 - 沒有執行正式簡報入口或其他投影片的修改；工作樹中的正式 tracked 檔案沒有變更。
+
+## Diagram Creation — Candidate D
+
+本輪承接上一輪 Visual Suggestion 選定的候選 D（Excalidraw 空間草圖），只製作獨立圖解，不修改既有 Slide 6 原型、正式 Slidev、標題／Footer 或 Reveal。
+
+### 選案決策
+
+- 使用左右兩個 variant-specific path frame：`AI-direct` 與 `Project-convention`。
+- 每個 frame 都有自己的 `Controller`，修正「同一個 Controller 分流至兩種實作」的錯誤語意。
+- 使用下方 shared runtime frame 表達共同的合成執行基礎：`DbTransport` → Browser MSW `POST /mock/db/query` → bounded SQL evaluator → `fixtures/orders.json`。
+- 以空間分組、框線、節點與箭頭傳遞責任與依賴；不把 bounded evaluator 表現成真實資料庫。
+
+### 產物
+
+- 編輯來源：[`diagram/slide-6-candidate-d.excalidraw`](./diagram/slide-6-candidate-d.excalidraw)
+- 重現與限制：[`diagram/README.md`](./diagram/README.md)
+
+來源通過本地 JSON 結構檢查：35 個元素、3 個邏輯群組、24 個可見文字詞，bound text 與箭頭綁定均有效。
+
+### 渲染狀態
+
+本輪先確認 `excalidraw-brute-export-cli@0.4.0` 實際使用 nested `playwright@1.65.1`，其 `browsers.json` 要求 Firefox revision `1572`（Firefox `159.0`）。已使用 `npx --package=playwright@1.65.1 -- playwright install firefox` 安裝到 Playwright cache，並保留既有 Firefox `1509`；沒有修改專案依賴或 CLI。
+
+重試上游同等渲染命令後，Firefox 1572 可以啟動；CLI 偵測到 Excalidraw `0.17.0`、成功載入 `.excalidraw`、開啟 Export menu 並按下 SVG 按鈕。但程序一直等待 Playwright `download` event，沒有產生 `slide-6-candidate-d.svg`，最後停止程序。這是本輪最後的具體環境／renderer 相容性限制；沒有修改 renderer、改用替代框架或進入 Slide Integration。
