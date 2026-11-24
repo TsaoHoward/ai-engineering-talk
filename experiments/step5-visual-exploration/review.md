@@ -46,6 +46,49 @@
 
 本輪保留三個方向供人工設計審查；不以自動化檢查替代人工判斷，不自行選擇方案。
 
+## Step 5B｜Wireframe / Visual Storyboard
+
+本輪依已確認的 Option A 構圖建立 Slide 5 的三個可觀看 state；保留 AI-direct
+在左、Project-convention 在右，不修改 Slide Copy、正式 Slidev、案例 SSOT 或
+其他探索方案。PNG 畫布只放實際投影片內容，不放 Option 名稱、State 編號、設計
+意圖或審查提示。
+
+### 產物與重現
+
+- `wireframe/state-1.png`：共同錯誤輸入與共同 HTTP response 條件。
+- `wireframe/state-2.png`：揭露兩個實作各自的 `message` 值，完整保留
+  `"fromDate and toDate must be supplied together"` 原文，換行只在同一組引號內。
+- `wireframe/state-3.png`：顯示共同 `message-catalog`／`resolveMessageCode(message)`
+  規則與兩個獨立 Consumer 結果；兩條 response 沒有合併成一條資料流。
+- `wireframe/preview.html`：畫布外提供 Previous／Next 與鍵盤左右鍵切換。
+- 重現：`node experiments/step5-visual-exploration/wireframe/render.mjs`
+
+### 設計決策
+
+1. 先以 State 3 的完整空間決定共同 response strip、左右 lane、message box、
+   shared Consumer band 與兩個結果區的位置；State 1／2 只控制可見性，不因揭露
+   message 或結果而重排已出現元素。
+2. State 1 只建立同一個錯誤輸入與 `HTTP 400`／`INVALID_QUERY`／`data: null` 的
+   比較背景；不提前顯示任何相容性結論。
+3. State 2 只揭露 `message` 分歧；Consumer 區域仍不顯示，讓觀眾先看到 detail
+   文字與 code 的差異。
+4. State 3 讓兩個 message 各自連入同一個解析規則，再各自連到結果；shared
+   Consumer 表達共用規則，不代表兩個 response 被合併。
+5. 維持黑、白、灰與簡單線條；不使用 Crystal 配色、陰影、漸層或裝飾性卡片。
+   Synthetic／Browser MSW／bounded SQL evaluator／fixed fixtures 的 evidence
+   limit 固定保留在 footer。
+
+### Review record（待人工審查）
+
+- 主要閱讀任務：三個 state 依序是「固定共同條件」→「看見 message 值」→
+  「理解同一查表規則下的兩個結果」。
+- 正確性核對：資料流依據 PR #13 固定 revision
+  `e8ae8ad3d419cf51927d69b598ea4e00ad6cf329` 的 `errorResponse`、
+  `readExistingErrorConsumer`、`resolveMessageCode` 與 `MESSAGE_CATALOG`；AI-direct
+  的 detail 解析失敗，Project-convention 的 `m0001` 解析為「查詢條件不合法」。
+- 本輪只完成可觀看 wireframe 與自動化溢位／尺寸檢查；視覺層級、揭露節奏與
+  是否通過仍交由人工審查，不在此自行宣告通過。
+
 ## 方法參考
 
 - [Assertion–Evidence Approach](https://www.assertion-evidence.com/)

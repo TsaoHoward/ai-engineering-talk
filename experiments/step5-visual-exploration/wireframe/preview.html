@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slide 5 Wireframe Preview</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { margin: 0; min-height: 100vh; background: #f1f3f4; color: #111; }
+    main { width: min(1180px, calc(100vw - 32px)); margin: 24px auto 40px; }
+    .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .toolbar h1 { margin: 0 auto 0 0; font-size: 18px; font-weight: 600; }
+    button { border: 1px solid #aeb4ba; border-radius: 4px; background: #fff; color: #111; padding: 8px 13px; font: inherit; cursor: pointer; }
+    button:hover, button:focus-visible { border-color: #111; }
+    #state-label { min-width: 76px; text-align: center; font-size: 14px; color: #5f6368; }
+    figure { margin: 0; background: #fff; border: 1px solid #aeb4ba; }
+    img { display: block; width: 100%; height: auto; }
+    figcaption { padding: 10px 12px; border-top: 1px solid #aeb4ba; color: #5f6368; font-size: 13px; }
+    .hint { margin: 12px 0 0; color: #5f6368; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="toolbar" aria-label="Wireframe state controls">
+      <h1>Slide 5 Wireframe Preview</h1>
+      <button id="previous" type="button">← Previous</button>
+      <span id="state-label" aria-live="polite">State 1 / 3</span>
+      <button id="next" type="button">Next →</button>
+    </div>
+    <figure>
+      <img id="frame" src="state-1.png" alt="共同錯誤輸入及 HTTP response 的 wireframe state">
+      <figcaption id="caption">共同錯誤輸入及 response 條件；message 值與 Consumer 結果尚未揭露。</figcaption>
+    </figure>
+    <p class="hint">使用 ← / → 鍵或上方按鈕切換。PNG 畫布本身不包含 State 編號或審查標籤。</p>
+  </main>
+  <script>
+    const frames = [
+      {src: 'state-1.png', alt: '共同錯誤輸入及 HTTP response 的 wireframe state', caption: '共同錯誤輸入及 response 條件；message 值與 Consumer 結果尚未揭露。'},
+      {src: 'state-2.png', alt: '兩種實作 message 值的 wireframe state', caption: '同一 error envelope 下，揭露 AI-direct 的 detail 與 Project-convention 的 message code。'},
+      {src: 'state-3.png', alt: '共同 Consumer 查表與兩種解析結果的 wireframe state', caption: '兩個 response 各自使用同一 message-catalog 解析規則，保留兩個獨立結果。'},
+    ]
+    let index = 0
+    const frame = document.querySelector('#frame')
+    const label = document.querySelector('#state-label')
+    const caption = document.querySelector('#caption')
+    function show(next) {
+      index = (next + frames.length) % frames.length
+      frame.src = frames[index].src
+      frame.alt = frames[index].alt
+      label.textContent = `State ${index + 1} / ${frames.length}`
+      caption.textContent = frames[index].caption
+    }
+    document.querySelector('#previous').addEventListener('click', () => show(index - 1))
+    document.querySelector('#next').addEventListener('click', () => show(index + 1))
+    document.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') show(index - 1)
+      if (event.key === 'ArrowRight') show(index + 1)
+    })
+  </script>
+</body>
+</html>
