@@ -85,3 +85,29 @@
 重試上游同等渲染命令後，Firefox 1572 可以啟動；CLI 偵測到 Excalidraw `0.17.0`、成功載入 `.excalidraw`、開啟 Export menu 並按下 SVG 按鈕。但程序一直等待 Playwright `download` event，沒有產生輸出檔；這是自動化路徑的具體環境／renderer 相容性限制。沒有修改 renderer、改用替代框架或進入 Slide Integration。
 
 之後使用者從同一份 `slide-6-candidate-d.excalidraw` 手動匯出 `無標題-2026-11-25-1004.svg`。已將該原始手動匯出保留在 diagram 目錄，並以 byte-for-byte copy 建立 canonical `slide-6-candidate-d.svg`；沒有修改 Excalidraw 構圖或來源。使用現有 Playwright Chromium 開啟 canonical SVG 並縮放至完整 viewBox 預覽，確認三個 frame（`AI-direct`、`Project-convention`、`Shared synthetic runtime (bounded Mock)`）均可觀看，SVG root、viewBox 與頁面尺寸均正常。
+
+## C2 — Slide Integration
+
+本輪使用 `cc-slidev-visual-design` 與 `cc-slidev-slidev-mastery`，只建立獨立的完整揭露靜態 State，不修改上一輪原型、Excalidraw source、正式 Slidev、Slide Copy 或 Skill。
+
+### 整合決策
+
+- 使用核准 headline：`既有契約也藏在命名與責任分層`。
+- 以 `diagram/slide-6-candidate-d.excalidraw` 與對應 SVG 作為空間關係及技術命名來源；沒有把原始 SVG 當作投影片圖片依賴，而是以 HTML/CSS 重建以提高 1600×900 下的可讀性。
+- 上方保留兩個 variant-specific frame：`AI-direct` 與 `Project-convention`；每個 frame 各自有一個 `Controller` instance，沒有畫成單一 Controller 分流。
+- 下方保留共同合成執行基礎：`DbTransport` → `Browser MSW POST /mock/db/query` → `bounded SQL evaluator` → `fixtures/orders.json`，並明確標示 `BOUNDED MOCK` 而非真實資料庫。
+- 沿用 Crystal Light 的淺色底、藍色主色、橙色／紫色輔助與深色文字；長技術名稱只在語意邊界換行，不在 token 中間斷行。
+
+### 產物
+
+- 獨立原型：[integration/slides.md](./integration/slides.md) 與 [integration/styles/index.css](./integration/styles/index.css)
+- 重現說明：[integration/README.md](./integration/README.md)
+- 1600×900 PNG：[integration/exports/slide-6-c2-static.png](./integration/exports/slide-6-c2-static.png)
+
+### 基本驗證
+
+- `node_modules/.bin/slidev build experiments/cc-slidev-design/integration/slides.md --out /tmp/cc-slidev-c2-build --without-notes`：成功。
+- 使用專案既有 `playwright` Chromium 擷取 PNG：`1600 × 900`。
+- 瀏覽器檢查：Slidev canvas `1600 × 900`；document `scrollWidth`／`scrollHeight` 均為 `1600 × 900`；標題、2 個 variant card、4 個 runtime node 均存在。
+- 畫面檢查：兩條責任鏈、兩個獨立 Controller、shared bounded mock rail 均完整可見；技術名稱沒有字元中間斷行。
+- Slidev 內建 `export --format png` 仍要求專案未安裝的 `playwright-chromium`；本輪沒有新增依賴，改用既有 Playwright 擷取 PNG。
