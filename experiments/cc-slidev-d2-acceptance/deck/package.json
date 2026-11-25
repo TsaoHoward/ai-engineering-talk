@@ -1,0 +1,13 @@
+{
+  "name": "merge-risk-shrinks-before-the-pr",
+  "private": true,
+  "scripts": {
+    "dev": "slidev slides.md",
+    "build": "slidev build slides.md",
+    "export": "slidev export slides.md"
+  },
+  "dependencies": {
+    "@slidev/cli": "53.1.0",
+    "@slidev/theme-default": "latest"
+  }
+}
