@@ -72,6 +72,8 @@
 ### 產物
 
 - 編輯來源：[`diagram/slide-6-candidate-d.excalidraw`](./diagram/slide-6-candidate-d.excalidraw)
+- Canonical SVG：[`diagram/slide-6-candidate-d.svg`](./diagram/slide-6-candidate-d.svg)
+- 原始手動匯出：[`diagram/無標題-2026-11-25-1004.svg`](./diagram/無標題-2026-11-25-1004.svg)
 - 重現與限制：[`diagram/README.md`](./diagram/README.md)
 
 來源通過本地 JSON 結構檢查：35 個元素、3 個邏輯群組、24 個可見文字詞，bound text 與箭頭綁定均有效。
@@ -80,4 +82,6 @@
 
 本輪先確認 `excalidraw-brute-export-cli@0.4.0` 實際使用 nested `playwright@1.65.1`，其 `browsers.json` 要求 Firefox revision `1572`（Firefox `159.0`）。已使用 `npx --package=playwright@1.65.1 -- playwright install firefox` 安裝到 Playwright cache，並保留既有 Firefox `1509`；沒有修改專案依賴或 CLI。
 
-重試上游同等渲染命令後，Firefox 1572 可以啟動；CLI 偵測到 Excalidraw `0.17.0`、成功載入 `.excalidraw`、開啟 Export menu 並按下 SVG 按鈕。但程序一直等待 Playwright `download` event，沒有產生 `slide-6-candidate-d.svg`，最後停止程序。這是本輪最後的具體環境／renderer 相容性限制；沒有修改 renderer、改用替代框架或進入 Slide Integration。
+重試上游同等渲染命令後，Firefox 1572 可以啟動；CLI 偵測到 Excalidraw `0.17.0`、成功載入 `.excalidraw`、開啟 Export menu 並按下 SVG 按鈕。但程序一直等待 Playwright `download` event，沒有產生輸出檔；這是自動化路徑的具體環境／renderer 相容性限制。沒有修改 renderer、改用替代框架或進入 Slide Integration。
+
+之後使用者從同一份 `slide-6-candidate-d.excalidraw` 手動匯出 `無標題-2026-11-25-1004.svg`。已將該原始手動匯出保留在 diagram 目錄，並以 byte-for-byte copy 建立 canonical `slide-6-candidate-d.svg`；沒有修改 Excalidraw 構圖或來源。使用現有 Playwright Chromium 開啟 canonical SVG 並縮放至完整 viewBox 預覽，確認三個 frame（`AI-direct`、`Project-convention`、`Shared synthetic runtime (bounded Mock)`）均可觀看，SVG root、viewBox 與頁面尺寸均正常。

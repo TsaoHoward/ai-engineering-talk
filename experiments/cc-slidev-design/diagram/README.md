@@ -15,7 +15,8 @@ The diagram is an independent artifact. It is not embedded into the formal Slide
 ## Files
 
 - [`slide-6-candidate-d.excalidraw`](./slide-6-candidate-d.excalidraw): editable Excalidraw JSON source.
-- `slide-6-candidate-d.svg`: not generated; the renderer reached the SVG export action but did not emit a download event. See the rendering limitation below.
+- [`slide-6-candidate-d.svg`](./slide-6-candidate-d.svg): canonical rendered SVG used for review.
+- [`無標題-2026-11-25-1004.svg`](./無標題-2026-11-25-1004.svg): original manual Excalidraw export retained for traceability. The canonical SVG is byte-for-byte identical to this file.
 
 ## Source validation
 
@@ -30,7 +31,7 @@ The source was checked locally for:
 
 ## Reproduction
 
-The upstream renderer uses `excalidraw-brute-export-cli` with the following options:
+The intended upstream renderer uses `excalidraw-brute-export-cli` with the following options:
 
 ```bash
 npx --yes --package=excalidraw-brute-export-cli -- \
@@ -52,6 +53,20 @@ render-excalidraw.sh \
   experiments/cc-slidev-design/diagram/slide-6-candidate-d.svg
 ```
 
+For the committed artifact in this experiment, the SVG was exported manually
+from `slide-6-candidate-d.excalidraw` in Excalidraw and saved as
+`無標題-2026-11-25-1004.svg`. The canonical filename was then created without
+rewriting the SVG:
+
+```bash
+cp -- \
+  experiments/cc-slidev-design/diagram/無標題-2026-11-25-1004.svg \
+  experiments/cc-slidev-design/diagram/slide-6-candidate-d.svg
+cmp --silent \
+  experiments/cc-slidev-design/diagram/無標題-2026-11-25-1004.svg \
+  experiments/cc-slidev-design/diagram/slide-6-candidate-d.svg
+```
+
 ## Rendering attempt and limitation in this session
 
 The CLI dependency was inspected before installation:
@@ -69,7 +84,7 @@ npx --yes --cache /tmp/cc-slidev-playwright-cache \
 
 The existing Firefox revision `1509` was retained. No project dependency or CLI source was changed.
 
-The renderer then launched Firefox 1572, detected Excalidraw `0.17.0`, loaded the source file, opened the export menu and clicked the SVG button. It did not complete the final download event or create an output file. The process was stopped after remaining silent at that stage.
+The renderer then launched Firefox 1572, detected Excalidraw `0.17.0`, loaded the source file, opened the export menu and clicked the SVG button. It did not complete the final download event or create an output file. This remains the limitation of the automated path; the committed SVG was supplied by the manual Excalidraw export above, without changing the source diagram or the CLI.
 
 ```text
 info: excalidrawVersion: 0.17.0
@@ -78,4 +93,13 @@ info: Pressing SVG button!
 <no download event or output file>
 ```
 
-Therefore `slide-6-candidate-d.svg` is intentionally absent. Further changes to the renderer, browser automation, or an alternative export framework are outside this experiment's scope.
+## SVG verification
+
+The manual export and canonical copy were checked locally:
+
+- `file` identifies the artifact as an SVG Scalable Vector Graphics image.
+- The XML root contains `svg-source:excalidraw`, `viewBox="0 0 1500 750.5"`, and the expected `3000 × 1501` export dimensions.
+- The canonical copy matches the manual export byte-for-byte.
+- Existing Playwright Chromium opened the SVG and produced a complete 1500 × 751 preview with one SVG root, no page overflow, and all three frames visible: `AI-direct`, `Project-convention`, and `Shared synthetic runtime (bounded Mock)`.
+
+The SVG is therefore available for human diagram review. Further changes to the renderer, browser automation, or an alternative export framework remain outside this experiment's scope.
