@@ -6,22 +6,32 @@ layout: default
 
 # message 不是自由文字，而是既有 UI 契約
 
-<div class="trial-columns">
-  <div class="trial-column trial-stack">
-    <div class="trial-row"><span class="trial-label">錯誤輸入</span><span class="trial-mono">?fromDate=2026-01-01</span></div>
-    <div class="trial-row"><span class="trial-label">回應</span><span class="trial-mono">HTTP 400 · INVALID_QUERY · data: null</span></div>
-  </div>
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Arial, Helvetica, sans-serif", "primaryTextColor": "#1f2937", "lineColor": "#4b5563"}}}%%
+flowchart LR
+  R["HTTP 400<br/>INVALID_QUERY<br/>data: null"]:::boundary
+  M{"message<br/>catalog"}:::boundary
+  A["AI-direct<br/>人類可讀文字"]:::system
+  U["Unknown<br/>message code"]:::gap
+  P["Project-convention<br/>m0001"]:::system
+  K["Existing Consumer<br/>可解析"]:::system
+  R --> M
+  M -->|人類可讀文字| A --> U
+  M -->|message code| P --> K
+  classDef system fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1f2937;
+  classDef gap fill:#ffedd5,stroke:#c2410c,stroke-width:2px,color:#1f2937;
+  classDef boundary fill:#f3f4f6,stroke:#4b5563,stroke-width:1.5px,color:#1f2937;
+```
 
-  <div class="trial-column trial-compare">
-    <div class="trial-path">
-      <span class="trial-path-title">AI-direct</span>
-      <span>人類可讀文字 → Unknown message code</span>
-    </div>
-    <div class="trial-path">
-      <span class="trial-path-title">Project-convention</span>
-      <span><span class="trial-mono">m0001</span> → 查詢條件不合法</span>
-    </div>
-  </div>
+<div class="trial-legend">
+  <span class="trial-legend-item">系統／契約路徑</span>
+  <span class="trial-legend-item--gap">契約落差</span>
+  <span class="trial-legend-item--boundary">案例邊界</span>
+</div>
+
+<div class="trial-reveal-stack">
+  <div class="trial-reveal-note trial-reveal-note--gap" v-click="1">先看落差：人類可讀文字在既有 Consumer 前形成 Unknown message code。</div>
+  <div class="trial-reveal-note" v-click="2">再看相容：m0001 沿著既有 message catalog 被 Consumer 解析。</div>
 </div>
 
 <!--
@@ -37,8 +47,8 @@ Transition: 從對外 Response 的契約，擴展到內部架構與命名的責�
 Timing: variable; main talk excludes Q&A.
 -->
 
-<!-- TODO: Visual opportunity - HIGH
-Type: native CSS comparison diagram
-Suggestion: Keep the two paths visually parallel; use labels as well as any future color so meaning does not rely on color alone.
-Element count: 2 response rows + 2 comparison paths = 4.
+<!-- TODO: Visual opportunity - HIGH · implemented in Visuals
+Type: Mermaid branching contract diagram with semantic triad and v-click annotations.
+Suggestion: The diagram replaces the repeated response/path text; reveal the incompatibility before the compatible message-code path.
+Element count: 6 diagram nodes + 2 narrative annotations = 8.
 -->

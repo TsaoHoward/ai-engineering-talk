@@ -6,19 +6,34 @@ layout: default
 
 # 既有契約也藏在命名與責任分層
 
-<div class="trial-paths">
-  <div class="trial-path">
-    <span class="trial-path-title">AI-direct</span>
-    <span>Controller → OrderRepository → parameterized SQL</span>
-  </div>
-  <div class="trial-path">
-    <span class="trial-path-title">Project-convention</span>
-    <span>Controller → OrderService → OrderDao → Drizzle ORM</span>
-  </div>
+<span class="trial-diagram--compact"></span>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Arial, Helvetica, sans-serif", "primaryTextColor": "#1f2937", "lineColor": "#4b5563"}}}%%
+flowchart LR
+  subgraph Direct["AI-direct"]
+    direction LR
+    D1["Controller"]:::system --> D2["OrderRepository"]:::system --> D3["parameterized SQL"]:::system
+  end
+  subgraph Convention["Project-convention"]
+    direction LR
+    P1["Controller"]:::system --> P2["OrderService"]:::system --> P3["OrderDao"]:::system --> P4["Drizzle ORM"]:::system
+  end
+  T["Shared bounded transport<br/>DbTransport → Browser MSW<br/>受限 SQL evaluator → fixtures/orders.json"]:::boundary
+  D3 --> T
+  P4 --> T
+  classDef system fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1f2937;
+  classDef boundary fill:#f3f4f6,stroke:#4b5563,stroke-width:1.5px,color:#1f2937;
+```
+
+<div class="trial-legend">
+  <span class="trial-legend-item">系統／責任路徑</span>
+  <span class="trial-legend-item--boundary">共同案例邊界</span>
 </div>
 
-<div class="trial-shared">
-  DbTransport → Browser MSW POST /mock/db/query → 受限 SQL evaluator → fixtures/orders.json
+<div class="trial-reveal-stack">
+  <div class="trial-reveal-note" v-click="1">命名與責任：兩條實作路徑不同，但都沿著可辨識的模組責任合作。</div>
+  <div class="trial-reveal-note trial-reveal-note--boundary" v-click="2">共同邊界：兩條路徑最後都進入同一個 bounded transport；這不是 production database 證據。</div>
 </div>
 
 <!--
@@ -33,8 +48,8 @@ Transition: 當我們用這些既有約定驗收，才看見交辦與規格之�
 Timing: variable; main talk excludes Q&A.
 -->
 
-<!-- TODO: Visual opportunity - HIGH
-Type: native CSS responsibility-path comparison
-Suggestion: Keep the two responsibility paths parallel and retain the shared bounded transport path as a separate relationship.
-Element count: 2 comparison paths + 1 shared path = 3.
+<!-- TODO: Visual opportunity - HIGH · implemented in Visuals
+Type: Mermaid responsibility architecture with semantic triad and v-click annotations.
+Suggestion: The diagram replaces the repeated path text; reveal responsibility naming before the shared bounded transport boundary.
+Element count: 2 paths + 1 shared boundary + 2 narrative annotations = 5.
 -->

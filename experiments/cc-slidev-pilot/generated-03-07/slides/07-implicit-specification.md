@@ -12,7 +12,7 @@ layout: default
     <div>查詢功能 · 狀態 · UTC 日期區間 · 分頁 · 總筆數</div>
   </div>
 
-  <div class="trial-column trial-stack">
+  <div class="trial-column trial-stack" v-click="1">
     <div class="trial-label">既有規格</div>
     <div>m0000／m0001 · data.items／data.totalCount</div>
     <div>Controller → Service → DAO</div>
@@ -20,7 +20,13 @@ layout: default
   </div>
 </div>
 
-<div class="trial-takeaway">沒有明確交代的，正是我依賴的既有規格。</div>
+<div class="trial-acceptance-gate" v-click="2">
+  <span class="trial-label">Acceptance</span>
+  <span class="trial-gate-arrow">→</span>
+  <strong>可交付判斷</strong>
+</div>
+
+<div class="trial-takeaway" v-click="3">沒有明確交代的，正是我依賴的既有規格。</div>
 
 <!--
 PRESENTER NOTES:
@@ -34,8 +40,8 @@ Transition: 接下來把這些既有約定命名為工程師日常工作使用�
 Timing: variable; main talk excludes Q&A.
 -->
 
-<!-- TODO: Visual opportunity - HIGH
-Type: native CSS brief-versus-acceptance comparison
-Suggestion: Keep the final statement as the visual anchor; avoid adding new evidence or a second conclusion.
-Element count: 2 comparison groups + 1 takeaway = 3.
+<!-- TODO: Visual opportunity - HIGH · implemented in Visuals
+Type: preserved two-column brief/spec comparison plus a lightweight acceptance gate and v-click.
+Suggestion: Reveal existing specification, then acceptance, then keep the final statement as the visual anchor.
+Element count: 2 comparison groups + 1 gate + 1 takeaway = 4.
 -->
