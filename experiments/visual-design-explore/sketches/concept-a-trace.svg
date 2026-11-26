@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Concept A — Trace the same Order API request</title>
+  <desc id="desc">A four-panel low-fidelity storyboard that zooms from one order query to its response, consumer contract, and distributed specification evidence.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .ink{fill:#1f2937}.muted{fill:#64748b}.blue{fill:#1d4ed8}.orange{fill:#c2410c}.gray{fill:#475569}.panel{fill:#ffffff;stroke:#cbd5e1;stroke-width:2}.soft{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}.bluebox{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.orangebox{fill:#ffedd5;stroke:#c2410c;stroke-width:2}.graybox{fill:#f1f5f9;stroke:#64748b;stroke-width:2}.dash{fill:none;stroke:#64748b;stroke-width:2;stroke-dasharray:8 7}.focus{fill:none;stroke:#f97316;stroke-width:5}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.sans{font-family:Arial,Helvetica,sans-serif}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="44" y="50" class="sans muted" font-size="18" letter-spacing="3">CONCEPT A · TRACE / ZOOM LENS</text>
+  <text x="44" y="94" class="sans ink" font-size="34" font-weight="700">把同一個 Order API 案例一路放大，再一路拉遠</text>
+  <text x="44" y="124" class="sans muted" font-size="18">觀眾不是先看架構圖，而是跟著同一張查詢單，逐層發現「可執行」之外的交付證據。</text>
+
+  <g transform="translate(40 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">01 / SAME REQUEST</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">先跟著一張查詢單</text>
+    <rect x="24" y="132" width="312" height="180" rx="10" class="soft"/>
+    <text x="46" y="168" class="sans muted" font-size="17">交辦</text>
+    <text x="46" y="206" class="mono ink" font-size="22">GET /orders</text>
+    <text x="46" y="245" class="mono blue" font-size="22">?pageSize=3</text>
+    <line x1="46" y1="268" x2="310" y2="268" stroke="#cbd5e1"/>
+    <text x="46" y="296" class="sans ink" font-size="18">狀態 · UTC 日期 · 分頁 · 總筆數</text>
+    <circle cx="180" cy="438" r="78" class="focus"/>
+    <line x1="180" y1="364" x2="180" y2="326" stroke="#f97316" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="108" y="442" class="sans orange" font-size="26" font-weight="700">可執行？</text>
+    <text x="24" y="570" class="sans muted" font-size="17">視覺連續物：這張查詢單</text>
+    <text x="24" y="598" class="sans muted" font-size="17">在每一格都不消失。</text>
+  </g>
+
+  <g transform="translate(420 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">02 / RUNNING PROOF</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">成功只證明路徑能走通</text>
+    <rect x="24" y="124" width="312" height="262" rx="10" class="bluebox"/>
+    <text x="46" y="164" class="sans blue" font-size="18" font-weight="700">HTTP 200 · 成功回應</text>
+    <text x="46" y="207" class="mono ink" font-size="21">message: m0000</text>
+    <text x="46" y="237" class="sans muted" font-size="14">敘事規格／待 runtime 對齊</text>
+    <text x="46" y="282" class="mono ink" font-size="21">IDs: [42, 35, 28]</text>
+    <text x="46" y="318" class="mono ink" font-size="21">totalCount: 42</text>
+    <rect x="46" y="342" width="235" height="24" rx="12" fill="#bfdbfe"/>
+    <text x="58" y="360" class="sans blue" font-size="14">AI-direct + convention 同結果</text>
+    <circle cx="276" cy="438" r="47" class="focus"/>
+    <line x1="276" y1="392" x2="276" y2="386" stroke="#f97316" stroke-width="4"/>
+    <text x="34" y="440" class="sans orange" font-size="18" font-weight="700">鏡頭 1</text>
+    <text x="24" y="508" class="sans gray" font-size="17">Browser MSW</text>
+    <text x="24" y="538" class="sans gray" font-size="17">受限 SQL evaluator</text>
+    <text x="24" y="568" class="sans gray" font-size="17">42 筆固定 fixtures</text>
+    <text x="24" y="612" class="sans muted" font-size="16">這是合成案例證據，</text>
+    <text x="24" y="636" class="sans muted" font-size="16">不是外部 API／真實 DB。</text>
+  </g>
+
+  <g transform="translate(800 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">03 / FIELD CONTRACT</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">鏡頭移到一個欄位</text>
+    <text x="24" y="112" class="sans muted" font-size="16">錯誤輸入：缺少 toDate</text>
+    <rect x="24" y="140" width="312" height="150" rx="10" class="orangebox"/>
+    <text x="42" y="174" class="sans orange" font-size="17" font-weight="700">AI-direct</text>
+    <text x="42" y="210" class="mono ink" font-size="16">message: "fromDate and</text>
+    <text x="42" y="234" class="mono ink" font-size="16">toDate must be supplied..."</text>
+    <text x="42" y="270" class="sans orange" font-size="17">→ Unknown message code</text>
+    <rect x="24" y="318" width="312" height="150" rx="10" class="bluebox"/>
+    <text x="42" y="352" class="sans blue" font-size="17" font-weight="700">Project-convention</text>
+    <text x="42" y="390" class="mono ink" font-size="20">message: m0001</text>
+    <text x="42" y="425" class="sans muted" font-size="15">敘事規格／待 runtime 對齊</text>
+    <text x="42" y="452" class="sans blue" font-size="17">→ 代碼表 → 查詢條件不合法</text>
+    <circle cx="185" cy="306" r="18" class="focus"/>
+    <line x1="185" y1="288" x2="185" y2="290" class="focus"/>
+    <text x="24" y="526" class="sans ink" font-size="18" font-weight="700">Existing Consumer 是鏡頭</text>
+    <text x="24" y="556" class="mono gray" font-size="16">data.items[] · data.totalCount</text>
+    <text x="24" y="600" class="sans muted" font-size="16">同一支 API，欄位語意</text>
+    <text x="24" y="624" class="sans muted" font-size="16">改變了整合結果。</text>
+  </g>
+
+  <g transform="translate(1180 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">04 / PULL BACK</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">再拉遠：規格散落在現場</text>
+    <rect x="103" y="124" width="154" height="74" rx="10" class="soft"/>
+    <text x="126" y="154" class="sans ink" font-size="18" font-weight="700">Order API</text>
+    <text x="122" y="181" class="mono muted" font-size="16">可交付？</text>
+    <line x1="103" y1="162" x2="42" y2="242" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="257" y1="162" x2="318" y2="242" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="103" y1="180" x2="42" y2="416" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="257" y1="180" x2="318" y2="416" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="24" y="242" width="140" height="92" rx="8" class="bluebox"/>
+    <text x="40" y="270" class="sans blue" font-size="16" font-weight="700">Consumer</text>
+    <text x="40" y="298" class="mono ink" font-size="14">items / totalCount</text>
+    <text x="40" y="321" class="sans muted" font-size="14">回應形狀</text>
+    <rect x="196" y="242" width="140" height="92" rx="8" class="graybox"/>
+    <text x="212" y="270" class="sans gray" font-size="16" font-weight="700">Naming</text>
+    <text x="212" y="298" class="mono ink" font-size="14">Controller→Service</text>
+    <text x="212" y="321" class="sans muted" font-size="14">→ DAO</text>
+    <rect x="24" y="416" width="140" height="92" rx="8" class="soft"/>
+    <text x="40" y="444" class="sans ink" font-size="16" font-weight="700">Tests</text>
+    <text x="40" y="472" class="mono muted" font-size="14">UTC · sort · page</text>
+    <text x="40" y="495" class="sans muted" font-size="14">驗收規則</text>
+    <rect x="196" y="416" width="140" height="92" rx="8" class="orangebox"/>
+    <text x="212" y="444" class="sans orange" font-size="16" font-weight="700">Evidence</text>
+    <text x="212" y="472" class="sans ink" font-size="14">synthetic / bounded</text>
+    <text x="212" y="495" class="sans muted" font-size="14">證據邊界</text>
+    <text x="24" y="570" class="sans orange" font-size="23" font-weight="700">可執行 ≠ 可交付</text>
+    <text x="24" y="610" class="sans muted" font-size="16">理解順序：案例 → 欄位 → 消費者 → 規格全景</text>
+  </g>
+
+  <text x="44" y="850" class="sans muted" font-size="16">low fidelity · sketch only · not formal slide layout</text>
+</svg>

@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Concept C — Build a proof constellation around the delivery claim</title>
+  <desc id="desc">A four-panel low-fidelity storyboard that treats runtime, consumer, architecture, tests, and evidence limits as witnesses around a delivery decision.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .ink{fill:#1f2937}.muted{fill:#64748b}.blue{fill:#1d4ed8}.orange{fill:#c2410c}.gray{fill:#475569}.panel{fill:#ffffff;stroke:#cbd5e1;stroke-width:2}.soft{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}.bluebox{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.orangebox{fill:#ffedd5;stroke:#c2410c;stroke-width:2}.graybox{fill:#f1f5f9;stroke:#64748b;stroke-width:2}.line{stroke:#94a3b8;stroke-width:2}.dash{fill:none;stroke:#64748b;stroke-width:2;stroke-dasharray:8 7}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.sans{font-family:Arial,Helvetica,sans-serif}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="44" y="50" class="sans muted" font-size="18" letter-spacing="3">CONCEPT C · EVIDENCE CONSTELLATION / DECISION</text>
+  <text x="44" y="94" class="sans ink" font-size="34" font-weight="700">把「可交付？」改成一個需要多位證人共同回答的判斷</text>
+  <text x="44" y="124" class="sans muted" font-size="18">觀眾不追一條實作流程，而是學會分辨：每一份證據能支持什麼、不能支持什麼。</text>
+
+  <g transform="translate(40 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">01 / THE CLAIM</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">問題不是「有沒有跑」</text>
+    <circle cx="180" cy="286" r="90" class="orangebox"/>
+    <text x="112" y="278" class="sans orange" font-size="30" font-weight="700">可交付？</text>
+    <text x="130" y="312" class="sans muted" font-size="15">delivery claim</text>
+    <rect x="32" y="150" width="112" height="76" rx="10" class="bluebox"/>
+    <text x="51" y="180" class="sans blue" font-size="16" font-weight="700">Runtime</text>
+    <text x="51" y="207" class="mono ink" font-size="14">200 / IDs</text>
+    <rect x="216" y="150" width="112" height="76" rx="10" class="graybox"/>
+    <text x="233" y="180" class="sans gray" font-size="16" font-weight="700">Consumer</text>
+    <text x="233" y="207" class="mono ink" font-size="14">items / count</text>
+    <rect x="32" y="392" width="112" height="76" rx="10" class="soft"/>
+    <text x="51" y="422" class="sans ink" font-size="16" font-weight="700">Naming</text>
+    <text x="51" y="449" class="mono muted" font-size="14">Service / DAO</text>
+    <rect x="216" y="392" width="112" height="76" rx="10" class="orangebox"/>
+    <text x="233" y="422" class="sans orange" font-size="16" font-weight="700">Tests</text>
+    <text x="233" y="449" class="mono ink" font-size="14">UTC / page</text>
+    <line x1="144" y1="210" x2="162" y2="230" class="line"/>
+    <line x1="216" y1="210" x2="198" y2="230" class="line"/>
+    <line x1="144" y1="410" x2="162" y2="340" class="line"/>
+    <line x1="216" y1="410" x2="198" y2="340" class="line"/>
+    <text x="24" y="554" class="sans muted" font-size="17">先把觀眾的問題改寫成：</text>
+    <text x="24" y="586" class="sans ink" font-size="19" font-weight="700">證據足夠支持哪個結論？</text>
+  </g>
+
+  <g transform="translate(420 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">02 / WITNESSES</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">四位證人，各自只證明一段</text>
+    <rect x="24" y="124" width="312" height="92" rx="10" class="bluebox"/>
+    <text x="42" y="153" class="sans blue" font-size="16" font-weight="700">Runtime witness</text>
+    <text x="42" y="181" class="mono ink" font-size="15">HTTP 200 · [42,35,28] · total 42</text>
+    <text x="42" y="204" class="sans muted" font-size="13">Chromium + Browser MSW + fixtures</text>
+    <rect x="24" y="236" width="312" height="92" rx="10" class="graybox"/>
+    <text x="42" y="265" class="sans gray" font-size="16" font-weight="700">Consumer witness</text>
+    <text x="42" y="293" class="mono ink" font-size="15">data.items[] · data.totalCount</text>
+    <text x="42" y="316" class="sans muted" font-size="13">AI-direct reject / convention compatible</text>
+    <rect x="24" y="348" width="312" height="92" rx="10" class="soft"/>
+    <text x="42" y="377" class="sans ink" font-size="16" font-weight="700">Architecture witness</text>
+    <text x="42" y="405" class="mono ink" font-size="14">Controller→Repository→SQL</text>
+    <text x="42" y="428" class="mono muted" font-size="14">Controller→Service→DAO→Drizzle</text>
+    <rect x="24" y="460" width="312" height="92" rx="10" class="orangebox"/>
+    <text x="42" y="489" class="sans orange" font-size="16" font-weight="700">Test witness</text>
+    <text x="42" y="517" class="mono ink" font-size="15">8 success · 9 invalid · 14 SQL rejects</text>
+    <text x="42" y="540" class="sans muted" font-size="13">bounded evaluator fail-closed checks</text>
+    <text x="24" y="596" class="sans muted" font-size="16">點與點之間不是流程；是可追溯的支持關係。</text>
+  </g>
+
+  <g transform="translate(800 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">03 / LIMITS WITH CLAIMS</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">證據邊界要跟主張一起出現</text>
+    <rect x="86" y="124" width="188" height="66" rx="33" class="bluebox"/>
+    <text x="133" y="164" class="sans blue" font-size="20" font-weight="700">已觀察</text>
+    <line x1="86" y1="157" x2="38" y2="252" class="line" marker-end="url(#arrow)"/>
+    <line x1="274" y1="157" x2="322" y2="252" class="line" marker-end="url(#arrow)"/>
+    <rect x="24" y="252" width="144" height="142" rx="10" class="bluebox"/>
+    <text x="42" y="282" class="sans blue" font-size="16" font-weight="700">可支持</text>
+    <text x="42" y="314" class="sans ink" font-size="15">相同篩選結果</text>
+    <text x="42" y="340" class="sans ink" font-size="15">Consumer shape</text>
+    <text x="42" y="366" class="sans ink" font-size="15">有限 SQL 拒絕</text>
+    <rect x="192" y="252" width="144" height="142" rx="10" class="orangebox"/>
+    <text x="210" y="282" class="sans orange" font-size="16" font-weight="700">不能支持</text>
+    <text x="210" y="314" class="sans ink" font-size="15">真實 API Server</text>
+    <text x="210" y="340" class="sans ink" font-size="15">真實 DB 正確性</text>
+    <text x="210" y="366" class="sans ink" font-size="15">真實 AI 產出</text>
+    <rect x="24" y="438" width="312" height="90" rx="10" class="graybox"/>
+    <text x="42" y="468" class="sans gray" font-size="16" font-weight="700">尚待對齊</text>
+    <text x="42" y="496" class="mono ink" font-size="14">m0000 / m0001 message-code</text>
+    <text x="42" y="518" class="sans muted" font-size="13">current base runtime：success / raw error</text>
+    <text x="24" y="580" class="sans orange" font-size="19" font-weight="700">主張越大，證據邊界越要清楚。</text>
+    <text x="24" y="616" class="sans muted" font-size="16">這格是本方案的敘事節奏核心。</text>
+  </g>
+
+  <g transform="translate(1180 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">04 / DECISION</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">收束成可檢查的判斷</text>
+    <rect x="24" y="128" width="312" height="114" rx="10" class="soft"/>
+    <text x="44" y="163" class="sans muted" font-size="16">交辦主張</text>
+    <text x="44" y="198" class="sans ink" font-size="21" font-weight="700">「完成訂單查詢功能」</text>
+    <rect x="24" y="274" width="312" height="178" rx="10" class="bluebox"/>
+    <text x="44" y="309" class="sans blue" font-size="16" font-weight="700">驗收還需要</text>
+    <text x="44" y="344" class="sans ink" font-size="17">回應形狀 · message 語意</text>
+    <text x="44" y="376" class="sans ink" font-size="17">命名／責任 · 測試規則</text>
+    <text x="44" y="408" class="sans ink" font-size="17">以及可追溯的證據邊界</text>
+    <path d="M180 242 L180 274" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="44" y="500" width="272" height="70" rx="35" class="orangebox"/>
+    <text x="79" y="543" class="sans orange" font-size="21" font-weight="700">功能 ≠ 交付</text>
+    <text x="24" y="612" class="sans muted" font-size="15">理解順序：主張 → 證人 → 證據邊界</text>
+    <text x="24" y="634" class="sans muted" font-size="15">→ 判斷。</text>
+  </g>
+
+  <text x="44" y="850" class="sans muted" font-size="16">low fidelity · evidence-oriented · proof boundaries are first-class visual content</text>
+</svg>
