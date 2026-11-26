@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot 03 — 功能確實能跑，視角先停在結果</title>
+  <desc id="desc">同一個 Order API 查詢由兩條案例路徑匯聚到 HTTP 200 與相同訂單結果，底部保留 Browser MSW 與 bounded SQL 的證據限制。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2F6B9A"/></marker></defs>
+  <style>
+    .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}.mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}.ink{fill:#102438}.muted{fill:#667483}.blue{fill:#2F6B9A}.green{fill:#2F8F66}.amber{fill:#A95D22}.line{stroke:#CCD6DD;stroke-width:2}.trace{stroke:#2F6B9A;stroke-width:5;fill:none;stroke-linecap:round}.small{font-size:16px}.body{font-size:21px}.label{font-size:17px;letter-spacing:2px}.card{fill:#FFFFFF;stroke:#CCD6DD;stroke-width:2}.soft{fill:#EEF4F7}.pill{fill:#FFFFFF;stroke:#9DB4C1;stroke-width:2}
+  </style>
+  <rect width="1600" height="900" fill="#F7F8F6"/>
+  <text x="88" y="48" class="sans muted label">DEVELOP / ORDER API · TRACE STORY</text>
+  <text x="1512" y="48" text-anchor="end" class="sans muted label">03 / 06</text>
+  <text x="88" y="114" class="sans ink" font-size="42" font-weight="700">功能確實能跑，視角先停在結果</text>
+  <text x="88" y="153" class="sans muted body">必要的成功先被看見；但畫面刻意留下下一個檢查入口。</text>
+  <line x1="92" y1="230" x2="92" y2="730" class="line"/>
+  <circle cx="92" cy="270" r="6" fill="#CCD6DD"/><circle cx="92" cy="420" r="6" fill="#CCD6DD"/><circle cx="92" cy="570" r="9" fill="#2F6B9A"/><circle cx="92" cy="720" r="6" fill="#CCD6DD"/>
+  <text x="130" y="570" class="sans blue label">RUNNING PROOF</text>
+
+  <g transform="translate(130 275)">
+    <rect width="370" height="240" rx="18" class="card"/>
+    <text x="28" y="38" class="sans blue label">REQUEST</text>
+    <text x="28" y="96" class="mono ink" font-size="23">GET /orders</text>
+    <text x="28" y="133" class="mono ink" font-size="23">?pageSize=3</text>
+    <line x1="28" y1="160" x2="342" y2="160" class="line"/>
+    <text x="28" y="204" class="sans muted body">同一輸入、兩條案例路徑</text>
+  </g>
+  <path d="M500 395 C615 395 650 305 770 305" class="trace" marker-end="url(#arrow)"/>
+  <path d="M500 395 C615 395 650 480 770 480" class="trace" marker-end="url(#arrow)"/>
+  <text x="548" y="335" class="sans blue small">same case / compare</text>
+
+  <g transform="translate(770 235)">
+    <rect width="690" height="355" rx="22" fill="#FFFFFF" stroke="#2F6B9A" stroke-width="4"/>
+    <rect width="690" height="72" rx="22" fill="#EAF3F8"/><rect y="50" width="690" height="22" fill="#EAF3F8"/>
+    <text x="34" y="46" class="sans ink" font-size="28" font-weight="700">HTTP 200 · code: OK · message: m0000</text>
+    <text x="34" y="126" class="sans muted label">OBSERVED SUCCESS RESULT</text>
+    <text x="34" y="192" class="sans ink" font-size="35" font-weight="700">IDs  [42, 35, 28]</text>
+    <text x="34" y="246" class="sans ink" font-size="30">totalCount: <tspan font-weight="700">42</tspan></text>
+    <line x1="350" y1="120" x2="350" y2="288" class="line"/>
+    <rect x="390" y="132" width="252" height="62" rx="14" class="pill"/><text x="516" y="171" text-anchor="middle" class="sans ink" font-size="19">AI-direct → result</text>
+    <rect x="390" y="212" width="252" height="62" rx="14" class="pill"/><text x="516" y="251" text-anchor="middle" class="sans ink" font-size="19">Project-convention → result</text>
+    <text x="34" y="326" class="sans green" font-size="19" font-weight="700">兩條路徑得到同一組成功資料</text>
+  </g>
+  <g transform="translate(770 630)">
+    <rect width="690" height="104" rx="16" fill="#FFF7EC" stroke="#D9A56C" stroke-width="2"/>
+    <text x="24" y="38" class="sans amber" font-size="18" font-weight="700">EVIDENCE BOUNDARY</text>
+    <text x="24" y="73" class="sans ink" font-size="19">Browser MSW · bounded SQL evaluator · fixed fixtures</text>
+    <text x="24" y="96" class="sans muted small">合成案例；不是外部 API Server 或真實資料庫執行證據</text>
+  </g>
+  <text x="130" y="690" class="sans ink" font-size="25" font-weight="700">必要，不充分</text>
+  <text x="130" y="725" class="sans muted body">下一個鏡頭要看：這些欄位怎麼被使用？</text>
+  <text x="88" y="840" class="sans muted small">same case / success is a checkpoint</text>
+  <text x="1512" y="840" text-anchor="end" class="sans muted small">source: PR #13 · e8ae8ad3 · slide-copy.md · not rerun</text>
+</svg>

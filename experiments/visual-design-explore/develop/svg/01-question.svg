@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot 01 — 能執行，是否就代表能交付？</title>
+  <desc id="desc">開場畫面以同一個 Order API 查詢卡片與放大鏡建立主要視覺連續物，尚未揭露規格細節。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2F6B9A"/></marker>
+  </defs>
+  <style>
+    .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}.mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}.ink{fill:#102438}.muted{fill:#667483}.blue{fill:#2F6B9A}.amber{fill:#A95D22}.line{stroke:#CCD6DD;stroke-width:2}.trace{stroke:#2F6B9A;stroke-width:5;fill:none;stroke-linecap:round}.small{font-size:16px}.body{font-size:21px}.label{font-size:17px;letter-spacing:2px}.card{fill:#FFFFFF;stroke:#CCD6DD;stroke-width:2}.soft{fill:#EEF4F7}.focus{fill:#EAF3F8;stroke:#2F6B9A;stroke-width:3}.dash{fill:none;stroke:#A8BAC5;stroke-width:2;stroke-dasharray:8 9}
+  </style>
+  <rect width="1600" height="900" fill="#F7F8F6"/>
+  <text x="88" y="48" class="sans muted label">DEVELOP / ORDER API · TRACE STORY</text>
+  <text x="1512" y="48" text-anchor="end" class="sans muted label">01 / 06</text>
+  <text x="88" y="114" class="sans ink" font-size="42" font-weight="700">能執行，是否就代表能交付？</text>
+  <text x="88" y="153" class="sans muted body">先把同一個案例放在桌上，再決定要檢查多深。</text>
+
+  <line x1="92" y1="230" x2="92" y2="730" class="line"/>
+  <circle cx="92" cy="270" r="9" fill="#2F6B9A"/>
+  <circle cx="92" cy="420" r="6" fill="#CCD6DD"/>
+  <circle cx="92" cy="570" r="6" fill="#CCD6DD"/>
+  <circle cx="92" cy="720" r="6" fill="#CCD6DD"/>
+  <text x="130" y="270" class="sans blue label">START WITH ONE CASE</text>
+
+  <g transform="translate(165 315)">
+    <rect width="590" height="250" rx="18" class="card"/>
+    <rect width="590" height="54" rx="18" fill="#102438"/>
+    <rect y="36" width="590" height="18" fill="#102438"/>
+    <circle cx="28" cy="27" r="6" fill="#79B9C7"/><circle cx="50" cy="27" r="6" fill="#E6B36A"/>
+    <text x="80" y="34" class="sans" font-size="17" fill="#FFFFFF" letter-spacing="1">ORDER QUERY / SAME CASE</text>
+    <text x="38" y="116" class="mono ink" font-size="27">GET /orders?pageSize=3</text>
+    <line x1="38" y1="142" x2="550" y2="142" class="line"/>
+    <text x="38" y="184" class="sans muted body">查詢一支訂單 API</text>
+    <text x="38" y="220" class="sans muted small">先不預設它已經符合所有既有規格</text>
+  </g>
+
+  <path d="M755 440 C850 440 875 360 970 360" class="trace" marker-end="url(#arrow)"/>
+  <text x="790" y="410" class="sans blue small">inspection path</text>
+  <g transform="translate(1010 270)">
+    <circle cx="175" cy="175" r="145" fill="#FFFFFF" stroke="#2F6B9A" stroke-width="5"/>
+    <circle cx="175" cy="175" r="108" fill="#EAF3F8"/>
+    <line x1="278" y1="278" x2="360" y2="360" stroke="#2F6B9A" stroke-width="18" stroke-linecap="round"/>
+    <text x="175" y="160" text-anchor="middle" class="sans blue" font-size="72" font-weight="700">?</text>
+    <text x="175" y="207" text-anchor="middle" class="sans ink" font-size="20">what else must fit?</text>
+  </g>
+  <text x="1070" y="690" class="sans ink" font-size="25" font-weight="700">視覺連續物：同一張查詢單</text>
+  <text x="1070" y="725" class="sans muted body">不是 runtime trace，而是逐層檢視。</text>
+
+  <text x="88" y="840" class="sans muted small">same case / inspection view</text>
+  <text x="1512" y="840" text-anchor="end" class="sans muted small">source: PR #13 · e8ae8ad3 · historical revision · not rerun</text>
+</svg>

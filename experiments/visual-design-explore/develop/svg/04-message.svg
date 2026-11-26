@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot 04 — message 不是自由文字，而是既有 UI 契約</title>
+  <desc id="desc">鏡頭移到錯誤 response 的 message 欄位，對比 AI-direct 原始文字與 Project-convention 的 m0001，並以 docking 接合 Consumer 與 message catalog。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2F6B9A"/></marker></defs>
+  <style>
+    .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}.mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}.ink{fill:#102438}.muted{fill:#667483}.blue{fill:#2F6B9A}.amber{fill:#A95D22}.green{fill:#2F8F66}.red{fill:#A13C35}.line{stroke:#CCD6DD;stroke-width:2}.trace{stroke:#2F6B9A;stroke-width:5;fill:none;stroke-linecap:round}.small{font-size:16px}.body{font-size:20px}.label{font-size:17px;letter-spacing:2px}.card{fill:#FFFFFF;stroke:#CCD6DD;stroke-width:2}.socket{fill:#FFFFFF;stroke:#2F6B9A;stroke-width:3}.danger{fill:#FFF1EF;stroke:#C97A72;stroke-width:2}.fit{fill:#EFF8F3;stroke:#7CB69B;stroke-width:2}
+  </style>
+  <rect width="1600" height="900" fill="#F7F8F6"/>
+  <text x="88" y="48" class="sans muted label">DEVELOP / ORDER API · TRACE STORY</text>
+  <text x="1512" y="48" text-anchor="end" class="sans muted label">04 / 06</text>
+  <text x="88" y="114" class="sans ink" font-size="42" font-weight="700">message 不是自由文字，而是既有 UI 契約</text>
+  <text x="88" y="153" class="sans muted body">鏡頭不換案例，只把注意力從成功結果移到欄位語意。</text>
+  <line x1="92" y1="230" x2="92" y2="730" class="line"/>
+  <circle cx="92" cy="270" r="6" fill="#CCD6DD"/><circle cx="92" cy="420" r="6" fill="#CCD6DD"/><circle cx="92" cy="570" r="6" fill="#CCD6DD"/><circle cx="92" cy="720" r="9" fill="#2F6B9A"/>
+  <text x="130" y="720" class="sans blue label">FIELD CONTRACT</text>
+
+  <g transform="translate(130 250)">
+    <rect width="390" height="250" rx="18" class="card"/>
+    <text x="28" y="38" class="sans blue label">SAME CASE / ERROR INPUT</text>
+    <text x="28" y="100" class="mono ink" font-size="21">?fromDate=2026-01-01</text>
+    <text x="28" y="133" class="mono ink" font-size="21"># missing toDate</text>
+    <line x1="28" y1="162" x2="362" y2="162" class="line"/>
+    <text x="28" y="207" class="sans ink" font-size="20">HTTP 400 · INVALID_QUERY</text>
+  </g>
+  <path d="M520 375 C590 375 600 360 670 360" class="trace" marker-end="url(#arrow)"/>
+  <circle cx="666" cy="360" r="30" fill="#EAF3F8" stroke="#2F6B9A" stroke-width="3"/>
+  <text x="666" y="369" text-anchor="middle" class="mono blue" font-size="20">msg</text>
+  <text x="585" y="330" class="sans blue small">zoom lens</text>
+
+  <g transform="translate(690 220)">
+    <text x="0" y="0" class="sans ink" font-size="23" font-weight="700">同一個錯誤 response，兩種 message 意義</text>
+    <text x="0" y="35" class="sans muted small">PR #13 / e8ae8ad3 historical revision</text>
+    <rect x="0" y="70" width="395" height="360" rx="18" class="danger"/>
+    <text x="28" y="112" class="sans red label">AI-DIRECT</text>
+    <text x="28" y="168" class="mono ink" font-size="20">message:</text>
+    <text x="28" y="205" class="mono red" font-size="18">"fromDate and toDate</text>
+    <text x="28" y="234" class="mono red" font-size="18">must be supplied together"</text>
+    <line x1="28" y1="260" x2="365" y2="260" stroke="#E2B1AB" stroke-width="2"/>
+    <text x="28" y="306" class="sans red" font-size="21" font-weight="700">Unknown message code</text>
+    <text x="28" y="350" class="sans muted body">Consumer 無法從 catalog 解碼</text>
+    <rect x="28" y="379" width="190" height="30" rx="15" fill="#FFFFFF" stroke="#C97A72" stroke-width="2"/><text x="123" y="400" text-anchor="middle" class="sans red small">does not dock</text>
+
+    <rect x="430" y="70" width="395" height="360" rx="18" class="fit"/>
+    <text x="458" y="112" class="sans green label">PROJECT-CONVENTION</text>
+    <text x="458" y="168" class="mono ink" font-size="20">message:</text>
+    <text x="458" y="220" class="mono green" font-size="34" font-weight="700">m0001</text>
+    <line x1="458" y1="260" x2="795" y2="260" stroke="#A7CDB6" stroke-width="2"/>
+    <text x="458" y="306" class="sans green" font-size="21" font-weight="700">查詢條件不合法</text>
+    <text x="458" y="350" class="sans muted body">Consumer 透過 message catalog 顯示</text>
+    <rect x="458" y="379" width="190" height="30" rx="15" fill="#FFFFFF" stroke="#7CB69B" stroke-width="2"/><text x="553" y="400" text-anchor="middle" class="sans green small">docks to catalog</text>
+  </g>
+
+  <g transform="translate(1110 675)">
+    <path d="M0 28 h48" stroke="#2F6B9A" stroke-width="3"/>
+    <path d="M48 14 v28" stroke="#2F6B9A" stroke-width="3"/>
+    <rect x="62" y="0" width="290" height="56" rx="12" class="socket"/>
+    <text x="207" y="35" text-anchor="middle" class="sans ink" font-size="20">existing Consumer + catalog</text>
+  </g>
+  <text x="88" y="840" class="sans muted small">same case / message field becomes the focal point</text>
+  <text x="1512" y="840" text-anchor="end" class="sans muted small">historical source only · no current runtime claim</text>
+</svg>
