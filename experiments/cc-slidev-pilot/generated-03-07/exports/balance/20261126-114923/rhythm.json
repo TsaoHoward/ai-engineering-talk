@@ -1,0 +1,19 @@
+{
+  "runs": [
+    {
+      "layout": "default",
+      "start": 3,
+      "end": 6,
+      "length": 4
+    }
+  ],
+  "swings": [
+    {
+      "from": 2,
+      "to": 3,
+      "from_fill": 0.0575,
+      "to_fill": 0.5977,
+      "delta": 0.5402
+    }
+  ]
+}

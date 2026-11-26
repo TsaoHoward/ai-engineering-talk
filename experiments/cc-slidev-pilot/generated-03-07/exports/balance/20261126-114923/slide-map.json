@@ -1,0 +1,68 @@
+[
+  {
+    "start_no": 1,
+    "current_no": 1,
+    "source_file": "slides.md",
+    "start_line": 1,
+    "end_line": 97,
+    "layout": "cover",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  },
+  {
+    "start_no": 2,
+    "current_no": 2,
+    "source_file": "slides/03-execution-vs-delivery.md",
+    "start_line": 1,
+    "end_line": 23,
+    "layout": "center",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  },
+  {
+    "start_no": 3,
+    "current_no": 3,
+    "source_file": "slides/04-order-api-runs.md",
+    "start_line": 1,
+    "end_line": 46,
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  },
+  {
+    "start_no": 4,
+    "current_no": 4,
+    "source_file": "slides/05-message-contract.md",
+    "start_line": 1,
+    "end_line": 54,
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  },
+  {
+    "start_no": 5,
+    "current_no": 5,
+    "source_file": "slides/06-responsibility-layering.md",
+    "start_line": 1,
+    "end_line": 56,
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  },
+  {
+    "start_no": 6,
+    "current_no": 6,
+    "source_file": "slides/07-implicit-specification.md",
+    "start_line": 1,
+    "end_line": 48,
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "frontmatter_overrides": {}
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "no": 5,
+  "density": "balanced",
+  "intentional": false,
+  "reason": "The two paths, shared boundary, legend, and callouts spread comfortably across the canvas. The hard issue is readability: Mermaid labels are below the 14pt minimum, despite no overflow.",
+  "fixes": [
+    {
+      "id": "zoom",
+      "kind": "auto",
+      "summary": "Scale the slide to 1.1 to use the remaining whitespace and improve label readability.",
+      "change": {"zoom": 1.1},
+      "projected": {"elements": 1, "words": 15}
+    },
+    {
+      "id": "diagram-resize",
+      "kind": "approval",
+      "summary": "Increase Mermaid label sizing and widen the diagram wrapper while preserving all existing nodes and annotations.",
+      "change": {"markdown": "round-1 verdict retained in the original slide-05.json"},
+      "projected": {"elements": 1, "words": 15}
+    }
+  ]
+}

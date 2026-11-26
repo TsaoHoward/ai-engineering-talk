@@ -1,0 +1,7 @@
+{
+  "no": 2,
+  "density": "sparse",
+  "intentional": true,
+  "reason": "The rendered slide is a centered title-only section opener: a chapter kicker and one large question are intentionally isolated with ample whitespace. The sparse and low-spread flags support the opening pause rather than indicating missing content.",
+  "fixes": []
+}

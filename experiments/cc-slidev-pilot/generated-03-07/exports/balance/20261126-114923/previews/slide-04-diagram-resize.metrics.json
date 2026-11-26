@@ -1,0 +1,15 @@
+{
+  "candidate": "slide-04-diagram-resize",
+  "formal_slide": 5,
+  "start_no": 4,
+  "fill_ratio": 0.7315,
+  "vertical_spread": 0.8524,
+  "overflow": {
+    "any": false,
+    "elements": []
+  },
+  "min_label_pt": 14.67,
+  "words": 22,
+  "elements": 1,
+  "flags": []
+}

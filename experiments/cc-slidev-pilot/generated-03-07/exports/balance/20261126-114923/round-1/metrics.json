@@ -1,0 +1,182 @@
+[
+  {
+    "no": 2,
+    "start_no": 2,
+    "title": "能執行，是否就代表能交付？",
+    "source_title": "能執行，是否就代表能交付？",
+    "source": {
+      "file": "slides/03-execution-vs-delivery.md",
+      "start": 1,
+      "end": 23
+    },
+    "layout": "center",
+    "balance": null,
+    "hidden": false,
+    "png": "round-1/slide-02.png",
+    "fill_ratio": 0.0575,
+    "vertical_spread": 0.5467,
+    "overflow": {
+      "any": false,
+      "elements": []
+    },
+    "min_body_pt": null,
+    "min_label_pt": null,
+    "words": 4,
+    "elements": 0,
+    "columns": null,
+    "gap": {
+      "x": 56,
+      "y": 300,
+      "w": 868,
+      "h": 212
+    },
+    "flags": [
+      "sparse",
+      "low-spread"
+    ],
+    "render_error": null
+  },
+  {
+    "no": 3,
+    "start_no": 3,
+    "title": "交辦一支訂單查詢 API，功能確實能跑",
+    "source_title": "交辦一支訂單查詢 API，功能確實能跑",
+    "source": {
+      "file": "slides/04-order-api-runs.md",
+      "start": 1,
+      "end": 46
+    },
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "png": "round-1/slide-03.png",
+    "fill_ratio": 0.5977,
+    "vertical_spread": 0.8135,
+    "overflow": {
+      "any": false,
+      "elements": []
+    },
+    "min_body_pt": null,
+    "min_label_pt": 15.67,
+    "words": 19,
+    "elements": 1,
+    "columns": null,
+    "gap": {
+      "x": 56,
+      "y": 448,
+      "w": 868,
+      "h": 64
+    },
+    "flags": [],
+    "render_error": null
+  },
+  {
+    "no": 4,
+    "start_no": 4,
+    "title": "message 不是自由文字，而是既有 UI 契約",
+    "source_title": "message 不是自由文字，而是既有 UI 契約",
+    "source": {
+      "file": "slides/05-message-contract.md",
+      "start": 1,
+      "end": 54
+    },
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "png": "round-1/slide-04.png",
+    "fill_ratio": 0.7908,
+    "vertical_spread": 0.9055,
+    "overflow": {
+      "any": false,
+      "elements": []
+    },
+    "min_body_pt": null,
+    "min_label_pt": 13.29,
+    "words": 22,
+    "elements": 1,
+    "columns": null,
+    "gap": {
+      "x": 720,
+      "y": 40,
+      "w": 204,
+      "h": 80
+    },
+    "flags": [
+      "crowded",
+      "small-labels"
+    ],
+    "render_error": null
+  },
+  {
+    "no": 5,
+    "start_no": 5,
+    "title": "既有契約也藏在命名與責任分層",
+    "source_title": "既有契約也藏在命名與責任分層",
+    "source": {
+      "file": "slides/06-responsibility-layering.md",
+      "start": 1,
+      "end": 55
+    },
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "png": "round-1/slide-05.png",
+    "fill_ratio": 0.6183,
+    "vertical_spread": 0.8991,
+    "overflow": {
+      "any": false,
+      "elements": []
+    },
+    "min_body_pt": null,
+    "min_label_pt": 9.51,
+    "words": 15,
+    "elements": 1,
+    "columns": null,
+    "gap": {
+      "x": 804,
+      "y": 40,
+      "w": 120,
+      "h": 360
+    },
+    "flags": [
+      "small-labels"
+    ],
+    "render_error": null
+  },
+  {
+    "no": 6,
+    "start_no": 6,
+    "title": "交辦寫的是功能，驗收依賴的是既有規格",
+    "source_title": "交辦寫的是功能，驗收依賴的是既有規格",
+    "source": {
+      "file": "slides/07-implicit-specification.md",
+      "start": 1,
+      "end": 47
+    },
+    "layout": "default",
+    "balance": null,
+    "hidden": false,
+    "png": "round-1/slide-06.png",
+    "fill_ratio": 0.3149,
+    "vertical_spread": 0.7031,
+    "overflow": {
+      "any": false,
+      "elements": []
+    },
+    "min_body_pt": null,
+    "min_label_pt": null,
+    "words": 25,
+    "elements": 0,
+    "columns": null,
+    "gap": {
+      "x": 56,
+      "y": 388,
+      "w": 868,
+      "h": 124
+    },
+    "flags": [
+      "sparse"
+    ],
+    "render_error": null
+  }
+]
