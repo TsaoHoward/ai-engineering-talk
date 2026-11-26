@@ -1,0 +1,17 @@
+{
+  "no": 4,
+  "density": "balanced",
+  "intentional": false,
+  "reason": "The central branching diagram, legend, and two takeaway bars are distributed across the canvas with clear margins; the crowded flag is mild, but several diagram labels render below the 14pt minimum.",
+  "fixes": [
+    {
+      "id": "diagram-resize",
+      "kind": "approval",
+      "summary": "Simplify repeated diagram labels so Mermaid can render the key paths at a larger readable size.",
+      "change": {
+        "markdown": "<div class=\"trial-kicker\">Slide 5 · 第一章 · 02 · B2 → B3</div>\n\n# message 不是自由文字，而是既有 UI 契約\n\n```mermaid\n%%{init: {\"theme\": \"base\", \"themeVariables\": {\"fontFamily\": \"Arial, Helvetica, sans-serif\", \"primaryTextColor\": \"#1f2937\", \"lineColor\": \"#4b5563\"}}}%%\nflowchart LR\n  R[\"HTTP 400<br/>INVALID_QUERY\"]:::boundary\n  M{\"message<br/>catalog\"}:::boundary\n  A[\"AI-direct\"]:::system\n  U[\"Unknown<br/>code\"]:::gap\n  P[\"m0001\"]:::system\n  K[\"Consumer<br/>可解析\"]:::system\n  R --> M\n  M -->|文字| A --> U\n  M -->|code| P --> K\n  classDef system fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1f2937;\n  classDef gap fill:#ffedd5,stroke:#c2410c,stroke-width:2px,color:#1f2937;\n  classDef boundary fill:#f3f4f6,stroke:#4b5563,stroke-width:1.5px,color:#1f2937;\n```\n\n<div class=\"trial-legend\">\n  <span class=\"trial-legend-item\">系統／契約路徑</span>\n  <span class=\"trial-legend-item--gap\">契約落差</span>\n  <span class=\"trial-legend-item--boundary\">案例邊界</span>\n</div>\n\n<div class=\"trial-reveal-stack\">\n  <div class=\"trial-reveal-note trial-reveal-note--gap\" v-click=\"1\">先看落差：人類可讀文字在既有 Consumer 前形成 Unknown message code。</div>\n  <div class=\"trial-reveal-note\" v-click=\"2\">再看相容：m0001 沿著既有 message catalog 被 Consumer 解析。</div>\n</div>\n\n<!--\nPRESENTER NOTES:\nOpening: fromDate without toDate creates the invalid-query case.\nKey points:\n- message 不是自由文字，而是既有 Consumer 可識別的訊息代碼。\n- AI-direct 的人類可讀文字無法被既有 Consumer 解析。\n- Project-convention 的 m0001 可以被既有 Consumer 解析。\nEvidence: application.ts; domain.ts; existing-consumer.ts; message-catalog.ts; browser.test.mjs, all from PR #13 revision e8ae8ad3.\nLimitation: Browser MSW 的 Chromium 合成案例；不是外部 API Server 或真實資料庫執行證據。\nTransition: 從對外 Response 的契約，擴展到內部架構與命名的責任分層。\nTiming: variable; main talk excludes Q&A.\n-->\n\n<!-- TODO: Visual opportunity - HIGH · implemented in Visuals\nType: Mermaid branching contract diagram with semantic triad and v-click annotations.\nSuggestion: The diagram replaces the repeated response/path text; reveal the incompatibility before the compatible message-code path.\nElement count: 6 diagram nodes + 2 narrative annotations = 8.\n-->"
+      },
+      "projected": {"elements": 1, "words": 18}
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "no": 6,
+  "density": "sparse",
+  "intentional": false,
+  "reason": "The comparison, acceptance gate, and takeaway are clear and reach below the middle, but the rendered slide leaves a broad unused lower band and falls below the fill threshold.",
+  "fixes": [
+    {
+      "id": "zoom",
+      "kind": "auto",
+      "summary": "Scale the slide to 1.1 so the existing comparison and takeaway occupy more of the canvas.",
+      "change": {"zoom": 1.1},
+      "projected": {"elements": 0, "words": 25}
+    }
+  ]
+}

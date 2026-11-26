@@ -1,5 +1,6 @@
 ---
 layout: default
+zoom: 1.1
 ---
 
 <div class="trial-kicker">Slide 6 · 第一章 · 02 · B2 → B3</div>

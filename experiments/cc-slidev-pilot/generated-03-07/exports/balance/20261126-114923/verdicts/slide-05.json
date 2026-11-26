@@ -1,0 +1,17 @@
+{
+  "no": 5,
+  "density": "balanced",
+  "intentional": false,
+  "reason": "The diagram and two annotations fill the canvas with strong vertical spread and no clipping, so the overall density is balanced. However, the diagram labels are visibly small, matching the 9.39pt minimum and the small-labels flag.",
+  "fixes": [
+    {
+      "id": "diagram-resize",
+      "kind": "approval",
+      "summary": "Increase Mermaid diagram label sizing to 19px and shorten only existing node labels so the diagram remains readable within the canvas.",
+      "change": {
+        "markdown": "<div class=\"trial-kicker\">Slide 6 · 第一章 · 02 · B2 → B3</div>\n\n# 既有契約也藏在命名與責任分層\n\n<span class=\"trial-diagram--compact\"></span>\n\n```mermaid\n%%{init: {\"theme\": \"base\", \"themeVariables\": {\"fontFamily\": \"Arial, Helvetica, sans-serif\", \"fontSize\": \"19px\", \"primaryTextColor\": \"#1f2937\", \"lineColor\": \"#4b5563\"}}}%%\nflowchart LR\n  subgraph Direct[\"AI-direct\"]\n    direction LR\n    D1[\"Controller\"]:::system --> D2[\"Repository\"]:::system --> D3[\"SQL\"]:::system\n  end\n  subgraph Convention[\"Project-convention\"]\n    direction LR\n    P1[\"Controller\"]:::system --> P2[\"Service\"]:::system --> P3[\"Dao\"]:::system --> P4[\"ORM\"]:::system\n  end\n  T[\"Shared bounded transport<br/>DbTransport → Browser MSW<br/>受限 SQL evaluator → fixtures/orders.json\"]:::boundary\n  D3 --> T\n  P4 --> T\n  classDef system fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1f2937;\n  classDef boundary fill:#f3f4f6,stroke:#4b5563,stroke-width:1.5px,color:#1f2937;\n```\n\n<div class=\"trial-legend\">\n  <span class=\"trial-legend-item\">系統／責任路徑</span>\n  <span class=\"trial-legend-item--boundary\">共同案例邊界</span>\n</div>\n\n<div class=\"trial-reveal-stack\">\n  <div class=\"trial-reveal-note\" v-click=\"1\">命名與責任：兩條實作路徑不同，但都沿著可辨識的模組責任合作。</div>\n  <div class=\"trial-reveal-note trial-reveal-note--boundary\" v-click=\"2\">共同邊界：兩條路徑最後都進入同一個 bounded transport；這不是 production database 證據。</div>\n</div>\n\n<!--\nPRESENTER NOTES:\nKey points:\n- 交付相容性也包含既有命名、責任與依賴分層。\n- 兩條路徑不是獨立的技術優劣比較，而是既有專案慣例如何影響交付。\n- 共同案例路徑使用 Browser MSW 與受限 SQL evaluator。\nEvidence: application.ts; worker.ts; README.md from PR #13 revision e8ae8ad3.\nLimitation: 這是案例中的合理分層，不表示層數越多越好；不是真實資料庫執行證據。\nTransition: 當我們用這些既有約定驗收，才看見交辦與規格之間的落差。\n-->"
+      },
+      "projected": {"elements": 1, "words": 15}
+    }
+  ]
+}
