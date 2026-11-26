@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900" role="img" aria-labelledby="title desc">
+  <title id="title">Factored common response values; message remains path-specific</title>
+  <desc id="desc">The same invalid query produces two distinct responses. HTTP status 400, code INVALID_QUERY, and data null are factored into a common visual structure that applies to both response objects. AI-direct keeps raw message text and fails the existing Consumer lookup; Project-convention keeps m0001 and resolves successfully.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#2b2b29"/>
+    </marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#d0d0ca" stroke-width="2"/>
+    </pattern>
+    <style>
+      .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}
+      .mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}
+      .ink{fill:#242422}
+      .muted{fill:#686863}
+      .soft{fill:#f0f0ed}
+      .paper{fill:#fbfbf9}
+      .rule{stroke:#b8b8b2;stroke-width:2}
+      .ink-rule{stroke:#2b2b29;stroke-width:2}
+      .dash-rule{stroke:#74746e;stroke-width:2;stroke-dasharray:7 6}
+      .eyebrow{font-size:15px;letter-spacing:2.2px;font-weight:700}
+      .small{font-size:16px}
+      .body{font-size:19px}
+      .mono-body{font-size:18px}
+      .label{font-size:17px;font-weight:700}
+    </style>
+  </defs>
+
+  <rect width="1500" height="900" fill="#f7f7f4"/>
+
+  <text x="70" y="54" class="sans muted eyebrow">S04 · ERROR RESPONSE</text>
+  <text x="1430" y="54" text-anchor="end" class="sans muted eyebrow">MESSAGE CONTRACT</text>
+  <text x="70" y="108" class="sans ink" font-size="38" font-weight="700">同一個 invalid query，message 決定既有 Consumer 能否解析</text>
+  <text x="70" y="142" class="sans muted body">兩個 response 的錯誤分類相同；差異只在 message 是否是既有 catalog 可識別的 key。</text>
+
+  <!-- shared invalid request -->
+  <g transform="translate(70 286)">
+    <rect width="300" height="140" rx="14" class="paper" stroke="#2b2b29" stroke-width="2"/>
+    <text x="24" y="31" class="sans ink eyebrow">SAME INVALID REQUEST</text>
+    <text x="24" y="75" class="mono ink mono-body">?fromDate=2026-01-01</text>
+    <text x="24" y="105" class="mono muted mono-body">toDate: missing</text>
+    <line x1="24" y1="118" x2="276" y2="118" class="rule"/>
+    <text x="24" y="132" class="sans muted" font-size="14">one input · two response objects</text>
+  </g>
+
+  <!-- one input branches to two distinct response objects -->
+  <path d="M370 356H392V507H420" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+  <path d="M392 356V645H420" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+  <circle cx="392" cy="356" r="5" fill="#2b2b29"/>
+  <text x="70" y="260" class="sans muted small">same input · two objects</text>
+
+  <!-- factored common values and two separate message-bearing responses -->
+  <g transform="translate(420 164)">
+    <rect width="520" height="566" rx="16" class="paper" stroke="#b8b8b2" stroke-width="2"/>
+    <text x="28" y="34" class="sans ink eyebrow">FACTORED VIEW</text>
+    <text x="492" y="34" text-anchor="end" class="sans muted small">separate response objects</text>
+    <line x1="28" y1="54" x2="492" y2="54" class="rule"/>
+
+    <!-- extracted common structure -->
+    <rect x="28" y="82" width="464" height="154" rx="10" fill="#ededeb" stroke="#b8b8b2" stroke-width="2"/>
+    <text x="46" y="109" class="sans ink eyebrow">COMMON VALUES · IN BOTH RESPONSES</text>
+    <text x="46" y="134" class="sans muted" font-size="14">factored visual · not a shared response instance</text>
+    <line x1="46" y1="148" x2="474" y2="148" class="rule"/>
+    <text x="46" y="175" class="sans muted" font-size="14">TRANSPORT</text>
+    <text x="190" y="175" class="mono ink" font-size="17">HTTP status: 400</text>
+    <text x="46" y="202" class="sans muted" font-size="14">RESPONSE BODY</text>
+    <text x="190" y="202" class="mono ink" font-size="17">code: INVALID_QUERY</text>
+    <text x="190" y="225" class="mono ink" font-size="17">data: null</text>
+
+    <text x="28" y="270" class="sans muted small">message remains a separate field on each response</text>
+
+    <!-- AI-direct response keeps its raw message -->
+    <text x="28" y="304" class="sans ink label">AI-direct response</text>
+    <rect x="28" y="318" width="464" height="100" rx="10" fill="url(#hatch)" stroke="#74746e" stroke-width="2" stroke-dasharray="7 6"/>
+    <text x="46" y="345" class="mono muted" font-size="15">message · raw text · separate field</text>
+    <text x="46" y="373" class="mono ink" font-size="15">fromDate and toDate</text>
+    <text x="46" y="396" class="mono ink" font-size="15">must be supplied together</text>
+
+    <!-- Project-convention response keeps its catalog key -->
+    <text x="28" y="442" class="sans ink label">Project-convention response</text>
+    <rect x="28" y="456" width="464" height="100" rx="10" fill="#fbfbf9" stroke="#2b2b29" stroke-width="2"/>
+    <text x="46" y="483" class="mono muted" font-size="15">message · catalog key · separate field</text>
+    <text x="46" y="529" class="mono ink" font-size="31" font-weight="700">m0001</text>
+  </g>
+
+  <!-- message paths enter one Consumer boundary -->
+  <path d="M912 507C950 507 972 430 1000 430" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+  <path d="M912 645C950 645 972 605 1000 605" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+  <text x="914" y="493" class="sans muted" font-size="14">message as key</text>
+  <text x="914" y="632" class="sans muted" font-size="14">message as key</text>
+
+  <!-- shared Consumer and catalog -->
+  <g transform="translate(1000 164)">
+    <rect width="430" height="566" rx="16" class="paper" stroke="#2b2b29" stroke-width="2"/>
+    <text x="28" y="34" class="sans ink eyebrow">EXISTING ERROR CONSUMER</text>
+    <text x="28" y="62" class="sans muted small">lookup only: message → MESSAGE_CATALOG</text>
+    <line x1="28" y1="82" x2="402" y2="82" class="rule"/>
+
+    <rect x="28" y="104" width="374" height="82" rx="10" fill="#ededeb" stroke="#b8b8b2" stroke-width="2"/>
+    <text x="46" y="131" class="sans muted small">MESSAGE_CATALOG</text>
+    <text x="46" y="163" class="mono ink" font-size="18">m0001  →  查詢條件不合法</text>
+
+    <!-- failed lookup -->
+    <text x="28" y="235" class="sans ink label">AI-direct</text>
+    <rect x="28" y="250" width="120" height="32" rx="16" fill="#fbfbf9" stroke="#74746e" stroke-width="2" stroke-dasharray="6 5"/>
+    <text x="88" y="271" text-anchor="middle" class="mono muted" font-size="15">raw text</text>
+    <path d="M148 266H179" class="dash-rule" marker-end="url(#arrow)"/>
+    <rect x="184" y="250" width="218" height="32" rx="16" fill="url(#hatch)" stroke="#74746e" stroke-width="2"/>
+    <text x="293" y="271" text-anchor="middle" class="sans ink" font-size="15">×  catalog miss</text>
+    <rect x="28" y="295" width="374" height="72" rx="10" fill="#f1f1ee" stroke="#74746e" stroke-width="2"/>
+    <text x="46" y="323" class="sans ink" font-size="17" font-weight="700">incompatible · Unknown message code</text>
+    <text x="46" y="349" class="mono muted" font-size="16">consumed: null</text>
+
+    <!-- successful lookup -->
+    <text x="28" y="410" class="sans ink label">Project-convention</text>
+    <rect x="28" y="425" width="120" height="32" rx="16" fill="#fbfbf9" stroke="#2b2b29" stroke-width="2"/>
+    <text x="88" y="446" text-anchor="middle" class="mono ink" font-size="16">m0001</text>
+    <path d="M148 441H179" class="ink-rule" marker-end="url(#arrow)"/>
+    <rect x="184" y="425" width="218" height="32" rx="16" fill="#2b2b29"/>
+    <text x="293" y="446" text-anchor="middle" class="sans" fill="#fbfbf9" font-size="15">✓  catalog hit</text>
+    <rect x="28" y="470" width="374" height="72" rx="10" fill="#fbfbf9" stroke="#2b2b29" stroke-width="2"/>
+    <text x="46" y="498" class="sans ink" font-size="17" font-weight="700">compatible · message code resolved</text>
+    <text x="46" y="524" class="sans ink" font-size="16">displayMessage: 查詢條件不合法</text>
+  </g>
+
+  <text x="70" y="826" class="sans muted small">共同的 status、code、data 被抽取為一個視覺結構；兩個獨立 response 仍各自攜帶不同 message。</text>
+</svg>
