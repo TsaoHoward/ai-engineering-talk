@@ -187,3 +187,49 @@
 - State 2 PNG 與對應 SVG 描述的物件集合不一致，無法確定後續 refinement 應針對哪一個已成立的狀態進行。
 
 其餘問題目前屬於 Trade-off 或 Uncertainty，沒有另行構成阻擋。本文件不提出修正稿、替代構圖、新狀態、完整設計計畫或 Visual Refinement 操作；在上述兩項 blocker 被釐清前，不對序列做進一步設計判斷。
+
+## Evidence Verification｜D3.4a
+
+本節是針對本文件前述「State 2 PNG／SVG 不一致」觀察的受限證據核對；保留原始 D3.4 紀錄，不重新執行完整 Design Critique，也不修改任何 SVG／PNG。
+
+### Commit 與 Git Blob 核對
+
+| Commit | `state-02.svg` Blob SHA | `state-02.png` Blob SHA |
+| --- | --- | --- |
+| `2506041` (`25060417b979af81306a1aaeaf13ae6361092d78`) | `032ff841e4f52692b2e28aec27d82a640a00089f` | `bfeee1b84484b7433b905b0b19236d4dd4c9ac05` |
+| `214e118` (`214e1183cd8ce0321aaf0004a3a20634d51bfecf`) | `032ff841e4f52692b2e28aec27d82a640a00089f` | `bfeee1b84484b7433b905b0b19236d4dd4c9ac05` |
+
+工作樹中兩個檔案的 `git hash-object` 也分別等於上述 Blob SHA。也就是說，D3.4 審查所針對的素材在 `2506041` 與 `214e118` 之間沒有變更；`214e118` 只新增本審查文件。
+
+### 渲染與像素比較方法
+
+- 直接觀看工作樹中、且已由 Blob SHA 確認等於 `214e118` 的原始 [`state-02.png`](./sequence/state-02.png)。
+- 使用 repository 已存在的 Playwright／Chromium 渲染環境，以 headless Chromium、viewport `1600×900`、`deviceScaleFactor: 1`，從 [`state-02.svg`](./sequence/state-02.svg) 產生暫存檔 `/tmp/d3-4a-state-02-from-svg.png`。
+- 使用一次性的 Node 輸出程序解碼兩個 PNG：讀取 PNG `IHDR`、解壓 `IDAT`，還原非交錯 8-bit RGB scanline filter，並比較解碼後的 RGB 像素 buffer。沒有新增永久性驗證工具、CI/CD 或 repository script。
+
+### 實際核對結果
+
+| 核對項目 | 提交 PNG 結果 |
+| --- | --- |
+| 尺寸 | `1600×900` |
+| PNG 格式 | 8-bit RGB、non-interlaced |
+| 對應 SVG 渲染結果尺寸 | `1600×900` |
+| 原始 PNG bytes 與渲染 PNG bytes | 相同 |
+| 解碼後像素 | 完全相同；`0` differing pixels、`0` differing channels、最大 channel delta `0` |
+
+逐項觀看並對照 SVG source 後，提交的原始 PNG 確實包含：
+
+- `Same invalid request`：上方置中的 request card，含 `?fromDate=2026-01-01`、`GET /orders` 與 `toDate: missing`。
+- `HTTP status: 400`、`code: INVALID_QUERY`、`data: null`：比較框內的 `COMMON ERROR ENVELOPE ON EACH RESPONSE` 區塊。
+- `Response comparison frame`：外層圓角框，標示 `TWO RESPONSE OBJECTS · SAME INPUT`，並包住共同 error envelope 與兩個 response cards。
+
+SVG source 也以相同座標與文字定義上述物件：request 位於其 `translate(520 145)` 群組，comparison frame 位於 `translate(60 245)` 群組；共同 envelope 及三個共同欄位位於該 frame 內。由於 SVG 重渲染後與提交 PNG 的解碼像素完全相同，不能把「缺少這些資訊物件」解讀成渲染環境差異。
+
+### Blocker 判定更新
+
+本次證據不支持 D3.4 提出的兩項 blocker：
+
+1. **「State 1 → 2 的共同基準不持續」：不成立。** 提交的 State 2 PNG 實際保留 same invalid request、共同 error envelope、`HTTP 400`、`INVALID_QUERY` 與 `data: null`；前述缺失觀察不是提交素材的可重現結果。
+2. **「State 2 的 PNG／SVG 不一致」：不成立。** 兩個 commit 的 Blob SHA 相同，且從 SVG 重渲染出的 PNG 與提交 PNG 在尺寸、原始 bytes 及解碼像素上完全一致。
+
+因此，針對 D3.4a 所核對的 State 2 證據，更新後的阻擋判斷是：**兩項 blocker 均解除。** D3.4 文件中「目前不適合進入 Visual Refinement」的結論若僅以這兩項 State 2 證據為理由，應視為被本節更正；本節不重新判定其他未測試的投影可讀性、mapping trade-off 或觀眾理解風險，也不因此執行 Visual Refinement。
