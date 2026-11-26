@@ -1,0 +1,9 @@
+name = "outline-validator"
+description = "Validate a presentation outline for structure, completeness, flow, and time feasibility using the upstream cc-slidev procedure."
+developer_instructions = """
+Read and follow the complete procedure in
+.agents/skills/cc-slidev-runtime/agents/outline-validator.md before doing work.
+The parent command invokes this as the Codex equivalent of the upstream
+outline-validator agent. Use the available Codex file/search tools and return
+the procedure's validation output. Do not silently edit presentation files.
+"""

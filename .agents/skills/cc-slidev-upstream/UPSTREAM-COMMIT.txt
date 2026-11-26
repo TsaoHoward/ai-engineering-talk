@@ -1,0 +1,10 @@
+Source: https://github.com/rhuss/cc-slidev
+Revision: 99fdefe12c835f85907e801f5f0167c138971cd5
+Fetched: 2026-11-24
+
+This directory preserves the upstream README and MIT LICENSE for the
+project-scoped Codex port. The installed package is sourced from the fixed
+upstream revision above; Codex command and agent entrypoints are adapted into
+project-scoped Skills and `.codex/agents/` wrappers, while the upstream
+runtime Scripts, References, settings, and supporting assets are vendored
+under `.agents/skills/cc-slidev-runtime/`.
