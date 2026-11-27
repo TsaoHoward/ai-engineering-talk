@@ -116,3 +116,27 @@
 - **表示意圖是否需猜測：** 策略原理、必要單元、共享規則與語意約束已明示，不應需要下游猜測「為何共用 Consumer」或「為何結果不同」。下游仍需自行完成的是上述 Construction 決策，而非補推表示語意。
 
 本文件只建立兩個候選表示策略；尚未評選優勝方案，也未驗證下游交接是否成功。實際交接與後續比較留待指定的下一個研究步驟。
+
+## 5. Construction Handoff Record
+
+### A｜Shared-rule dual trace
+
+- **Inherited Decisions：** 保留同一 `Invalid query request`、兩個獨立 response、共同 `HTTP 400`／`code: INVALID_QUERY`／`data: null`、同一個 `Existing error Consumer`、同一個 `MESSAGE_CATALOG` 與同一條 `message → MESSAGE_CATALOG` lookup rule。兩條 trace 分別保留 raw text／catalog miss／`Unknown message code`／`incompatible`／`consumed: null`，以及 `m0001`／catalog hit／`compatible`／`displayMessage: 查詢條件不合法`。
+- **Construction Decisions：** 以同一大小的左側構造區域放置共同 query card、兩張 response card、單一共享 rule card、單一 catalog card 與兩張 outcome card。由兩個 response 的 `message` 分別以方向線進入共享 rule，再以標示為 trace A／B 的分流連線對應 catalog miss／hit 與各自 outcome；共同 envelope 在兩張 response card 中重複列出以維持每筆 response 的完整性。
+
+### B｜Shared-rule relational comparison
+
+- **Inherited Decisions：** 保留同一 query、兩筆不可合併的 response record、對齊的共同 envelope、各自的 exact `message` value 與 semantic role、同一 Consumer／catalog／lookup rule、`m0001 → 查詢條件不合法`、miss／hit 與各自 Consumer outcome。`compatible`／`incompatible` 僅作為 Consumer compatibility 結果。
+- **Construction Decisions：** 以同一大小的右側構造區域放置兩個等寬、同欄位順序的 response record，將 API envelope、message role/value、lookup result 與 Consumer outcome 作垂直對齊；在下方放置單一 shared contract card，以虛線參照連接兩筆 record，不使用流程箭頭，維持「欄位對照」而非「執行順序」的讀法。
+
+### Handoff Gaps、假設與 blocker
+
+- 規格未決定座標、尺寸、文字換行、容器樣式、連線路徑、共享單元的具體位置與文字層級；本次由 Construction 自行決定上述幾何與排版。
+- 小型假設：兩個策略各使用一個 760×862 的 panel，整張 Study Sheet 為 1600×1000；統一採 Arial／Noto Sans 系列與灰階；raw text 在必要處換成兩行。A 將共享 Consumer／catalog 集中成單一節點，B 將共享契約置於兩筆 record 下方；這些是假設性的具體構造，不改變表示策略或語意限制。
+- 未發現需要修改 Representation Strategy 或 Semantic Constraints 的 blocker；本次未重新選擇表示策略、未評選方案，也未形成 Separate／Retain／Defer 判定。
+
+### Artifact Verification
+
+- **Artifact Evidence：** `comparison.svg` 的實際尺寸為 `1600×1000`、`viewBox="0 0 1600 1000"`；以 Playwright Chromium headless、viewport `1600×1000`、device scale factor `1` 載入 SVG 產生 `comparison.png`。SVG 載入無 page error／console error，頁面內含 88 個文字節點。
+- **Visual Check：** 檢視 fresh render 後，未見文字溢出、畫布裁切、非預期重疊；A 的方向連線未穿越主要文字，B 的虛線參照未被構造成流程箭頭。此為構造檢查，不等同於觀眾理解已被驗證。
+- **Fresh Render Check：** fresh SVG render 的 PNG 與交付 PNG 均為 `1600×1000`、8-bit RGB、non-interlaced；兩者 SHA-256 同為 `c16887971641f0fb70fcda30562ca0080bcd4c04ccf069a67700fe4f2c480456`。

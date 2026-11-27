@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <title>S04 Representation Study — Graphic Construction Handoff</title>
+  <desc>Two low-fidelity constructions of the same message lookup contract. A is an execution trace; B is a relational record comparison.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b4d4d"/>
+    </marker>
+    <style>
+      .sheet { fill: #ffffff; }
+      .panel { fill: #fafaf8; stroke: #242626; stroke-width: 2; }
+      .card { fill: #f1f1ee; stroke: #474949; stroke-width: 1.5; }
+      .shared { fill: #e4e4e0; stroke: #303232; stroke-width: 1.8; }
+      .outcome-a { fill: #eeeeeb; stroke: #474949; stroke-width: 1.5; }
+      .outcome-b { fill: #e2e2de; stroke: #303232; stroke-width: 1.5; }
+      .rule { stroke: #4b4d4d; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .ref { stroke: #6c6e6e; stroke-width: 1.8; stroke-dasharray: 7 6; fill: none; }
+      .guide { stroke: #a2a4a2; stroke-width: 1; fill: none; }
+      .divider { stroke: #a2a4a2; stroke-width: 1; }
+      .title { font-family: Arial, "Noto Sans", sans-serif; font-size: 27px; font-weight: 700; fill: #1e2020; letter-spacing: 0.2px; }
+      .panel-title { font-family: Arial, "Noto Sans", sans-serif; font-size: 20px; font-weight: 700; fill: #1e2020; letter-spacing: 0.5px; }
+      .subhead { font-family: Arial, "Noto Sans", sans-serif; font-size: 14px; font-weight: 700; fill: #414343; letter-spacing: 0.8px; }
+      .body { font-family: Arial, "Noto Sans", sans-serif; font-size: 15px; fill: #242626; }
+      .body-small { font-family: Arial, "Noto Sans", sans-serif; font-size: 13px; fill: #363838; }
+      .body-tiny { font-family: Arial, "Noto Sans", sans-serif; font-size: 12px; fill: #5b5d5d; }
+      .mono { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-size: 14px; fill: #1e2020; }
+      .mono-small { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-size: 12px; fill: #1e2020; }
+      .label { font-family: Arial, "Noto Sans", sans-serif; font-size: 12px; font-weight: 700; fill: #5b5d5d; letter-spacing: 0.5px; }
+      .tag { fill: #d7d7d3; stroke: #8a8c8a; stroke-width: 1; }
+      .tag-text { font-family: Arial, "Noto Sans", sans-serif; font-size: 12px; font-weight: 700; fill: #343636; }
+      .center { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="sheet" x="0" y="0" width="1600" height="1000"/>
+  <text class="title" x="40" y="44">S04 · Representation Study / Graphic Construction Handoff</text>
+  <text class="body-small" x="40" y="70">Same invalid query · same API error envelope · one Existing error Consumer · one MESSAGE_CATALOG</text>
+
+  <!-- A: execution trace -->
+  <rect class="panel" x="40" y="94" width="760" height="862" rx="4"/>
+  <text class="panel-title" x="64" y="128">A · SHARED-RULE DUAL TRACE</text>
+  <text class="body-small" x="64" y="148">Representation principle: each message is executed independently through the same lookup rule.</text>
+
+  <rect class="shared" x="64" y="166" width="712" height="70" rx="3"/>
+  <text class="subhead" x="82" y="188">ONE INVALID QUERY / TWO INDEPENDENT RESPONSES</text>
+  <text class="mono" x="82" y="213">?fromDate=2026-01-01</text>
+  <text class="body-small" x="328" y="213">toDate missing · same input case</text>
+
+  <!-- response A -->
+  <rect class="card" x="64" y="260" width="340" height="164" rx="3"/>
+  <text class="subhead" x="82" y="285">AI-DIRECT RESPONSE</text>
+  <text class="label" x="82" y="305">SHARED API ERROR ENVELOPE</text>
+  <text class="mono-small" x="82" y="324">HTTP 400 · code: INVALID_QUERY</text>
+  <text class="mono-small" x="82" y="341">data: null</text>
+  <line class="divider" x1="82" y1="350" x2="386" y2="350"/>
+  <text class="label" x="82" y="368">message · RAW ERROR DETAIL</text>
+  <text class="mono-small" x="82" y="387">fromDate and toDate must be</text>
+  <text class="mono-small" x="82" y="403">supplied together</text>
+
+  <!-- response B -->
+  <rect class="card" x="436" y="260" width="340" height="164" rx="3"/>
+  <text class="subhead" x="454" y="285">PROJECT-CONVENTION RESPONSE</text>
+  <text class="label" x="454" y="305">SHARED API ERROR ENVELOPE</text>
+  <text class="mono-small" x="454" y="324">HTTP 400 · code: INVALID_QUERY</text>
+  <text class="mono-small" x="454" y="341">data: null</text>
+  <line class="divider" x1="454" y1="350" x2="758" y2="350"/>
+  <text class="label" x="454" y="368">message · CATALOG KEY</text>
+  <text class="mono" x="454" y="395">m0001</text>
+
+  <!-- two trace references into one shared rule -->
+  <path class="rule" d="M 234 424 L 234 458"/>
+  <path class="rule" d="M 606 424 L 606 458"/>
+  <text class="body-tiny center" x="234" y="448">lookup input A</text>
+  <text class="body-tiny center" x="606" y="448">lookup input B</text>
+
+  <rect class="shared" x="118" y="458" width="604" height="92" rx="3"/>
+  <text class="subhead center" x="420" y="482">ONE SHARED RULE</text>
+  <text class="body center" x="420" y="507">Existing error Consumer</text>
+  <text class="mono-small center" x="420" y="530">for each response: message → MESSAGE_CATALOG</text>
+
+  <!-- shared catalog operator with two independent trace rows -->
+  <path class="rule" d="M 318 550 L 318 582"/>
+  <path class="rule" d="M 522 550 L 522 582"/>
+  <text class="body-tiny center" x="318" y="572">trace A</text>
+  <text class="body-tiny center" x="522" y="572">trace B</text>
+
+  <rect class="shared" x="118" y="582" width="604" height="102" rx="3"/>
+  <text class="subhead center" x="420" y="606">ONE MESSAGE_CATALOG</text>
+  <text class="mono-small" x="138" y="632">A · raw text → miss</text>
+  <text class="mono-small" x="138" y="653">no matching key → Unknown message code</text>
+  <text class="mono-small" x="430" y="632">B · m0001 → hit</text>
+  <text class="mono-small" x="430" y="653">m0001 → 查詢條件不合法</text>
+
+  <!-- outcomes -->
+  <path class="rule" d="M 234 684 L 234 722"/>
+  <path class="rule" d="M 606 684 L 606 722"/>
+  <rect class="outcome-a" x="64" y="722" width="340" height="154" rx="3"/>
+  <rect class="outcome-b" x="436" y="722" width="340" height="154" rx="3"/>
+  <text class="subhead" x="82" y="748">TRACE A · CONSUMER OUTCOME</text>
+  <text class="body" x="82" y="773">catalog miss</text>
+  <text class="mono-small" x="82" y="797">Unknown message code</text>
+  <text class="mono-small" x="82" y="819">incompatible · consumed: null</text>
+  <text class="body-tiny" x="82" y="850">API error remains HTTP 400 / INVALID_QUERY.</text>
+
+  <text class="subhead" x="454" y="748">TRACE B · CONSUMER OUTCOME</text>
+  <text class="body" x="454" y="773">catalog hit</text>
+  <text class="mono-small" x="454" y="797">compatible</text>
+  <text class="mono-small" x="454" y="819">displayMessage: 查詢條件不合法</text>
+  <text class="body-tiny" x="454" y="850">API error remains HTTP 400 / INVALID_QUERY.</text>
+
+  <text class="body-tiny center" x="420" y="918">Two traces · one Consumer · one catalog · separate inputs and outcomes</text>
+
+  <!-- B: relational record comparison -->
+  <rect class="panel" x="800" y="94" width="760" height="862" rx="4"/>
+  <text class="panel-title" x="824" y="128">B · SHARED-RULE RELATIONAL COMPARISON</text>
+  <text class="body-small" x="824" y="148">Representation principle: two independent records align on invariant and relational fields.</text>
+
+  <rect class="shared" x="824" y="166" width="712" height="70" rx="3"/>
+  <text class="subhead" x="842" y="188">ONE CASE IDENTIFIER / TWO RECORDS</text>
+  <text class="mono" x="842" y="213">?fromDate=2026-01-01</text>
+  <text class="body-small" x="1088" y="213">toDate missing · same input case</text>
+
+  <!-- record columns -->
+  <rect class="card" x="824" y="260" width="340" height="420" rx="3"/>
+  <rect class="card" x="1196" y="260" width="340" height="420" rx="3"/>
+
+  <text class="subhead" x="842" y="285">AI-DIRECT RESPONSE</text>
+  <text class="subhead" x="1214" y="285">PROJECT-CONVENTION RESPONSE</text>
+
+  <text class="label" x="842" y="309">API ENVELOPE · SAME VALUE</text>
+  <text class="mono-small" x="842" y="330">HTTP 400</text>
+  <text class="mono-small" x="842" y="347">code: INVALID_QUERY</text>
+  <text class="mono-small" x="842" y="364">data: null</text>
+  <text class="label" x="1214" y="309">API ENVELOPE · SAME VALUE</text>
+  <text class="mono-small" x="1214" y="330">HTTP 400</text>
+  <text class="mono-small" x="1214" y="347">code: INVALID_QUERY</text>
+  <text class="mono-small" x="1214" y="364">data: null</text>
+  <line class="divider" x1="842" y1="377" x2="1146" y2="377"/>
+  <line class="divider" x1="1214" y1="377" x2="1518" y2="377"/>
+
+  <text class="label" x="842" y="399">message · RAW ERROR DETAIL</text>
+  <text class="mono-small" x="842" y="421">fromDate and toDate must be</text>
+  <text class="mono-small" x="842" y="438">supplied together</text>
+  <text class="label" x="842" y="461">semantic role: raw error detail</text>
+  <text class="label" x="1214" y="399">message · CATALOG KEY</text>
+  <text class="mono" x="1214" y="429">m0001</text>
+  <text class="label" x="1214" y="461">semantic role: message catalog key</text>
+  <line class="divider" x1="842" y1="477" x2="1146" y2="477"/>
+  <line class="divider" x1="1214" y1="477" x2="1518" y2="477"/>
+
+  <text class="label" x="842" y="499">LOOKUP UNDER SHARED RULE</text>
+  <rect class="tag" x="842" y="512" width="110" height="26" rx="13"/>
+  <text class="tag-text center" x="897" y="530">catalog miss</text>
+  <text class="body-tiny" x="842" y="558">not a key in MESSAGE_CATALOG</text>
+  <text class="label" x="1214" y="499">LOOKUP UNDER SHARED RULE</text>
+  <rect class="tag" x="1214" y="512" width="92" height="26" rx="13"/>
+  <text class="tag-text center" x="1260" y="530">catalog hit</text>
+  <text class="body-tiny" x="1214" y="558">m0001 is a catalog entry</text>
+  <line class="divider" x1="842" y1="574" x2="1146" y2="574"/>
+  <line class="divider" x1="1214" y1="574" x2="1518" y2="574"/>
+
+  <text class="label" x="842" y="596">CONSUMER OUTCOME</text>
+  <text class="mono-small" x="842" y="618">Unknown message code</text>
+  <text class="mono-small" x="842" y="638">incompatible</text>
+  <text class="mono-small" x="842" y="658">consumed: null</text>
+  <text class="label" x="1214" y="596">CONSUMER OUTCOME</text>
+  <text class="mono-small" x="1214" y="618">compatible</text>
+  <text class="mono-small" x="1214" y="638">displayMessage:</text>
+  <text class="mono-small" x="1214" y="658">查詢條件不合法</text>
+
+  <!-- references from two records to one shared contract; no sequence arrow -->
+  <path class="ref" d="M 994 680 L 994 716"/>
+  <path class="ref" d="M 1366 680 L 1366 716"/>
+  <text class="body-tiny center" x="994" y="704">references one rule</text>
+  <text class="body-tiny center" x="1366" y="704">references one rule</text>
+
+  <rect class="shared" x="824" y="716" width="712" height="168" rx="3"/>
+  <text class="subhead center" x="1180" y="741">ONE SHARED CONTRACT</text>
+  <text class="body center" x="1180" y="765">Existing error Consumer</text>
+  <text class="mono-small center" x="1180" y="786">message → MESSAGE_CATALOG</text>
+  <line class="divider" x1="842" y1="800" x2="1518" y2="800"/>
+  <text class="mono-small" x="862" y="823">m0001 → 查詢條件不合法</text>
+  <text class="mono-small" x="1214" y="823">no key → Unknown message code</text>
+  <text class="body-tiny center" x="1180" y="855">Both records use this one rule and one catalog; rows remain separate.</text>
+
+  <text class="body-tiny center" x="1180" y="918">Two records · aligned invariants · shared relation · no merged response</text>
+</svg>
