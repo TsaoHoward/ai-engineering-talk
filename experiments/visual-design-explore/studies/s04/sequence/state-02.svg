@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">S04 State 2: message values differ</title>
+  <desc id="desc">The same invalid request and common API error envelope remain. The AI-direct response now shows raw error detail, while the Project-convention response shows m0001 as a message code. Consumer lookup results are not shown yet.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#2b2b29"/>
+    </marker>
+    <style>
+      .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}
+      .mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}
+      .ink{fill:#242422}
+      .muted{fill:#686863}
+      .paper{fill:#fbfbf9}
+      .soft{fill:#ededeb}
+      .rule{stroke:#b8b8b2;stroke-width:2}
+      .ink-rule{stroke:#2b2b29;stroke-width:2.2}
+      .guide-rule{stroke:#8b8b85;stroke-width:1.8;stroke-dasharray:5 6}
+      .eyebrow{font-size:15px;letter-spacing:2px;font-weight:700}
+      .small{font-size:16px}
+      .body{font-size:18px}
+      .label{font-size:17px;font-weight:700}
+      .mono-body{font-size:18px}
+      .mono-small{font-size:15px}
+      .message-card{fill:#565652;stroke:#2b2b29;stroke-width:2.5}
+      .message-ink{fill:#fbfbf9}
+      .message-muted{fill:#e1e1dc}
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f7f7f4"/>
+
+  <text x="60" y="43" class="sans muted eyebrow">S04 · ERROR RESPONSE</text>
+  <text x="1540" y="43" text-anchor="end" class="sans muted eyebrow">STATE 2 · MESSAGE DIFFERENCE</text>
+  <text x="60" y="89" class="sans ink" font-size="40" font-weight="700">共同 error envelope 不變，message 值不同</text>
+  <text x="60" y="119" class="sans muted body">同一個 invalid query、同一組 API error fields；差異落在 message 的語意。</text>
+
+  <g transform="translate(520 145)">
+    <rect width="560" height="72" rx="12" class="paper" stroke="#2b2b29" stroke-width="2.2"/>
+    <text x="22" y="29" class="sans ink eyebrow">SAME INVALID REQUEST</text>
+    <text x="270" y="29" class="mono ink mono-body">?fromDate=2026-01-01</text>
+    <text x="22" y="56" class="sans muted small">GET /orders</text>
+    <text x="270" y="56" class="mono muted mono-small">toDate: missing</text>
+  </g>
+  <path d="M800 217V245" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+
+  <g transform="translate(60 245)">
+    <rect width="1480" height="500" rx="16" class="paper" stroke="#2b2b29" stroke-width="2.2"/>
+    <text x="28" y="31" class="sans ink eyebrow">TWO RESPONSE OBJECTS · SAME INPUT</text>
+    <text x="1452" y="31" text-anchor="end" class="sans muted small">same error envelope · different message</text>
+    <line x1="28" y1="49" x2="1452" y2="49" class="rule"/>
+
+    <rect x="28" y="67" width="1424" height="72" rx="10" class="soft" stroke="#b8b8b2" stroke-width="2"/>
+    <text x="48" y="92" class="sans ink eyebrow">COMMON ERROR ENVELOPE ON EACH RESPONSE</text>
+    <text x="48" y="119" class="mono ink mono-body">HTTP status: 400</text>
+    <text x="348" y="119" class="mono ink mono-body">code: INVALID_QUERY</text>
+    <text x="735" y="119" class="mono ink mono-body">data: null</text>
+
+    <path d="M382 139V169" fill="none" class="guide-rule"/>
+    <path d="M1098 139V169" fill="none" class="guide-rule"/>
+    <text x="740" y="161" text-anchor="middle" class="sans muted small">only the message value changes</text>
+
+    <g transform="translate(28 183)">
+      <rect width="686" height="218" rx="12" class="message-card"/>
+      <text x="22" y="31" class="sans message-muted eyebrow">RESPONSE A · AI-DIRECT</text>
+      <text x="664" y="31" text-anchor="end" class="sans message-muted small">raw error detail</text>
+      <text x="22" y="76" class="mono message-muted mono-body">message</text>
+      <text x="128" y="76" class="mono message-ink" font-size="22">fromDate and toDate must be</text>
+      <text x="128" y="108" class="mono message-ink" font-size="22">supplied together</text>
+    </g>
+
+    <g transform="translate(766 183)">
+      <rect width="686" height="218" rx="12" class="message-card"/>
+      <text x="22" y="31" class="sans message-muted eyebrow">RESPONSE B · PROJECT-CONVENTION</text>
+      <text x="664" y="31" text-anchor="end" class="sans message-muted small">message code</text>
+      <text x="22" y="76" class="mono message-muted mono-body">message</text>
+      <text x="128" y="108" class="mono message-ink" font-size="42" font-weight="700">m0001</text>
+    </g>
+  </g>
+
+  <text x="60" y="875" class="sans muted small">同一個欄位，兩種語意：raw error detail 與 message code。</text>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot 02 — 先看交辦：功能條件已經在場</title>
+  <desc id="desc">同一個 Order API 查詢卡片固定在左側，右側以四個條件標籤呈現交辦內容，放大鏡仍只聚焦可見功能。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2F6B9A"/></marker></defs>
+  <style>
+    .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}.mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}.ink{fill:#102438}.muted{fill:#667483}.blue{fill:#2F6B9A}.amber{fill:#A95D22}.green{fill:#2F8F66}.line{stroke:#CCD6DD;stroke-width:2}.trace{stroke:#2F6B9A;stroke-width:5;fill:none;stroke-linecap:round}.small{font-size:16px}.body{font-size:21px}.label{font-size:17px;letter-spacing:2px}.card{fill:#FFFFFF;stroke:#CCD6DD;stroke-width:2}.soft{fill:#EEF4F7}.tag{fill:#FFFFFF;stroke:#9DB4C1;stroke-width:2}.dash{fill:none;stroke:#A8BAC5;stroke-width:2;stroke-dasharray:8 9}
+  </style>
+  <rect width="1600" height="900" fill="#F7F8F6"/>
+  <text x="88" y="48" class="sans muted label">DEVELOP / ORDER API · TRACE STORY</text>
+  <text x="1512" y="48" text-anchor="end" class="sans muted label">02 / 06</text>
+  <text x="88" y="114" class="sans ink" font-size="42" font-weight="700">先看交辦：功能條件已經在場</text>
+  <text x="88" y="153" class="sans muted body">這一眼只回答「要做什麼」，不先替專案補完「怎麼接」。</text>
+
+  <line x1="92" y1="230" x2="92" y2="730" class="line"/>
+  <circle cx="92" cy="270" r="6" fill="#CCD6DD"/><circle cx="92" cy="420" r="9" fill="#2F6B9A"/><circle cx="92" cy="570" r="6" fill="#CCD6DD"/><circle cx="92" cy="720" r="6" fill="#CCD6DD"/>
+  <text x="130" y="270" class="sans muted label">VISIBLE BRIEF</text>
+  <text x="130" y="420" class="sans blue label">SAME CASE</text>
+
+  <g transform="translate(145 300)">
+    <rect width="540" height="300" rx="18" class="card"/>
+    <rect width="540" height="54" rx="18" fill="#102438"/><rect y="36" width="540" height="18" fill="#102438"/>
+    <text x="34" y="34" class="sans" font-size="17" fill="#FFFFFF" letter-spacing="1">REQUEST CARD / FIXED ANCHOR</text>
+    <text x="34" y="122" class="mono ink" font-size="26">GET /orders?pageSize=3</text>
+    <line x1="34" y1="148" x2="506" y2="148" class="line"/>
+    <text x="34" y="192" class="sans muted body">新增訂單查詢 API</text>
+    <text x="34" y="232" class="sans muted small">same request through every inspection</text>
+    <rect x="34" y="255" width="136" height="28" rx="14" fill="#EAF3F8"/><text x="102" y="275" text-anchor="middle" class="sans blue small">case anchor</text>
+  </g>
+
+  <path d="M690 450 H835" class="trace" marker-end="url(#arrow)"/>
+  <text x="712" y="420" class="sans blue small">brief names the output</text>
+  <g transform="translate(875 245)">
+    <text x="0" y="0" class="sans ink" font-size="25" font-weight="700">交辦可見的功能面</text>
+    <text x="0" y="37" class="sans muted small">來自 slide copy / PR #13 example</text>
+    <rect x="0" y="80" width="540" height="76" rx="14" class="tag"/>
+    <circle cx="34" cy="118" r="12" fill="#2F6B9A"/><text x="34" y="124" text-anchor="middle" class="sans" font-size="15" fill="#FFFFFF">1</text>
+    <text x="68" y="125" class="sans ink" font-size="23">查詢訂單</text>
+    <rect x="0" y="174" width="540" height="76" rx="14" class="tag"/>
+    <circle cx="34" cy="212" r="12" fill="#2F6B9A"/><text x="34" y="218" text-anchor="middle" class="sans" font-size="15" fill="#FFFFFF">2</text>
+    <text x="68" y="219" class="sans ink" font-size="23">狀態與 UTC 日期區間</text>
+    <rect x="0" y="268" width="540" height="76" rx="14" class="tag"/>
+    <circle cx="34" cy="306" r="12" fill="#2F6B9A"/><text x="34" y="312" text-anchor="middle" class="sans" font-size="15" fill="#FFFFFF">3</text>
+    <text x="68" y="313" class="sans ink" font-size="23">分頁與總筆數</text>
+    <rect x="0" y="390" width="540" height="88" rx="14" fill="#FFF7EC" stroke="#D9A56C" stroke-width="2"/>
+    <text x="28" y="425" class="sans amber" font-size="20" font-weight="700">尚未揭露</text>
+    <text x="28" y="456" class="sans ink body">既有 Consumer、message、責任與測試規格</text>
+  </g>
+  <text x="88" y="840" class="sans muted small">same case / visible brief only</text>
+  <text x="1512" y="840" text-anchor="end" class="sans muted small">source: slide-copy.md · historical example anchor</text>
+</svg>

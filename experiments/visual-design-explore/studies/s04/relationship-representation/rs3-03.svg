@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1260" viewBox="0 0 1800 1260" role="img" aria-labelledby="title desc">
+  <title id="title">RS3-03 Relationship Representation Study Sheet</title>
+  <desc id="desc">Two low-fidelity black, white and gray constructions for the same Consumer message catalog lookup contract.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#333333"/>
+    </marker>
+    <marker id="arrow-light" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#777777"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK TC", "Noto Sans TC", Arial, sans-serif; fill: #202020; }
+      .eyebrow { font-size: 20px; font-weight: 700; letter-spacing: 2px; fill: #666666; }
+      .sheet-title { font-size: 42px; font-weight: 700; letter-spacing: -0.5px; }
+      .sheet-subtitle { font-size: 22px; fill: #5e5e5e; }
+      .zone-label { font-size: 27px; font-weight: 700; }
+      .zone-method { font-size: 19px; font-weight: 700; letter-spacing: 1.2px; fill: #666666; }
+      .box-title { font-size: 25px; font-weight: 700; }
+      .compact-title { font-size: 18px; font-weight: 700; letter-spacing: -0.15px; }
+      .label { font-size: 19px; fill: #666666; }
+      .body { font-size: 22px; }
+      .body-small { font-size: 19px; }
+      .value { font-size: 24px; font-weight: 700; }
+      .value-small { font-size: 21px; font-weight: 700; }
+      .rule { font-size: 28px; font-weight: 700; }
+      .catalog-value { font-size: 23px; font-weight: 700; }
+      .note { font-size: 18px; fill: #5e5e5e; }
+      .white { fill: #ffffff; }
+      .paper { fill: #f3f3f3; }
+      .ink { fill: #202020; }
+      .dark-gray { fill: #555555; }
+      .mid-gray { fill: #888888; }
+      .light-gray { fill: #dedede; }
+      .line { stroke: #333333; stroke-width: 3; fill: none; }
+      .thin-line { stroke: #777777; stroke-width: 2; fill: none; }
+      .dashed { stroke: #777777; stroke-width: 2.5; stroke-dasharray: 9 8; fill: none; }
+      .zone { fill: #fafafa; stroke: #b2b2b2; stroke-width: 2; }
+      .card { fill: #ffffff; stroke: #555555; stroke-width: 2.5; }
+      .consumer { fill: #e6e6e6; stroke: #333333; stroke-width: 3; }
+      .catalog { fill: #ffffff; stroke: #333333; stroke-width: 3; }
+      .chip { fill: #dedede; stroke: #777777; stroke-width: 1.5; }
+      .slot { fill: #ffffff; stroke: #777777; stroke-width: 2; }
+      .miss { fill: #eeeeee; stroke: #777777; stroke-width: 2; stroke-dasharray: 7 6; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1260" fill="#f3f3f3"/>
+
+  <!-- Header -->
+  <text x="70" y="54" class="eyebrow">S04 / RS3-03</text>
+  <text x="70" y="104" class="sheet-title">Relationship representation · Consumer lookup contract</text>
+  <text x="70" y="140" class="sheet-subtitle">One Consumer · one MESSAGE_CATALOG · two message values · two low-fidelity constructions</text>
+  <line x1="70" y1="166" x2="1730" y2="166" class="thin-line"/>
+
+  <!-- Equal construction areas -->
+  <rect x="60" y="190" width="820" height="1000" rx="8" class="zone"/>
+  <rect x="920" y="190" width="820" height="1000" rx="8" class="zone"/>
+
+  <!-- Scheme A -->
+  <text x="90" y="235" class="zone-label">A · Parallel lookup lanes</text>
+  <text x="90" y="267" class="zone-method">ALIGN + CONNECT · FAN-IN TO ONE SHARED RULE</text>
+  <line x1="90" y1="286" x2="850" y2="286" class="thin-line"/>
+
+  <!-- A: two distinct message values -->
+  <rect x="90" y="325" width="320" height="190" rx="7" class="card"/>
+  <text x="112" y="359" class="box-title">AI-direct.message</text>
+  <text x="112" y="397" class="value-small">fromDate and toDate</text>
+  <text x="112" y="427" class="value-small">must be supplied together</text>
+  <rect x="112" y="455" width="112" height="32" rx="16" class="chip"/>
+  <text x="168" y="478" text-anchor="middle" class="body-small">raw text</text>
+
+  <rect x="90" y="560" width="320" height="190" rx="7" class="card"/>
+  <text x="112" y="594" class="compact-title">Project-convention.message</text>
+  <text x="112" y="650" class="value">m0001</text>
+  <rect x="112" y="682" width="150" height="32" rx="16" class="chip"/>
+  <text x="187" y="705" text-anchor="middle" class="body-small">catalog key</text>
+
+  <!-- A: one Consumer receives both lanes -->
+  <rect x="470" y="418" width="350" height="250" rx="9" class="consumer"/>
+  <text x="495" y="457" class="box-title">Existing error Consumer</text>
+  <text x="495" y="493" class="label">same rule for both message values</text>
+  <line x1="495" y1="513" x2="795" y2="513" class="thin-line"/>
+  <text x="645" y="562" text-anchor="middle" class="rule">message →</text>
+  <text x="645" y="602" text-anchor="middle" class="rule">MESSAGE_CATALOG</text>
+  <text x="495" y="640" class="note">message is treated as a key</text>
+
+  <!-- A: connecting lanes -->
+  <path d="M 410 420 C 432 420, 445 468, 470 468" class="line" marker-end="url(#arrow)"/>
+  <path d="M 410 655 C 432 655, 445 602, 470 602" class="line" marker-end="url(#arrow)"/>
+  <text x="422" y="390" class="label">same Consumer</text>
+  <text x="422" y="688" class="label">same Consumer</text>
+  <path d="M 645 668 L 645 710" class="line" marker-end="url(#arrow)"/>
+
+  <!-- A: shared catalog -->
+  <rect x="410" y="710" width="410" height="385" rx="9" class="catalog"/>
+  <text x="435" y="749" class="box-title">MESSAGE_CATALOG</text>
+  <text x="435" y="780" class="label">one shared catalog object</text>
+  <line x1="435" y1="798" x2="795" y2="798" class="thin-line"/>
+  <rect x="435" y="818" width="115" height="52" rx="5" class="slot"/>
+  <text x="492" y="851" text-anchor="middle" class="value">m0001</text>
+  <path d="M 560 844 L 610 844" class="line" marker-end="url(#arrow)"/>
+  <text x="630" y="851" class="catalog-value">查詢條件不合法</text>
+  <rect x="435" y="892" width="360" height="116" rx="6" class="miss"/>
+  <text x="455" y="926" class="body-small">raw text key → not found</text>
+  <text x="455" y="962" class="catalog-value">→ Unknown message code</text>
+  <text x="435" y="1058" class="note">raw text is not directly displayed</text>
+
+  <!-- Scheme B -->
+  <text x="950" y="235" class="zone-label">B · Nested contract with a reused catalog</text>
+  <text x="950" y="267" class="zone-method">CONTAIN + REFERENCE / REUSE · SHARED LOOKUP SLOT</text>
+  <line x1="950" y1="286" x2="1710" y2="286" class="thin-line"/>
+
+  <!-- B: one consumer boundary contains the two message slots and the one rule -->
+  <rect x="950" y="315" width="760" height="555" rx="13" class="consumer"/>
+  <text x="980" y="356" class="box-title">Existing error Consumer</text>
+  <text x="980" y="385" class="label">both values enter the same contract boundary</text>
+
+  <rect x="980" y="413" width="330" height="160" rx="7" class="slot"/>
+  <text x="1002" y="448" class="box-title">AI-direct.message</text>
+  <text x="1002" y="486" class="value-small">fromDate and toDate</text>
+  <text x="1002" y="516" class="value-small">must be supplied together</text>
+  <rect x="1002" y="535" width="112" height="28" rx="14" class="chip"/>
+  <text x="1058" y="555" text-anchor="middle" class="body-small">raw text</text>
+
+  <rect x="1350" y="413" width="330" height="160" rx="7" class="slot"/>
+  <text x="1372" y="448" class="compact-title">Project-convention.message</text>
+  <text x="1372" y="502" class="value">m0001</text>
+  <rect x="1372" y="535" width="150" height="28" rx="14" class="chip"/>
+  <text x="1447" y="555" text-anchor="middle" class="body-small">catalog key</text>
+
+  <!-- B: the two contained slots reference one shared lookup contract -->
+  <path d="M 1145 573 L 1145 607" class="line" marker-end="url(#arrow)"/>
+  <path d="M 1515 573 L 1515 607" class="line" marker-end="url(#arrow)"/>
+  <rect x="1080" y="607" width="500" height="190" rx="9" class="white" stroke="#333333" stroke-width="3"/>
+  <text x="1105" y="644" class="box-title">Shared lookup contract</text>
+  <text x="1105" y="674" class="label">one rule receives either supplied message value</text>
+  <line x1="1105" y1="691" x2="1555" y2="691" class="thin-line"/>
+  <text x="1330" y="735" text-anchor="middle" class="rule">message → MESSAGE_CATALOG</text>
+  <text x="1330" y="770" text-anchor="middle" class="note">same lookup rule · message is a key</text>
+
+  <!-- B: reused catalog reference outside the Consumer boundary -->
+  <path d="M 1330 797 L 1330 916" class="dashed" marker-end="url(#arrow-light)"/>
+  <text x="1360" y="863" class="label">Reference / Reuse</text>
+
+  <rect x="1010" y="916" width="640" height="242" rx="9" class="catalog"/>
+  <text x="1040" y="954" class="box-title">MESSAGE_CATALOG</text>
+  <text x="1040" y="983" class="label">one shared catalog object</text>
+  <line x1="1040" y1="999" x2="1620" y2="999" class="thin-line"/>
+  <rect x="1040" y="1018" width="120" height="52" rx="5" class="slot"/>
+  <text x="1100" y="1051" text-anchor="middle" class="value">m0001</text>
+  <path d="M 1172 1044 L 1220 1044" class="line" marker-end="url(#arrow)"/>
+  <text x="1240" y="1051" class="catalog-value">查詢條件不合法</text>
+  <rect x="1040" y="1081" width="580" height="58" rx="6" class="miss"/>
+  <text x="1062" y="1107" class="body-small">raw text key → not found → Unknown message code</text>
+  <text x="1040" y="1179" class="note">raw text is not directly displayed</text>
+
+  <!-- Footer -->
+  <line x1="70" y1="1212" x2="1730" y2="1212" class="thin-line"/>
+  <text x="70" y="1242" class="note">Same information and semantic limits in both areas; difference is the relation construction, not decoration.</text>
+</svg>

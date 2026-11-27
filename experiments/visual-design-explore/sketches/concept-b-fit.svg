@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Concept B — Fit the delivered API into an existing contract</title>
+  <desc id="desc">A four-panel low-fidelity storyboard using a fitting and docking metaphor to expose hidden response, naming, and acceptance requirements.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .ink{fill:#1f2937}.muted{fill:#64748b}.blue{fill:#1d4ed8}.orange{fill:#c2410c}.gray{fill:#475569}.panel{fill:#ffffff;stroke:#cbd5e1;stroke-width:2}.soft{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}.bluebox{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.orangebox{fill:#ffedd5;stroke:#c2410c;stroke-width:2}.graybox{fill:#f1f5f9;stroke:#64748b;stroke-width:2}.slot{fill:#ffffff;stroke:#64748b;stroke-width:3;stroke-dasharray:7 6}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.sans{font-family:Arial,Helvetica,sans-serif}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="44" y="50" class="sans muted" font-size="18" letter-spacing="3">CONCEPT B · CONTRACT FIT / DOCKING</text>
+  <text x="44" y="94" class="sans ink" font-size="34" font-weight="700">把交付想成一個要接上的介面，而不是一張完成清單</text>
+  <text x="44" y="124" class="sans muted" font-size="18">觀眾看見：同樣的查詢結果，仍可能因為接頭、命名與驗收規則不同而無法嵌入既有系統。</text>
+
+  <g transform="translate(40 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">01 / BRIEF AS PARTS</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">交辦是零件清單</text>
+    <rect x="24" y="126" width="312" height="174" rx="10" class="soft"/>
+    <text x="44" y="163" class="sans muted" font-size="17">新增訂單查詢 API</text>
+    <rect x="44" y="185" width="116" height="34" rx="8" class="bluebox"/>
+    <text x="58" y="208" class="sans blue" font-size="15">status</text>
+    <rect x="172" y="185" width="142" height="34" rx="8" class="bluebox"/>
+    <text x="185" y="208" class="sans blue" font-size="15">UTC date range</text>
+    <rect x="44" y="237" width="116" height="34" rx="8" class="bluebox"/>
+    <text x="62" y="260" class="sans blue" font-size="15">pagination</text>
+    <rect x="172" y="237" width="142" height="34" rx="8" class="bluebox"/>
+    <text x="183" y="260" class="sans blue" font-size="15">total count</text>
+    <text x="24" y="370" class="sans muted" font-size="18">功能描述很清楚，</text>
+    <text x="24" y="402" class="sans muted" font-size="18">但接收端的插槽尚未被畫出。</text>
+    <path d="M180 455 L180 548" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="82" y="560" width="196" height="52" rx="26" class="orangebox"/>
+    <text x="112" y="593" class="sans orange" font-size="19" font-weight="700">會接得上嗎？</text>
+  </g>
+
+  <g transform="translate(420 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">02 / SAME RESULT, SHAPE</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">同一結果，接頭不同</text>
+    <text x="24" y="116" class="sans muted" font-size="16">正常查詢：`?pageSize=3` · IDs `[42,35,28]`</text>
+    <rect x="24" y="150" width="136" height="190" rx="10" class="orangebox"/>
+    <text x="42" y="184" class="sans orange" font-size="17" font-weight="700">AI-direct</text>
+    <text x="42" y="222" class="mono ink" font-size="15">data: [items]</text>
+    <text x="42" y="254" class="mono ink" font-size="15">totalCount: 42</text>
+    <rect x="51" y="290" width="82" height="26" rx="5" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+    <text x="66" y="309" class="sans orange" font-size="13">外接零件</text>
+    <rect x="200" y="150" width="136" height="190" rx="10" class="bluebox"/>
+    <text x="218" y="184" class="sans blue" font-size="17" font-weight="700">Convention</text>
+    <text x="218" y="222" class="mono ink" font-size="15">data.items</text>
+    <text x="218" y="254" class="mono ink" font-size="15">data.totalCount</text>
+    <rect x="227" y="290" width="82" height="26" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="239" y="309" class="sans blue" font-size="13">內接零件</text>
+    <path d="M160 245 L194 245" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M24 414 L336 414" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="24" y="452" class="sans ink" font-size="18" font-weight="700">接收端的槽：</text>
+    <rect x="24" y="476" width="312" height="56" rx="10" class="slot"/>
+    <text x="46" y="511" class="mono gray" font-size="18">existing consumer expects data.items[]</text>
+    <text x="24" y="584" class="sans muted" font-size="16">這裡先看「形狀」；下一格才看</text>
+    <text x="24" y="608" class="sans muted" font-size="16">message、命名與測試的隱藏槽。</text>
+  </g>
+
+  <g transform="translate(800 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">03 / HIDDEN SOCKETS</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">契約插槽不只一個</text>
+    <rect x="24" y="124" width="312" height="70" rx="10" class="slot"/>
+    <text x="42" y="151" class="sans gray" font-size="16" font-weight="700">Response socket</text>
+    <text x="42" y="179" class="mono ink" font-size="15">message: m0001 → catalog</text>
+    <text x="250" y="165" class="sans orange" font-size="18">× raw text</text>
+    <rect x="24" y="214" width="312" height="70" rx="10" class="slot"/>
+    <text x="42" y="241" class="sans gray" font-size="16" font-weight="700">Responsibility socket</text>
+    <text x="42" y="269" class="mono ink" font-size="15">Controller → Service → DAO</text>
+    <text x="257" y="255" class="sans blue" font-size="18">✓</text>
+    <rect x="24" y="304" width="312" height="70" rx="10" class="slot"/>
+    <text x="42" y="331" class="sans gray" font-size="16" font-weight="700">Acceptance socket</text>
+    <text x="42" y="359" class="mono ink" font-size="15">UTC · stable sort · pagination</text>
+    <text x="257" y="345" class="sans blue" font-size="18">✓</text>
+    <rect x="24" y="414" width="312" height="88" rx="10" class="graybox"/>
+    <text x="42" y="446" class="sans gray" font-size="16" font-weight="700">Evidence boundary</text>
+    <text x="42" y="475" class="sans ink" font-size="15">Browser MSW · bounded SQL</text>
+    <text x="42" y="497" class="sans muted" font-size="14">不是 production DB 證明</text>
+    <text x="24" y="558" class="sans orange" font-size="18" font-weight="700">「能跑」只插進其中幾個槽</text>
+    <text x="24" y="594" class="sans muted" font-size="16">敘事規格的 m0000／m0001</text>
+    <text x="24" y="618" class="sans muted" font-size="16">在 current base 仍待案例對齊。</text>
+  </g>
+
+  <g transform="translate(1180 160)">
+    <rect width="360" height="640" rx="12" class="panel"/>
+    <text x="24" y="38" class="sans muted" font-size="16" letter-spacing="2">04 / ACCEPTANCE DOCK</text>
+    <text x="24" y="82" class="sans ink" font-size="26" font-weight="700">驗收是接頭，不是清單</text>
+    <rect x="24" y="128" width="312" height="210" rx="12" class="soft"/>
+    <text x="44" y="166" class="sans muted" font-size="16">交付包裹</text>
+    <rect x="44" y="190" width="124" height="34" rx="8" class="bluebox"/>
+    <text x="62" y="213" class="sans blue" font-size="14">HTTP 200</text>
+    <rect x="184" y="190" width="126" height="34" rx="8" class="bluebox"/>
+    <text x="201" y="213" class="sans blue" font-size="14">IDs 42·35·28</text>
+    <rect x="44" y="242" width="124" height="34" rx="8" class="orangebox"/>
+    <text x="54" y="265" class="sans orange" font-size="14">message: raw</text>
+    <rect x="184" y="242" width="126" height="34" rx="8" class="graybox"/>
+    <text x="197" y="265" class="sans gray" font-size="14">bounded evidence</text>
+    <path d="M168 207 L184 207" stroke="#2563eb" stroke-width="4"/>
+    <path d="M168 259 L184 259" stroke="#c2410c" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="44" y="316" class="sans orange" font-size="15">一個未接上的錯誤槽，會改變驗收結果。</text>
+    <path d="M180 372 L180 420" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="48" y="436" width="264" height="86" rx="43" class="bluebox"/>
+    <circle cx="96" cy="479" r="20" fill="#2563eb"/>
+    <path d="M86 479 l8 8 14-18" fill="none" stroke="#fff" stroke-width="4"/>
+    <text x="130" y="473" class="sans blue" font-size="20" font-weight="700">可交付判斷</text>
+    <text x="130" y="499" class="sans muted" font-size="15">depends on existing contract</text>
+    <text x="24" y="582" class="sans ink" font-size="22" font-weight="700">功能是零件，契約才是接頭。</text>
+    <text x="24" y="620" class="sans muted" font-size="16">理解順序：需求 → 形狀 → 隱藏槽 → 驗收。</text>
+  </g>
+
+  <text x="44" y="850" class="sans muted" font-size="16">low fidelity · metaphor under review · no formal theme or animation</text>
+</svg>

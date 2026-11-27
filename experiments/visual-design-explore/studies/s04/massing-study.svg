@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="680" viewBox="0 0 2200 680" role="img" aria-labelledby="title desc">
+  <title id="title">S04 Massing Study — three spatial arrangements based on V2</title>
+  <desc id="desc">A study sheet with three 16 by 9 low-fidelity composition candidates. All candidates preserve the same invalid input, common error conditions, two response messages, message catalog lookup, existing error consumer, and compatible or incompatible outcomes. Only the spatial arrangement changes.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L9 4.5L0 9Z" fill="#2b2b29"/>
+    </marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#d0d0ca" stroke-width="2"/>
+    </pattern>
+    <style>
+      .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}
+      .mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}
+      .ink{fill:#242422}
+      .muted{fill:#686863}
+      .paper{fill:#fbfbf9}
+      .soft{fill:#ededeb}
+      .rule{stroke:#b8b8b2;stroke-width:1.6}
+      .ink-rule{stroke:#2b2b29;stroke-width:1.7}
+      .dash-rule{stroke:#74746e;stroke-width:1.6;stroke-dasharray:6 5}
+      .eyebrow{font-size:12px;letter-spacing:1.5px;font-weight:700}
+      .label{font-size:12px;font-weight:700}
+      .micro{font-size:10px}
+      .micro-mono{font-size:10px}
+      .value{font-size:11px}
+    </style>
+  </defs>
+
+  <rect width="2200" height="680" fill="#f7f7f4"/>
+
+  <text x="60" y="40" class="sans muted eyebrow">S04 · MASSING STUDY</text>
+  <text x="2140" y="40" text-anchor="end" class="sans muted eyebrow">D2.1 · V2 INFORMATION SET</text>
+  <text x="60" y="80" class="sans ink" font-size="29" font-weight="700">Three low-fidelity spatial arrangements</text>
+  <text x="60" y="108" class="sans muted" font-size="16">same roles · same grayscale · same relationships · each candidate frame is 16:9</text>
+
+  <!-- Option A: left-to-right lanes -->
+  <g transform="translate(60 160)">
+    <rect width="660" height="371.25" rx="8" class="paper" stroke="#2b2b29" stroke-width="2"/>
+    <text x="20" y="27" class="sans ink" font-size="21" font-weight="700">A</text>
+    <text x="55" y="26" class="sans muted eyebrow">LEFT → RIGHT LANES</text>
+    <line x1="20" y1="39" x2="640" y2="39" class="rule"/>
+
+    <!-- input -->
+    <rect x="18" y="127" width="134" height="70" rx="9" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="30" y="149" class="sans ink eyebrow">INPUT</text>
+    <text x="30" y="168" class="sans muted micro">same invalid query</text>
+    <text x="30" y="184" class="mono ink micro-mono">toDate missing</text>
+
+    <!-- response group -->
+    <rect x="175" y="42" width="235" height="302" rx="12" class="paper" stroke="#b8b8b2" stroke-width="1.7"/>
+    <text x="190" y="65" class="sans ink eyebrow">TWO RESPONSE OBJECTS</text>
+    <line x1="190" y1="76" x2="395" y2="76" class="rule"/>
+
+    <rect x="191" y="91" width="203" height="62" rx="7" class="soft" stroke="#b8b8b2" stroke-width="1.4"/>
+    <text x="202" y="108" class="sans ink eyebrow">COMMON · BOTH RESPONSES</text>
+    <text x="202" y="128" class="mono ink value">HTTP 400 · INVALID_QUERY</text>
+    <text x="202" y="143" class="mono muted value">data: null · both</text>
+
+    <text x="191" y="174" class="sans ink label">AI-DIRECT RESPONSE</text>
+    <rect x="191" y="181" width="203" height="52" rx="7" fill="url(#hatch)" stroke="#74746e" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="202" y="202" class="mono muted value">message: raw text</text>
+    <text x="202" y="219" class="sans muted micro">path-specific value</text>
+
+    <text x="191" y="257" class="sans ink label">PROJECT-CONVENTION</text>
+    <rect x="191" y="264" width="203" height="52" rx="7" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="202" y="285" class="mono ink value">message: m0001</text>
+    <text x="202" y="302" class="sans muted micro">catalog key</text>
+
+    <!-- consumer group -->
+    <rect x="422" y="42" width="220" height="302" rx="12" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="437" y="65" class="sans ink eyebrow">EXISTING ERROR</text>
+    <text x="437" y="80" class="sans muted micro">CONSUMER · message → lookup</text>
+    <line x1="437" y1="90" x2="627" y2="90" class="rule"/>
+
+    <rect x="437" y="104" width="190" height="48" rx="7" class="soft" stroke="#b8b8b2" stroke-width="1.4"/>
+    <text x="448" y="122" class="sans muted eyebrow">MESSAGE CATALOG</text>
+    <text x="448" y="140" class="mono ink value">m0001 → display</text>
+
+    <text x="437" y="173" class="sans ink label">AI-DIRECT</text>
+    <rect x="437" y="181" width="190" height="43" rx="7" fill="url(#hatch)" stroke="#74746e" stroke-width="1.4"/>
+    <text x="448" y="199" class="mono muted value">raw text → MISS</text>
+    <text x="448" y="215" class="sans ink micro">INCOMPATIBLE</text>
+
+    <text x="437" y="250" class="sans ink label">PROJECT-CONVENTION</text>
+    <rect x="437" y="258" width="190" height="43" rx="7" class="paper" stroke="#2b2b29" stroke-width="1.5"/>
+    <text x="448" y="276" class="mono ink value">m0001 → HIT</text>
+    <text x="448" y="292" class="sans ink micro">COMPATIBLE · display</text>
+
+    <!-- flow arrows -->
+    <path d="M152 162H162V207H175" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M162 162V290H175" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <circle cx="162" cy="162" r="4" fill="#2b2b29"/>
+    <path d="M394 207H422" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M394 290H422" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <text x="20" y="360" class="sans muted micro">same input · common conditions · two message paths</text>
+  </g>
+
+  <!-- Option B: top-down matrix -->
+  <g transform="translate(770 160)">
+    <rect width="660" height="371.25" rx="8" class="paper" stroke="#2b2b29" stroke-width="2"/>
+    <text x="20" y="27" class="sans ink" font-size="21" font-weight="700">B</text>
+    <text x="55" y="26" class="sans muted eyebrow">TOP → DOWN MATRIX</text>
+    <line x1="20" y1="39" x2="640" y2="39" class="rule"/>
+
+    <!-- input -->
+    <rect x="264" y="51" width="132" height="42" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="330" y="69" text-anchor="middle" class="sans ink eyebrow">INPUT</text>
+    <text x="330" y="84" text-anchor="middle" class="sans muted micro">invalid query</text>
+
+    <!-- common band -->
+    <rect x="28" y="108" width="604" height="61" rx="8" class="soft" stroke="#b8b8b2" stroke-width="1.5"/>
+    <text x="43" y="128" class="sans ink eyebrow">COMMON CONDITIONS · APPLIES TO BOTH RESPONSES</text>
+    <text x="43" y="151" class="mono ink value">HTTP 400</text>
+    <text x="194" y="151" class="mono ink value">INVALID_QUERY</text>
+    <text x="405" y="151" class="mono muted value">data: null</text>
+    <text x="560" y="151" class="sans muted micro">same envelope</text>
+
+    <!-- response pair -->
+    <rect x="28" y="191" width="286" height="64" rx="8" fill="url(#hatch)" stroke="#74746e" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="43" y="211" class="sans ink label">AI-DIRECT RESPONSE</text>
+    <text x="43" y="233" class="mono muted value">message: raw text</text>
+    <text x="43" y="247" class="sans muted micro">separate field</text>
+
+    <rect x="346" y="191" width="286" height="64" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="361" y="211" class="sans ink label">PROJECT-CONVENTION RESPONSE</text>
+    <text x="361" y="233" class="mono ink value">message: m0001</text>
+    <text x="361" y="247" class="sans muted micro">separate field</text>
+
+    <!-- catalog and consumer footer -->
+    <rect x="28" y="279" width="170" height="63" rx="8" class="soft" stroke="#b8b8b2" stroke-width="1.5"/>
+    <text x="42" y="299" class="sans muted eyebrow">MESSAGE CATALOG</text>
+    <text x="42" y="320" class="mono ink value">m0001 → display</text>
+    <text x="42" y="334" class="sans muted micro">lookup source</text>
+
+    <rect x="222" y="267" width="410" height="75" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="237" y="287" class="sans ink eyebrow">EXISTING ERROR CONSUMER · MESSAGE → LOOKUP</text>
+    <line x1="237" y1="296" x2="617" y2="296" class="rule"/>
+    <text x="237" y="314" class="mono muted micro-mono">raw text → MISS · INCOMPATIBLE</text>
+    <text x="237" y="332" class="mono ink micro-mono">m0001 → HIT · COMPATIBLE · display</text>
+
+    <!-- flow arrows -->
+    <path d="M330 93V108" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M330 169V177H171V191" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M330 169V177H489V191" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M171 255V262H390V267" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M489 255V267" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M198 311H222" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <text x="20" y="360" class="sans muted micro">shared footer · two response lanes resolve through one consumer</text>
+  </g>
+
+  <!-- Option C: central spine -->
+  <g transform="translate(1480 160)">
+    <rect width="660" height="371.25" rx="8" class="paper" stroke="#2b2b29" stroke-width="2"/>
+    <text x="20" y="27" class="sans ink" font-size="21" font-weight="700">C</text>
+    <text x="55" y="26" class="sans muted eyebrow">CENTRAL CONDITION SPINE</text>
+    <line x1="20" y1="39" x2="640" y2="39" class="rule"/>
+
+    <!-- input -->
+    <rect x="20" y="62" width="142" height="62" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="34" y="84" class="sans ink eyebrow">INPUT</text>
+    <text x="34" y="103" class="sans muted micro">same invalid query</text>
+    <text x="34" y="116" class="mono ink micro-mono">toDate missing</text>
+
+    <!-- common vertical spine -->
+    <rect x="194" y="48" width="170" height="224" rx="10" class="soft" stroke="#b8b8b2" stroke-width="1.6"/>
+    <text x="210" y="70" class="sans ink eyebrow">COMMON</text>
+    <text x="210" y="84" class="sans ink eyebrow">CONDITIONS</text>
+    <text x="210" y="103" class="sans muted micro">applies to both</text>
+    <line x1="210" y1="114" x2="348" y2="114" class="rule"/>
+    <text x="210" y="141" class="sans muted micro">TRANSPORT</text>
+    <text x="210" y="158" class="mono ink value">HTTP 400</text>
+    <text x="210" y="187" class="sans muted micro">ERROR CLASS</text>
+    <text x="210" y="204" class="mono ink value">INVALID_QUERY</text>
+    <text x="210" y="233" class="sans muted micro">PAYLOAD</text>
+    <text x="210" y="250" class="mono ink value">data: null</text>
+
+    <!-- response pair -->
+    <rect x="400" y="48" width="240" height="90" rx="8" fill="url(#hatch)" stroke="#74746e" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="416" y="70" class="sans ink label">AI-DIRECT RESPONSE</text>
+    <text x="416" y="94" class="mono muted value">message: raw text</text>
+    <text x="416" y="113" class="sans muted micro">separate field · catalog miss</text>
+
+    <rect x="400" y="154" width="240" height="90" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="416" y="176" class="sans ink label">PROJECT-CONVENTION</text>
+    <text x="416" y="190" class="sans ink label">RESPONSE</text>
+    <text x="416" y="214" class="mono ink value">message: m0001</text>
+    <text x="416" y="233" class="sans muted micro">separate field · catalog hit</text>
+
+    <!-- catalog and consumer footer -->
+    <rect x="20" y="292" width="190" height="59" rx="8" class="soft" stroke="#b8b8b2" stroke-width="1.5"/>
+    <text x="34" y="313" class="sans muted eyebrow">MESSAGE CATALOG</text>
+    <text x="34" y="334" class="mono ink value">m0001 → display</text>
+
+    <rect x="234" y="278" width="406" height="73" rx="8" class="paper" stroke="#2b2b29" stroke-width="1.7"/>
+    <text x="249" y="298" class="sans ink eyebrow">EXISTING ERROR CONSUMER</text>
+    <text x="249" y="312" class="sans muted micro">message → catalog lookup</text>
+    <line x1="249" y1="320" x2="625" y2="320" class="rule"/>
+    <text x="249" y="337" class="mono muted micro-mono">raw text → MISS · INCOMPATIBLE</text>
+    <text x="458" y="337" class="mono ink micro-mono">m0001 → HIT · COMPATIBLE</text>
+
+    <!-- flow arrows: input fans around the spine -->
+    <path d="M162 93H179V30H382V93H400" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M162 93H179V262H382V199H400" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <circle cx="179" cy="93" r="4" fill="#2b2b29"/>
+    <path d="M640 93H650V260H500V278" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M640 199H650V260H580V278" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <path d="M210 321H234" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    <text x="20" y="360" class="sans muted micro">central invariant · response pair · shared lookup and outcome zone</text>
+  </g>
+
+  <text x="60" y="585" class="sans muted" font-size="15">Fixed information set: invalid input · common conditions · AI-direct response · Project-convention response · message catalog · existing consumer · miss/hit outcome.</text>
+  <text x="60" y="612" class="sans muted" font-size="15">Massing only: differences are position, size, proportion, and relative arrangement.</text>
+</svg>

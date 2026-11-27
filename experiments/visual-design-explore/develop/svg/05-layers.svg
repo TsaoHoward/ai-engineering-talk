@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot 05 — 契約還藏在命名與責任分層</title>
+  <desc id="desc">鏡頭從 message 欄位拉到兩條案例責任路徑，對照 AI-direct 與 project-convention，同時將共同的 Browser MSW mock 邊界放在次要位置。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2F6B9A"/></marker></defs>
+  <style>
+    .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}.mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}.ink{fill:#102438}.muted{fill:#667483}.blue{fill:#2F6B9A}.amber{fill:#A95D22}.green{fill:#2F8F66}.line{stroke:#CCD6DD;stroke-width:2}.trace{stroke:#2F6B9A;stroke-width:5;fill:none;stroke-linecap:round}.small{font-size:16px}.body{font-size:20px}.label{font-size:17px;letter-spacing:2px}.card{fill:#FFFFFF;stroke:#CCD6DD;stroke-width:2}.ai{fill:#F1F5F7;stroke:#8EA5B1;stroke-width:2}.conv{fill:#EFF8F3;stroke:#7CB69B;stroke-width:2}.mock{fill:#FFF7EC;stroke:#D9A56C;stroke-width:2}.dash{fill:none;stroke:#A8BAC5;stroke-width:2;stroke-dasharray:8 9}
+  </style>
+  <rect width="1600" height="900" fill="#F7F8F6"/>
+  <text x="88" y="48" class="sans muted label">DEVELOP / ORDER API · TRACE STORY</text>
+  <text x="1512" y="48" text-anchor="end" class="sans muted label">05 / 06</text>
+  <text x="88" y="114" class="sans ink" font-size="42" font-weight="700">契約還藏在命名與責任分層</text>
+  <text x="88" y="153" class="sans muted body">從欄位往外拉遠：同一份交付，也要接上既有合作方式。</text>
+  <line x1="92" y1="230" x2="92" y2="730" class="line"/>
+  <circle cx="92" cy="270" r="6" fill="#CCD6DD"/><circle cx="92" cy="420" r="6" fill="#CCD6DD"/><circle cx="92" cy="570" r="9" fill="#2F6B9A"/><circle cx="92" cy="720" r="6" fill="#CCD6DD"/>
+  <text x="130" y="570" class="sans blue label">RESPONSIBILITY VIEW</text>
+
+  <g transform="translate(130 260)">
+    <rect width="300" height="160" rx="16" class="card"/>
+    <text x="26" y="38" class="sans blue label">SAME REQUEST</text>
+    <text x="26" y="94" class="mono ink" font-size="21">GET /orders</text>
+    <text x="26" y="128" class="mono ink" font-size="21">?pageSize=3</text>
+  </g>
+  <path d="M430 340 C525 340 525 295 625 295" class="trace" marker-end="url(#arrow)"/>
+  <path d="M430 340 C525 340 525 530 625 530" class="trace" marker-end="url(#arrow)"/>
+  <text x="470" y="300" class="sans blue small">inspection comparison</text>
+  <circle cx="620" cy="340" r="34" fill="#EAF3F8" stroke="#2F6B9A" stroke-width="3"/>
+  <text x="620" y="349" text-anchor="middle" class="sans blue" font-size="18" font-weight="700">fit</text>
+
+  <g transform="translate(650 215)">
+    <rect width="790" height="205" rx="18" class="ai"/>
+    <text x="28" y="40" class="sans ink label">AI-DIRECT / SHORT PATH</text>
+    <text x="28" y="100" class="mono ink" font-size="24">Controller → OrderRepository</text>
+    <text x="28" y="138" class="mono ink" font-size="24">→ parameterized SQL</text>
+    <rect x="540" y="70" width="205" height="64" rx="14" fill="#FFFFFF" stroke="#8EA5B1" stroke-width="2"/>
+    <text x="642" y="98" text-anchor="middle" class="sans ink small">case comparison</text>
+    <text x="642" y="120" text-anchor="middle" class="sans muted small">not a universal rule</text>
+  </g>
+  <g transform="translate(650 450)">
+    <rect width="790" height="205" rx="18" class="conv"/>
+    <text x="28" y="40" class="sans green label">PROJECT-CONVENTION / EXISTING PATH</text>
+    <text x="28" y="96" class="mono ink" font-size="23">Controller → OrderService → OrderDao</text>
+    <text x="28" y="134" class="mono ink" font-size="23">→ Drizzle (sqlite-proxy)</text>
+    <rect x="540" y="70" width="205" height="64" rx="14" fill="#FFFFFF" stroke="#7CB69B" stroke-width="2"/>
+    <text x="642" y="98" text-anchor="middle" class="sans green small">fits this project</text>
+    <text x="642" y="120" text-anchor="middle" class="sans muted small">not a universal standard</text>
+  </g>
+  <g transform="translate(650 700)">
+    <rect width="790" height="82" rx="16" class="mock"/>
+    <text x="24" y="31" class="sans amber label">SHARED MOCK BOUNDARY</text>
+    <text x="24" y="61" class="mono ink" font-size="17">DbTransport → Browser MSW → bounded SQL evaluator → fixtures/orders.json</text>
+  </g>
+  <text x="130" y="635" class="sans ink" font-size="25" font-weight="700">接合點換了</text>
+  <text x="130" y="675" class="sans muted body">但畫面不把路徑畫成優劣排名。</text>
+  <text x="88" y="840" class="sans muted small">same case / responsibility and naming are inspected, not prescribed</text>
+  <text x="1512" y="840" text-anchor="end" class="sans muted small">source: application.ts · worker.ts @ e8ae8ad3 · not rerun</text>
+</svg>
