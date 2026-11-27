@@ -140,3 +140,67 @@
 - **Artifact Evidence：** `comparison.svg` 的實際尺寸為 `1600×1000`、`viewBox="0 0 1600 1000"`；以 Playwright Chromium headless、viewport `1600×1000`、device scale factor `1` 載入 SVG 產生 `comparison.png`。SVG 載入無 page error／console error，頁面內含 88 個文字節點。
 - **Visual Check：** 檢視 fresh render 後，未見文字溢出、畫布裁切、非預期重疊；A 的方向連線未穿越主要文字，B 的虛線參照未被構造成流程箭頭。此為構造檢查，不等同於觀眾理解已被驗證。
 - **Fresh Render Check：** fresh SVG render 的 PNG 與交付 PNG 均為 `1600×1000`、8-bit RGB、non-interlaced；兩者 SHA-256 同為 `c16887971641f0fb70fcda30562ca0080bcd4c04ccf069a67700fe4f2c480456`。
+
+## 6. Boundary Evaluation
+
+### Representation 與 Construction 的責任差異
+
+| 判定面 | Representation Specification 已決定 | Construction 實際獨立決定 | 證據類型 |
+| --- | --- | --- | --- |
+| 語意與關係邊界 | A 的雙 trace、B 的雙 record；輸入／record 必須獨立；Consumer、catalog 與 lookup rule 必須共享；hit／miss 與 outcome 不得被合併或改義 | 沒有重新選擇或修改 A／B 的表示原理；只把它們落成不同的卡片、區域與連接方式 | Artifact Evidence |
+| 具體構造 | 只規定應保留的單元、共享／獨立關係與 interpretation constraints | 決定 panel、卡片分組、欄位順序、尺寸、文字換行、線路、虛線參照、標籤位置、字體與灰階 | Artifact Evidence；Design Judgment |
+| 表示策略是否被 Construction 重選 | 未指定座標、幾何或完整 composition，仍保留構造自由度 | A 仍是「分別執行同一規則」；B 仍是「兩筆紀錄引用一個共享契約」；未將 B 改成流程，也未將 A 合併成單一輸入 | Artifact Evidence |
+| 上游規格是否過度指定 | 已指定足以驗收的 semantic role、shared／independent identity 與不可違反的關係 | 仍需自行完成路徑、容器、文字層級與局部排版；沒有被迫採用固定座標或裝飾 | Artifact Evidence；Design Judgment |
+
+E1a 本身沒有過度指定具體構造；但本文件第 5 節是合併的 handoff artifact，已明確記錄 panel 尺寸、區域位置、字體／灰階、換行與連線等 E1b 決策。這些內容應被視為 Construction record，而不是 Representation Specification 的必要輸入；若不分開標記，artifact 邊界會發生 scope leak。
+
+### 交付物檢視與問題分類
+
+| 分類 | 實際檢視結果 | 判讀 |
+| --- | --- | --- |
+| Representation defect | `comparison.svg/png` 兩側都保留獨立輸入／record、單一 shared rule／contract、各自結果；A／B 與規格中的表示原理一致 | 未觀察到 Representation defect。這只表示本輪構造沒有違反上游表示約束，不表示策略本身已被選優 | Artifact Evidence |
+| Construction defect | A 的輸入線、shared rule 之後的 `trace A/B` 線與 outcome 線不是同一條幾何連續路徑；例如 A 的輸出在 rule／catalog 區域改以標籤與重新對齊的線段維持對應 | A 的 trace 連續性主要靠 `trace A/B`、catalog 內的 A／B 文字及 outcome 卡片補足，存在局部 mapping 負擔；責任落在連線構造，不是上游策略改義 | Artifact Evidence；Design Judgment |
+| Construction／handoff 一致性 | 既有 `decision-construction.md` 的 D01 constraint 要求 `1600×900`、上下兩列比較且各列向右延伸；實際 `comparison.svg/png` 是 `1600×1000`、A／B 左右並列的 study sheet | 這是既有 Construction constraint 與本輪實際交付物的不一致；不改變 A／B 的 Representation，但降低本輪對「同一表示策略下可獨立調整 Construction 變數」的證據強度 | Artifact Evidence；Design Judgment |
+| Composition issue | A 的 `lookup input A/B`、`trace A/B` 與 B 的 `references one rule` 都靠近或置於垂直連線的文字 footprint；PNG 未見裁切或主要文字被遮蔽，但線與輔助標籤的間距偏緊 | 屬局部標籤／線路排版問題，不構成語意或表示策略缺陷 | Artifact Evidence；Design Judgment |
+| B 的共享契約關係 | B 以兩條無箭頭虛線從兩筆 record 指向同一個下方 shared contract，符合「reference／reuse」而非流程箭頭；各 record 的 hit／miss 與 shared contract 內容主要靠欄位對齊與文字說明對應 | 構造已保留共享且不合併的關係；但對應不是一條可逐段追蹤的流程線，是否足以支撐不同觀眾的理解仍未測量 | Artifact Evidence；Unverified |
+| 未驗證理解風險 | 未測試觀眾是否能在 A 中持續追蹤兩條 trace，或在 B 中把虛線理解為共享契約引用而非執行順序 | 不能由 PNG／SVG 的無溢出、無裁切或 self-check 推導理解效果 | Unverified |
+
+### Existing Method Comparison
+
+| 既有方法 | 已包含的責任 | 本輪 E1a／E1b 的新增交接價值 | 重複與限制 |
+| --- | --- | --- | --- |
+| G1 Relationship Representation | 已包含 Alignment、Connection、Containment、Reference／Reuse 等關係表示選擇，以及低精度 representation variant | 將「哪些表示原理與語意限制必須被保留」寫成可交給 Construction 的明確規格，並可檢查 Construction 是否改義 | 表示策略選擇本身不是新增能力；A／B 仍屬 G1 可涵蓋的兩種 representation variant |
+| G2 Object Identity | 已處理 factoring、subtraction、shared object、reference／reuse，以及哪些物件不可因共享而合併 | 明確把獨立 response／trace／record 與共享 Consumer／catalog 的身份約束列入 handoff，降低 Construction 對 shared／independent 的猜測 | 與本輪的 shared rule、shared contract、不可合併輸入高度重疊；沒有證據支持新增一個獨立的 object-identity 方法 |
+| G3 Construction Integration | 已負責把選定 representation、物件身份與方向限制整合成可交付的 visual object graph，並保留 row／lane 對應 | Handoff Record 讓 inherited decisions 與 construction decisions 可逐項對照，能指出「未改策略但構造仍有 mapping 負擔」 | 這是 G3 的責任邊界證據與交接紀錄，不是新的構造演算法或驗收能力 |
+
+`rs3-03.svg/png` 已經包含表示策略選擇：A／B 分別以 `ALIGN + CONNECT` 與 `CONTAIN + REFERENCE / REUSE` 展示同一契約的低精度 representation variant。本輪的新增不在於再提出 A／B，而在於把 representation 先寫成 E1a specification，再把 E1b 的具體幾何與路徑決策分開記錄。因此，本輪 A／B 的主要差異仍位於表示策略；panel、卡片、線路、虛線參照、文字排列與連續性負擔則位於 Construction／Composition 層級。
+
+本輪沒有在同一表示策略下直接比較多種 Construction，也沒有有／無 Representation Specification 的成本或品質對照；因此不能把一次跨 Session 交接成功提升為一般性的獨立方法效益。另有重複成本：representation-study 重述了部分既有 Semantic Model、Relationship Scoping 與 G1／G2 的限制；其新增價值是交接可追蹤性，而非新的表示分類。
+
+另須保留 D01 的一致性限制：本輪 `comparison.svg/png` 可作為 A／B handoff 與 artifact review 的證據，但不能同時視為 D01 所選 `1600×900` 上下列構造的完成實作。這使本輪同時混合了表示策略比較與 study-sheet 構造比較，不能把差異完全歸因於 Representation 或完全歸因於 Construction。
+
+## 7. Boundary Decision
+
+### 五項拆分標準
+
+| 標準 | 判定 | 依據與限制 |
+| --- | --- | --- |
+| 責任獨立性 | **Separate** | Representation 決定要保留的關係原理、shared／independent identity 與語意限制；Construction 決定如何以幾何、路徑、文字與容器交付。實際 A／B 中 Construction 能作出構造選擇而不重選表示策略。 |
+| 變數獨立性 | **Defer** | 本輪顯示可以改變構造變數而維持上游表示約束，但每種表示策略只有一種具體構造，未直接驗證同一策略下的多種 Construction 或受控變數隔離。 |
+| 產物獨立性 | **Separate** | E1a 的 Representation Specification 能作為 E1b 讀取的上游契約，Handoff Record 能分辨 inherited 與 construction decisions；其下游用途在本案例已可核對，但跨案例用途尚未驗證。 |
+| 驗收獨立性 | **Retain** | 保留既有的分層驗收：Representation 核對語意保留、共享／獨立關係與不可改義；Construction／artifact 核對連線、標籤間距、overflow／clipping 與局部 mapping。這支持責任可區分，但尚不足以新增另一套驗收方法；觀眾理解與投影效果也不在本輪證據內。 |
+| 拆分效益 | **Defer** | 未做有／無 Representation Specification 的成本、重工或品質對照；不能宣稱拆分必然降低複雜度或提高品質。 |
+
+### Concept／Method／Artifact 結論
+
+| 層級 | 結論 | 交付決定 |
+| --- | --- | --- |
+| Concept | **Separate** | 保留 Representation 與 Graphic Construction 是不同設計責任的概念邊界。前者回答「關係如何被理解與表示」，後者回答「這些關係如何被構造成可交付圖形」。 |
+| Method | **Defer** | 暫不把它們提升為新的、可任意獨立選用的方法組合；先保留既有 G1／G2／G3 方法目錄與其按不確定性取用的方式。未來若要宣稱獨立選用效益，至少需要同一表示策略的多種 Construction，或有／無規格的成本／品質對照。 |
+| Artifact | **Retain** | 保留獨立的 Representation Specification 與明確的 Handoff Record 作為本案例的交接契約；不新增 Skill、Workflow 或另一套重複的 Method Catalog。 |
+
+### 建議保留的責任邊界與證據限制
+
+Representation 應負責表示原理、必要關係、shared／independent identity、semantic mapping 與 interpretation constraints；Construction 應負責物件分組、座標／尺寸、路徑與參照線、文字排版及局部幾何驗收。Construction 可以提出構造 trade-off，但不應以排版方便為由重選或合併上游表示策略。
+
+本結論只由 S04、A／B 各一種具體構造、一次跨 Session handoff 與 SVG／PNG artifact review 支持。尚未驗證同一表示策略的多種構造、無規格對照、觀眾理解、投影效果或跨案例適用性；上述未驗證項目不支持更強的 Method-level generalization。
