@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">S04 State 3: relational composition of response messages and Consumer lookup</title>
+  <desc id="desc">The same invalid request produces two response objects with the same error envelope. Their message fields are compared on one axis, then connected directly to one existing Consumer and one message catalog. Raw text misses; m0001 hits and resolves to 查詢條件不合法.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#2b2b29"/>
+    </marker>
+    <marker id="arrow-muted" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#777771"/>
+    </marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#cfcfc9" stroke-width="2"/>
+    </pattern>
+    <style>
+      .sans{font-family:"Noto Sans TC","Inter","Arial",sans-serif}
+      .mono{font-family:"JetBrains Mono","SFMono-Regular","Consolas",monospace}
+      .ink{fill:#242422}
+      .muted{fill:#686863}
+      .paper{fill:#fbfbf9}
+      .soft{fill:#ededeb}
+      .rule{stroke:#b8b8b2;stroke-width:2}
+      .ink-rule{stroke:#2b2b29;stroke-width:2.2}
+      .guide-rule{stroke:#777771;stroke-width:1.8;stroke-dasharray:6 6}
+      .eyebrow{font-size:15px;letter-spacing:2px;font-weight:700}
+      .small{font-size:16px}
+      .body{font-size:18px}
+      .label{font-size:17px;font-weight:700}
+      .mono-body{font-size:18px}
+      .mono-small{font-size:15px}
+      .message-field{fill:#565652;stroke:#2b2b29;stroke-width:2.5}
+      .message-ink{fill:#fbfbf9}
+      .message-muted{fill:#e1e1dc}
+      .miss{fill:url(#hatch);stroke:#74746e;stroke-width:2}
+      .hit{fill:#fbfbf9;stroke:#2b2b29;stroke-width:2}
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f7f7f4"/>
+
+  <text x="60" y="43" class="sans muted eyebrow">S04 · ERROR RESPONSE</text>
+  <text x="1540" y="43" text-anchor="end" class="sans muted eyebrow">STATE 3 · CONSUMER CONTRACT</text>
+  <text x="60" y="89" class="sans ink" font-size="40" font-weight="700">message 不是自由文字，而是既有 UI 契約</text>
+  <text x="60" y="119" class="sans muted body">同一個 error envelope 交給同一個 Consumer；message 的語意決定能否被既有 catalog 解析。</text>
+
+  <g transform="translate(520 145)">
+    <rect width="560" height="72" rx="12" class="paper" stroke="#2b2b29" stroke-width="2.2"/>
+    <text x="22" y="29" class="sans ink eyebrow">SAME INVALID REQUEST</text>
+    <text x="22" y="56" class="sans muted small">GET /orders</text>
+    <text x="270" y="29" class="mono ink mono-body">?fromDate=2026-01-01</text>
+    <text x="270" y="56" class="mono muted mono-small">toDate: missing</text>
+  </g>
+  <path d="M800 217V235" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+
+  <g transform="translate(60 235)">
+    <rect width="1480" height="600" rx="18" class="paper" stroke="#2b2b29" stroke-width="2.2"/>
+
+    <text x="28" y="31" class="sans ink eyebrow">SAME ERROR ENVELOPE · TWO RESPONSE OBJECTS · ONE CONSUMER</text>
+    <text x="1452" y="31" text-anchor="end" class="sans muted small">only message changes meaning</text>
+    <line x1="28" y1="49" x2="1452" y2="49" class="rule"/>
+
+    <rect x="28" y="68" width="1424" height="58" rx="10" class="soft" stroke="#b8b8b2" stroke-width="2"/>
+    <text x="48" y="92" class="sans ink eyebrow">SHARED ERROR ENVELOPE · A + B</text>
+    <text x="470" y="104" class="mono ink mono-body">HTTP status: 400</text>
+    <text x="780" y="104" class="mono ink mono-body">code: INVALID_QUERY</text>
+    <text x="1190" y="104" class="mono ink mono-body">data: null</text>
+
+    <line x1="28" y1="160" x2="1452" y2="160" class="rule"/>
+    <line x1="840" y1="160" x2="840" y2="566" class="rule"/>
+
+    <text x="28" y="188" class="sans ink eyebrow">RESPONSE OBJECTS</text>
+    <text x="28" y="213" class="sans muted small">same envelope · compare the aligned message fields</text>
+    <text x="864" y="188" class="sans ink eyebrow">EXISTING ERROR CONSUMER</text>
+    <text x="1452" y="188" text-anchor="end" class="sans muted small">message → MESSAGE_CATALOG</text>
+
+    <line x1="28" y1="225" x2="812" y2="225" class="guide-rule"/>
+    <line x1="864" y1="225" x2="1452" y2="225" class="guide-rule"/>
+
+    <g>
+      <text x="28" y="272" class="sans ink label">A · AI-direct response</text>
+      <text x="28" y="297" class="sans muted small">response · message = raw error detail</text>
+      <path d="M278 281H318" fill="none" class="guide-rule" marker-end="url(#arrow-muted)"/>
+      <rect x="365" y="243" width="447" height="86" rx="12" class="message-field"/>
+      <text x="385" y="272" class="mono message-muted mono-small">message</text>
+      <text x="480" y="270" class="mono message-ink" font-size="22">fromDate and toDate must be</text>
+      <text x="480" y="298" class="mono message-ink" font-size="22">supplied together</text>
+      <path d="M812 286H1002" fill="none" class="guide-rule" marker-end="url(#arrow-muted)"/>
+    </g>
+
+    <g>
+      <text x="28" y="423" class="sans ink label">B · Project-convention</text>
+      <text x="28" y="448" class="sans muted small">response · message = catalog key</text>
+      <path d="M278 432H318" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+      <rect x="365" y="394" width="447" height="86" rx="12" class="message-field"/>
+      <text x="385" y="423" class="mono message-muted mono-small">message</text>
+      <text x="480" y="451" class="mono message-ink" font-size="42" font-weight="700">m0001</text>
+      <path d="M812 437H1002" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+    </g>
+
+    <text x="28" y="520" class="sans muted small">A and B are two responses to the same invalid query.</text>
+
+    <g>
+      <rect x="864" y="243" width="588" height="323" rx="14" fill="#f7f7f4" stroke="#b8b8b2" stroke-width="2"/>
+      <rect x="1015" y="303" width="260" height="238" rx="12" class="soft" stroke="#b8b8b2" stroke-width="2"/>
+      <text x="1037" y="332" class="sans muted eyebrow">MESSAGE_CATALOG</text>
+      <text x="1037" y="357" class="sans muted small">recognizes codes only</text>
+      <line x1="1037" y1="374" x2="1253" y2="374" class="rule"/>
+      <text x="1037" y="408" class="mono ink mono-body">m0001 → 查詢條件不合法</text>
+      <text x="1037" y="474" class="sans muted small">raw detail is not an alternate key</text>
+
+      <rect x="875" y="261" width="130" height="40" rx="20" class="miss"/>
+      <text x="940" y="287" text-anchor="middle" class="sans ink label">catalog miss</text>
+      <path d="M1005 281H1015" fill="none" class="guide-rule" marker-end="url(#arrow-muted)"/>
+      <path d="M1275 281H1295" fill="none" class="guide-rule" marker-end="url(#arrow-muted)"/>
+
+      <rect x="875" y="417" width="130" height="40" rx="20" class="hit"/>
+      <text x="940" y="443" text-anchor="middle" class="sans ink label">catalog hit</text>
+      <path d="M1005 437H1015" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+      <path d="M1275 437H1295" fill="none" class="ink-rule" marker-end="url(#arrow)"/>
+
+      <rect x="1295" y="243" width="157" height="76" rx="10" class="miss"/>
+      <text x="1310" y="268" class="sans ink label">incompatible</text>
+      <text x="1310" y="290" class="mono muted" font-size="13">Unknown message code</text>
+      <text x="1310" y="307" class="mono muted" font-size="13">consumed: null</text>
+
+      <rect x="1295" y="399" width="157" height="76" rx="10" class="hit"/>
+      <text x="1310" y="424" class="sans ink label">compatible</text>
+      <text x="1310" y="446" class="sans ink" font-size="13">displayMessage:</text>
+      <text x="1310" y="464" class="sans ink" font-size="13">查詢條件不合法</text>
+    </g>
+
+    <text x="864" y="595" class="sans muted small">Both API results are invalid; only Consumer compatibility differs.</text>
+  </g>
+
+  <text x="60" y="875" class="sans muted small">同一個既有 Consumer 解析兩個 message：raw text 查不到 catalog；m0001 命中既有 entry。</text>
+</svg>
