@@ -2,7 +2,7 @@
 
 ## 範圍與判讀方式
 
-本文件只整理截至 `b2371e6` 的既有產物、commit 與 Draft PR #21 紀錄，不新增設計實驗、不產生新圖形，也不把局部結果提升為整體流程結論。整理對象包括：Semantic Model、Information Allocation、Relationship Scoping、D1–D3、E2–E5，以及 C1–C3 的局部研究。
+本文件只整理截至 `b2371e6` 的既有產物、commit、Draft PR #21 紀錄，以及 Phase 2 的三份邊界研究，不新增設計實驗、不產生新圖形，也不把局部結果提升為整體流程結論。整理對象包括：Semantic Model、Information Allocation、Relationship Scoping、D1–D3、E2–E5、C1–C3 的局部研究，以及 P2-A／P2-B／P2-C 的研究結果。
 
 文中的「已支持」只表示既有產物或客觀核對能直接支持；「設計判斷」表示由 Agent／設計者對畫面作的質性判讀；「尚未驗證」表示現有資料沒有觀眾、投影、runtime 或跨案例證據。
 
@@ -11,7 +11,9 @@
 | 層次 | 要處理的問題 | 主要輸入 | 產出 | 不負責的問題 |
 | --- | --- | --- | --- | --- |
 | 語意模型 | 哪些 domain fact、invariant、difference 與關係必須被保留？ | source revision、案例事實、Consumer 契約 | semantic objects、屬性、關係、限制 | 不決定視覺編碼、位置或動畫順序 |
+| Communication Framing／Information Abstraction | 對這次傳達而言，哪些語意必須保留、可如何抽象，以及哪些責任不能交給講者補完？ | communication objective、audience、evidence boundary、Semantic Model | 輕量的 core／support／omit、exact／summary／conceptual guard；可由既有方法承載 | 不另建案例事實 SSOT，不決定圖形、位置、視覺重量或固定揭露順序 |
 | 視覺物件 | 觀眾要看到哪些可辨識的圖形物件與連接？ | semantic model、已界定的局部關係 | response card、shared baseline、message object、lookup lane、container、path 等 | 不等同於 domain object；共享語意不代表必須合併成一個圖形物件 |
+| Visual Representation | 關係原理、表示單元及 shared／independent identity 要如何被理解？ | semantic model、局部關係、representation scope | representation specification、semantic mapping、interpretation constraints | 不決定座標、完整構圖、字體或其他局部幾何 |
 | Graphic Construction | 如何把一組必要關係構造成可追蹤的視覺物件與物件關係？ | semantic objects、Relationship Scoping、局部限制 | construction variant、物件身份、alignment／containment／connection／reference–reuse 等構造關係 | 不處理整張畫面的 global hierarchy、畫布分配或連續揭露 |
 | Composition | 已選定或已成立的視覺物件，如何在畫布或連續狀態中配置、分級與引導？ | visual object graph、canvas、內容尺寸、優先級、持續性限制 | massing、space arrangement、value／weight、reading path、rough composition、sequence state | 不應藉構圖改寫語意、合併不可合併的 response／lane，或以刪除必要關係換取稀疏 |
 | Critique／Verification | 這個設計判斷或交付檔案是否可被核對？ | 完整 PNG／SVG、規格、source、測量結果 | qualitative findings、客觀驗證紀錄、defect／trade-off／uncertainty | Critique 不是真值；artifact verification 也不證明觀眾看懂 |
@@ -24,15 +26,15 @@ Graphic Construction 與 Composition 的界線不是「前者畫圖、後者排�
 
 | ID／問題類型 | 適用方法 | 必要輸入 | 處理範圍 | 預期輸出 | 驗收方式 |
 | --- | --- | --- | --- | --- | --- |
-| S1 語意邊界與共同基準 | Semantic Model；Source Guard | 指定 revision、案例資料、既有 Consumer 契約 | 分開 API error result、`message` 語意與 Consumer compatibility；列出 invariant／difference | 可供設計取用的 semantic object／relation 清單與不可違反的限制 | 能回答同一 input、共同 envelope、差異欄位與結果層次；不能把 `compatible` 說成 API 成功 |
+| S1 語意邊界與共同基準 | Semantic Model；Source Guard；Communication Framing guard | 指定 revision、案例資料、既有 Consumer 契約；需要時加入 communication objective、audience 與 evidence boundary | 分開 API error result、`message` 語意與 Consumer compatibility；列出 invariant／difference，並核對必要語意的 abstraction 與 core／support／omit 邊界 | 可供設計取用的 semantic object／relation 清單、不可違反的限制，以及可供下游查找的輕量 framing guard | 能回答同一 input、共同 envelope、差異欄位與結果層次；必要語意未被錯誤抽象；不能把 `compatible` 說成 API 成功；不要求固定執行順序或獨立長期文件 |
 | S2 局部關係拆解 | Relationship Scoping | S1；需要觀眾理解的 State／單張圖目標 | 將關係拆成封閉的局部問題，不預先指定色彩、位置、外框或連線形式 | RS3-01–04 類型的問題卡、scope、shared objects、constraints、acceptance | 每個問題可獨立描述其 understanding objective，且不把構造方案偷渡成問題定義 |
-| G1 關係表示 | Alignment、Connection、Containment、Reference／Reuse；Relationship Representation | 一個局部關係及其物件身份 | 表示共同輸入、共同規則、兩個獨立輸入、lookup 方向或 container 邊界 | 一個或多個低精度 representation variant | 觀眾可追蹤必要關係；兩個 response／lookup lane 不被誤合併；不引入未給定語意 |
-| G2 物件身份與共享／抽取 | Factoring、Subtraction、Shared Object Integration | semantic invariants、response identity、必要中間關係 | 決定哪些物件只畫一次並被引用、哪些共同欄位可抽取、哪些不能刪 | response-specific object、shared baseline、lookup object、reuse／reference 關係 | 抽取後仍能看出適用對象、從屬關係與因果鏈；較少物件不作為唯一成功標準 |
-| G3 構造整合 | Relational Composition；D01／D02 decision constraints | 已選的局部 representation、物件身份、方向限制 | 把局部物件接成一個可交付的 construction；保留 row／lane 對應與共用規則 | 可被 Composition 取用的 visual object graph 或局部 SVG | 物件可辨識、連線方向不製造錯誤匯合、共用規則只出現一次但兩條輸入仍分開 |
+| G1 關係表示 | Alignment、Connection、Containment、Reference／Reuse；Relationship Representation | 一個局部關係、物件身份、semantic mapping 與必要 interpretation constraints | 表示共同輸入、共同規則、兩個獨立輸入、lookup 方向或 container 邊界 | 一個或多個低精度 representation variant；必要時形成 Representation Specification | 核對表示原理、semantic mapping、shared／independent identity 與限制；不把構造細節誤當表示決策 |
+| G2 物件身份與共享／抽取 | Factoring、Subtraction、Shared Object Integration | semantic invariants、response identity、必要中間關係、representation specification | 決定哪些物件只畫一次並被引用、哪些共同欄位可抽取、哪些不能刪 | response-specific object、shared baseline、lookup object、reuse／reference 關係；記錄 inherited identity constraints | 抽取後仍能看出適用對象、從屬關係與因果鏈；shared／independent identity 不被合併；較少物件不作為唯一成功標準 |
+| G3 構造整合 | Relational Composition；D01／D02 decision constraints | 已選的局部 representation、Representation Specification、物件身份、方向限制 | 把局部物件接成一個可交付的 construction；保留 row／lane 對應與共用規則，區分 inherited／construction decisions | 可被 Composition 取用的 visual object graph 或局部 SVG；必要時附 Handoff Record | 物件可辨識、連線方向不製造錯誤匯合、共用規則只出現一次但兩條輸入仍分開；不由 Construction 重選表示策略 |
 | C1 空間可行性 | Space Requirement Measurement；Spatial Arrangement | 已定內容、字體／字級／行高、可用區域與高度限制 | 測量換行、auto-height、邊界、欄寬與間距；選擇局部位置與尺寸 | 尺寸、bounding boxes、間距、可行／不可行配置 | 實測無 overflow、overlap、clipping；量測結果不直接宣稱最佳構圖 |
-| C2 視覺焦點與相對重量 | Value Study；Visual Weight | 穩定的 geometry、內容優先級、對比／明度候選 | 只改 value、contrast、weight 或同層級的視覺屬性，保持物件與空間不變 | 可比較的 focus／weight variants | 能指出本輪改變的視覺變數；對比與尺寸可客觀核對，但焦點是否被觀眾正確辨識仍須測試 |
+| C2 視覺編碼、焦點與相對重量 | Value Study；Visual Encoding；Visual Weight | 穩定的 geometry、物件身份、semantic mapping、內容優先級、對比／明度候選 | 指定視覺屬性如何承載語意／分類／關係，並在固定物件與空間下調整 value、contrast、weight；同一屬性可同時承擔多種責任 | 可比較的 encoding／focus／weight variants、既有 semantic constraints 或 critique record | 能分辨 changed property 與承載責任；mapping、文字／pattern／line style 與尺寸可核對，但感知焦點、等權與理解仍須測試 |
 | C3 閱讀路徑與 mapping | Staging、Alignment、Continuity、Path Disambiguation、Connection | source／destination、lane identity、跨區對應、已有構圖 | 消除斜切、內聚或錯誤匯合造成的閱讀歧義；不新增 domain relation | 每個輸入到目的地的清楚 path；狀態間可延續的物件位置／身份 | 路徑可逐條追蹤、無錯誤合流、箭頭不穿過主要文字；不以靜態檢查宣稱閱讀速度改善 |
-| C4 單張構圖與密度 | Massing；Rough Composition；Independent Composition Critique | 穩定 visual object graph、內容尺寸、message priority、畫布 | 配置整張圖的區域、層級、留白與完整內容，並標出完整性／負荷取捨 | massing sheet、rough composition、質性 review | 必要物件／關係存在、渲染無明顯幾何缺陷，並把 trade-off 與 uncertainty 分開；不把低負荷等同較易懂 |
+| C4 單張構圖、密度與受控 Treatment | Massing；Rough Composition；Independent Composition Critique | 穩定 visual object graph、內容尺寸、message priority、畫布，以及已凍結的 semantic mapping／identity／必要 weight constraints | 配置整張圖的區域、層級、留白與完整內容；可將 surface appearance 作為既有構圖／critique 中的局部變數 | massing sheet、rough composition、SVG／PNG variant、質性 review | 必要物件／關係存在、渲染無明顯幾何缺陷，局部 Treatment 不取代 encoding 或改寫語意；把 artifact invariants、perceptual outcomes、trade-off 與 uncertainty 分開 |
 | Q1 狀態分配與物件延續 | Information Allocation；Object Matching；Sequence Construction | semantic model、各狀態理解目標、visual object identity | 決定何時 persist、update、enter、exit；保留共同基準與 A/B lane 身份 | state-by-state allocation table、object matching、SVG／PNG states | 每個狀態只揭露允許的資訊；persistent object 不改名、不被合併；source 與實際交付物一致 |
 
 ## 3. 必要依賴（不是固定 Workflow）
@@ -83,6 +85,9 @@ S1 Semantic Model
 
 | 方法／實驗 | 既有證據支持的範圍 | 已知缺陷或取捨 | 尚未驗證 |
 | --- | --- | --- | --- |
+| P2-A Information Design／Semantic Model | [`information-design.md`](./studies/s04/information-design.md) 以 S04 固定案例核對 Communication Framing、Information Abstraction、core／support／omit、必要關係與畫面／講者／補充責任；其結論保留輕量概念責任，並將 Semantic Model 作為案例事實 SSOT、Information Allocation 作為狀態與揭露分配。**Artifact Evidence：** 規格與既有 Semantic Model／Information Allocation 可逐項核對。**Design Judgment：** 集中化可作下游 guard，但整體重疊使獨立階段效益不足。 | 不建立獨立 Information Design 執行階段或長期文件契約；不能把抽象／priority guard 改寫成固定執行順序或視覺方案。 | 跨案例適用性、abstraction／priority 的重工與理解效益、長期文件形態與觀眾／投影效果。 |
+| P2-B Visual Representation／Graphic Construction | [`representation-study.md`](./studies/s04/representation-study.md) 的 E1a／E1b 具體區分表示原理、semantic mapping、shared／independent identity、interpretation constraints 與 Construction 的幾何、連線、文字及局部排版；Representation Specification 可交給 G3，Handoff Record 可分辨 inherited decisions、construction decisions 與 gaps。**Artifact Evidence：** `comparison.svg/png`、fresh render 與 SHA 可核對。**Design Judgment：** 交接產物具有本案例用途。 | Concept 與 Artifact 可分開；Method-level 拆分 **Defer**。每種策略只有一個 Construction，沒有有／無規格的成本或品質對照；D01 差異只能限制證據強度，不能被解讀成 handoff failure。 | **Unverified：** 同一 Representation Strategy 下的多種 Construction、有／無規格對照、觀眾理解、投影效果、跨案例適用性與拆分效益。 |
+| P2-C Visual Encoding／Visual Treatment | [`visual-encoding-study.md`](./studies/s04/visual-encoding-study.md) 在固定 geometry、identity、文字、path 與既有 mapping 下核對 Encoding 與 Treatment 的差異。**Artifact Evidence：** Baseline／Variant SVG／PNG、source diff、render、尺寸與 contrast 可核對。**Design Judgment：** Encoding 可由既有 G1／G2／C2 承載，Treatment 可作 Composition／Critique 的局部變數。 | Visual Encoding 的概念責任與既有產物 **Retain**；不新增 Encoding 方法或檔案類型。Visual Treatment 為條件式概念 Separate，但 Method-level **Defer**；artifact 沿用既有 SVG／critique records。 | **Unverified：** 反向 Encoding／Treatment 控制、感知 Weight／分組／可讀性、觀眾理解、投影／跨案例效果，以及獨立方法的成本／品質效益。 |
 | Semantic Model；Relationship Scoping | `semantic-model.md` 把同一 invalid query、共同 `HTTP 400 / INVALID_QUERY / data: null`、兩個 response、`message` 差異與 Consumer lookup 分開；`relationship-scoping.md` 將 State 3 拆為 RS3-01–04，且每題有 scope 與 acceptance。 | 多份文件重述共同 envelope、response 與 lookup，存在維護與漂移成本；拆解本身尚未跨案例驗證。 | 有無 semantic model／scoping 是否改善觀眾保留 invariant、是否值得文件成本。 |
 | Relationship Representation（E2／E3） | E2 的 RS3-03 比較 Parallel Lookup Lanes 與 Nested Contract；E3 的 RS3-02 保留共同基準並放大兩種 `message` 語意。兩者都證明局部規格足以產生局部 representation。 | E2 沒有方案評選；E3 明確不包含 Consumer lookup／compatibility outcome，不能當作完整構圖。 | 哪種表示較快、較準確，或在投影／不同畫布上較穩定。 |
 | Factoring／Subtraction；E4／E5 | V2 Factoring 移除共同欄位重複但保留 lookup 因果鏈；V3 Subtraction 因刪除 catalog miss／hit 與共同欄位從屬關係而失敗。E4 讓兩個 message object 各自只出現一次並被 response 與 lookup 共同引用；E5 把共同 request／API baseline 抽成明確適用於兩者的區域。 | Factoring 使從屬關係更依賴標註與版面推論；Subtraction 顯示「更少物件」可能刪掉必要語意；E4／E5 都沒有完整 compatibility outcome 或整體 refinement。 | Factoring 的推論成本在何種畫布、距離與內容密度下會超過減少重複的收益。 |
@@ -94,7 +99,41 @@ S1 Semantic Model
 | Information Allocation／Object Matching／Sequence | 三狀態規格要求共同基準 → `message` 差異 → Consumer 結果，並固定 O1–O10 的 persist／enter／update；D3.4a 以 Blob SHA、1600×900 重渲染與 `0` differing pixels 更正了原先不可重現的 State 2 blocker。 | Sequence critique 曾把畫面印象誤判為 PNG／SVG 不一致；修正後只能說交付一致，不能說 State 2 最佳或觀眾理解成立。 | 播放、講者引導、投影後排可讀性，以及觀眾能否區分 API error result 與 Consumer compatibility。 |
 | Independent Critique／Artifact Verification | `graphic-review.md`、`composition-review.md`、`sequence-review.md` 能分辨語意缺口、密度 trade-off、mapping 風險與可見渲染缺陷；D3.4a 顯示檔案事實需獨立核對。 | 單次「independent」不代表第二評審者、盲審或統計可靠性；critique 不能取代量測，量測也不能取代設計判斷。 | 第二評審者一致性、觀眾資料、跨案例再現性、時間／成本／token 效率。 |
 
-## 6. 收束結論
+## 6. Phase 2 Boundary Consolidation
+
+本節只整合 P2-A、P2-B、P2-C 已完成的研究判定；Concept、Method 與 Artifact 分開判讀，不把概念上的 Separate 直接轉成新的方法、強制產物或固定 Workflow。
+
+### 6.1 Concept／Method／Artifact 最終判定
+
+| Responsibility | Concept | Method | Artifact | 最終承載 |
+| --- | --- | --- | --- | --- |
+| Information Design | Retain | Retain（既有方法中的輕量責任） | 不要求獨立長期文件 | Communication Framing、Information Abstraction 由既有 Semantic Model／Information Allocation 承載；Semantic Model 維持案例事實、必要關係與 semantic constraints 的 SSOT，Information Allocation 維持狀態、揭露順序與畫面／講者／補充分配。 |
+| Visual Representation | Separate | Defer | Retain | G1／G2 可產出 Representation Specification；G3 讀取它並以 Handoff Record 交接，不把一次成功交接提升為每次都要分離的方法。 |
+| Visual Encoding | Separate | Retain | Retain | 保留「視覺屬性如何承載語意、分類或關係」的描述責任，沿用 G1／G2、semantic constraints 與 C2，不新增 Encoding 方法或檔案類型。 |
+| Visual Treatment | Separate（條件式） | Defer | Retain | 在固定 mapping、identity、geometry、必要 Encoding／Weight 條件下，作為既有 Composition／Critique 的局部變數；沿用 SVG／PNG 與 critique records，不建立獨立 Treatment Workflow。 |
+
+Visual Weight 負責焦點、相對重要性與注意力分配；Visual Treatment 負責在既有語意、物件、構造與層級條件下的外觀處理。Treatment 的獨立調整只在條件式固定邊界下成立；它可能影響分組、感知 Weight 與可讀性，故不能以 source-level 不變直接宣稱 perceptual-level outcome 不變。
+
+### 6.2 受影響方法的輸入、產物、下游與驗收
+
+| 責任／方法 | 必要輸入 | 預期產物 | 下游依賴 | 驗收、適用條件與證據限制 |
+| --- | --- | --- | --- | --- |
+| Communication Framing／Information Abstraction（由 S1 與 Q1 承載） | Communication Objective、Audience Context、Presentation Context、Evidence Boundary、Semantic Model 的必要語意 | 輕量的 core／support／omit、exact／summary／conceptual guard；不要求獨立長期文件 | 支援 G1／G2／G3 與 Q1，但不預先規定它們的固定順序 | 核對必要語意未被刪除或錯誤改寫、不可由講者補完的關係有承載責任；S04 有 Artifact Evidence 與 Design Judgment，跨案例與抽象／priority 效益 Unverified。 |
+| G1 Relationship Representation | 局部關係、物件身份、semantic mapping、shared／independent constraints | 低精度 representation variant；需要交接時附 Representation Specification | G2／G3、後續 Composition | 核對表示原理、semantic mapping、shared／independent identity 與 interpretation constraints；只適用於已界定的局部關係，S04 交接用途有 Artifact Evidence，Method-level split 仍 Defer。 |
+| G2 Object Identity／Shared Object | Semantic invariants、response identity、必要中間關係、Representation Specification | response-specific object、shared object、reuse／reference 關係與 inherited identity constraints | G3、C3／C4 與任何需要 shared／independent 判定的構造 | 核對抽取後適用對象、從屬關係與因果鏈仍可見，不能以物件較少作唯一標準；跨案例的推論成本與效益 Unverified。 |
+| G3 Construction Integration | 已選 representation、Representation Specification、物件身份、方向限制與 Construction constraints | 可交付 visual object graph／局部 SVG，以及區分 inherited decisions、construction decisions、handoff gaps 的 Handoff Record | C1–C4 或 Q1；依實際不確定性取用，不形成固定 Workflow | 核對不得重選表示策略、必要物件／關係可追蹤、連線／標籤／幾何無明顯缺陷；`comparison.svg/png` 支持本案例 artifact facts，但 D01 解讀修正後仍只有單一 Construction／策略。 |
+| C2 Visual Encoding／Visual Weight | 穩定 geometry、object identity、semantic mapping、內容優先級與待比較視覺屬性 | encoding／focus／weight variants、既有 semantic constraints、SVG／PNG 或 critique record | C4 Composition／Critique；必要時回饋 G1／G2 的 mapping 或 identity 問題 | 核對 source-level changed property、文字／pattern／line style、尺寸與 contrast；artifact facts 不等於感知 Weight、焦點或觀眾理解，且本案未做反向 Encoding 控制。 |
+| C4 Composition／Critique 中的 Visual Treatment | 已凍結 mapping、identity、geometry、必要 Encoding／Weight constraints | 局部 SVG／PNG variant 與 critique record | 既有 Composition／Critique 的後續局部調整 | 核對 artifact-level invariants（物件、文字、path、尺寸、overflow／clipping）與局部外觀差異；perceptual-level outcomes（分組、Weight、可讀性、投影）仍 Unverified，故不形成獨立 Treatment method。 |
+
+### 6.3 Phase 2 證據與依賴限制
+
+- **Artifact Evidence：** 三份研究文件所引用的規格、SVG／PNG、source diff、fresh render、尺寸、文字／path、contrast 與 SHA／pixel 核對，只支持文件或產物可直接核對的事實。
+- **Design Judgment：** 對責任邊界、下游用途、mapping 負擔、局部外觀差異與拆分成本的質性判斷，不能單獨證明方法效益。
+- **Unverified：** 觀眾理解、感知 Weight、分組、投影可讀性、跨案例適用性、整體使用成本與品質效益均不因本輪整合而變成已驗證。
+- 同一視覺屬性可能同時承擔 Encoding、Weight、Treatment 或 Grouping 責任；應依該屬性在案例中的用途判定責任，不依屬性種類預先分類。Artifact-level invariants 與 perceptual-level outcomes 必須分開記錄。
+- 所有依賴仍是條件式設計依賴：representation 可為 Construction 的輸入，encoding／weight／treatment 的限制可供 Composition／Critique 使用，但不存在由此推導的固定 Workflow。
+
+## 7. 收束結論
 
 1. Graphic Construction 的最小責任是保留必要關係並建立可追蹤的視覺物件；Composition 的最小責任是配置、分級與引導已成立的物件。兩者都不能藉「簡潔」偷偷刪除語意。
 2. Semantic objects、visual objects、construction methods 必須分開命名。`message` 共享語意，不代表必須畫成一個 shared message；`MESSAGE_CATALOG` 可是單一共享物件，但兩個 lookup input 與 outcome 仍須保持分離。

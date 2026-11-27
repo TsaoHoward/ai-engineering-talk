@@ -204,3 +204,11 @@ E1a 本身沒有過度指定具體構造；但本文件第 5 節是合併的 han
 Representation 應負責表示原理、必要關係、shared／independent identity、semantic mapping 與 interpretation constraints；Construction 應負責物件分組、座標／尺寸、路徑與參照線、文字排版及局部幾何驗收。Construction 可以提出構造 trade-off，但不應以排版方便為由重選或合併上游表示策略。
 
 本結論只由 S04、A／B 各一種具體構造、一次跨 Session handoff 與 SVG／PNG artifact review 支持。尚未驗證同一表示策略的多種構造、無規格對照、觀眾理解、投影效果或跨案例適用性；上述未驗證項目不支持更強的 Method-level generalization。
+
+## 8. Interpretation Correction（P2-R）
+
+補充修正 D01 的判讀：`decision-construction.md` 中的 D01 是先前特定 Construction 方案的決策，不是 P2-B E1a／E1b 的固定 Input。E1a／E1b 的研究設計刻意將既有 D01 與既有 Construction 產物隔離，分別檢視 Representation Specification、Construction Decisions 與交接關係。
+
+因此，本輪實際的 `1600×1000` Study Sheet 雖然在構造方向上不同於 D01 所記錄的 `1600×900`、上下兩列方案，但這個差異不構成本次 Representation／Construction Handoff 違約，也不應作為本輪交接失敗的證據。它只表示本輪 Study Sheet 不是 D01 構造方案的直接完成實作，並限制「同一表示策略下可獨立調整 Construction 變數」的證據強度。
+
+本輪仍然只有每種 Representation Strategy 各一個 Construction，且沒有進行有／無 Representation Specification 的成本或品質對照。因此，這項 D01 判讀修正不改變 P2-B 的 Method-level **Defer** 結論，也不移除本文件已記錄的 mapping 負擔、局部標籤／線路排版問題或其他 Construction／Composition 限制。
