@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L12 6L0 12Z" fill="#30302e"/>
+    </marker>
+    <style>
+      .sans { font-family: Arial, sans-serif; }
+      .mono { font-family: "Courier New", monospace; }
+      .ink { fill: #292927; }
+      .muted { fill: #62625e; }
+      .paper { fill: #fafaf7; }
+      .soft { fill: #e6e6e1; }
+      .message { fill: #50504c; }
+      .message-text { fill: #fafaf7; }
+      .outline { stroke: #30302e; stroke-width: 3; }
+      .rule { stroke: #8f8f89; stroke-width: 2; }
+      .path { stroke: #30302e; stroke-width: 4; fill: none; }
+      .eyebrow { font-size: 19px; font-weight: 700; letter-spacing: 2px; }
+      .label { font-size: 24px; font-weight: 700; }
+      .field { font-size: 19px; letter-spacing: 1px; }
+      .value { font-size: 27px; }
+      .code { font-size: 45px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f4f4f0"/>
+
+  <!-- Upper comparison row: AI-direct -->
+  <g>
+    <rect x="60" y="220" width="560" height="230" rx="16" class="message outline"/>
+    <text x="92" y="268" class="sans message-text eyebrow">A · AI-direct</text>
+    <line x1="92" y1="290" x2="588" y2="290" stroke="#8d8d87" stroke-width="2"/>
+    <text x="92" y="330" class="mono" fill="#deded8" font-size="19">message</text>
+    <text x="92" y="376" class="mono message-text value">fromDate and toDate must be</text>
+    <text x="92" y="413" class="mono message-text value">supplied together</text>
+  </g>
+
+  <!-- Lower comparison row: Project-convention -->
+  <g>
+    <rect x="60" y="530" width="560" height="190" rx="16" class="message outline"/>
+    <text x="92" y="578" class="sans message-text eyebrow">B · Project-convention</text>
+    <line x1="92" y1="600" x2="588" y2="600" stroke="#8d8d87" stroke-width="2"/>
+    <text x="92" y="640" class="mono" fill="#deded8" font-size="19">message</text>
+    <text x="92" y="687" class="mono message-text code">m0001</text>
+  </g>
+
+  <!-- One shared Consumer / Lookup region -->
+  <g>
+    <rect x="670" y="70" width="870" height="760" rx="22" class="paper outline"/>
+    <text x="710" y="122" class="sans ink eyebrow">EXISTING ERROR CONSUMER</text>
+    <line x1="710" y1="145" x2="1500" y2="145" class="rule"/>
+
+    <!-- One shared operation label; the two paths remain separate below it. -->
+    <rect x="880" y="175" width="430" height="78" rx="14" class="soft outline"/>
+    <text x="1095" y="207" text-anchor="middle" class="sans ink eyebrow">SHARED LOOKUP</text>
+    <text x="1095" y="235" text-anchor="middle" class="mono muted field">message → MESSAGE_CATALOG</text>
+
+    <!-- Independent upper path -->
+    <path d="M620 335H1180" class="path" marker-end="url(#arrow)"/>
+    <rect x="1190" y="298" width="280" height="74" rx="14" fill="#fafaf7" class="outline"/>
+    <text x="1330" y="343" text-anchor="middle" class="sans ink label">catalog miss</text>
+
+    <!-- Independent lower path -->
+    <path d="M620 625H1180" class="path" marker-end="url(#arrow)"/>
+    <rect x="1190" y="588" width="280" height="74" rx="14" fill="#fafaf7" class="outline"/>
+    <text x="1330" y="633" text-anchor="middle" class="sans ink label">catalog hit</text>
+  </g>
+</svg>
