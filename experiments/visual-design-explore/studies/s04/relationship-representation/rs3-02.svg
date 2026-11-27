@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1020" viewBox="0 0 1440 1020" role="img" aria-labelledby="title desc">
+  <title id="title">RS3-02: two responses share an API error envelope but differ in message semantics</title>
+  <desc id="desc">One invalid query feeds an AI-direct response and a Project-convention response. Both have HTTP 400, code INVALID_QUERY, and data null. Their message values differ: raw error detail versus catalog key m0001. The code does not automatically derive either message.</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444444" />
+    </marker>
+  </defs>
+
+  <rect width="1440" height="1020" fill="#ffffff" />
+
+  <text x="80" y="58" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#111111">RS3-02 · Same error envelope, different message semantics</text>
+  <text x="80" y="90" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#555555">One invalid input is answered in two ways. The common API baseline stays fixed; only <tspan font-weight="700" fill="#111111">message</tspan> changes meaning.</text>
+
+  <!-- One shared source -->
+  <rect x="80" y="125" width="1280" height="135" rx="10" fill="#f4f4f4" stroke="#222222" stroke-width="2" />
+  <text x="112" y="158" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#555555">ONE INVALID QUERY REQUEST</text>
+  <text x="112" y="207" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" fill="#111111">?fromDate=2026-01-01</text>
+  <text x="112" y="240" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#333333">toDate is missing</text>
+  <text x="1320" y="207" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#555555">same input</text>
+  <path d="M 720 260 L 720 290" stroke="#444444" stroke-width="2.5" marker-end="url(#arrow)" />
+
+  <!-- Shared API baseline -->
+  <rect x="80" y="300" width="1280" height="135" rx="10" fill="#e7e7e7" stroke="#777777" stroke-width="2" />
+  <text x="112" y="333" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#555555">COMMON API ERROR ENVELOPE · SAME IN BOTH RESPONSES</text>
+
+  <rect x="112" y="350" width="360" height="58" fill="#ffffff" stroke="#aaaaaa" stroke-width="1.5" />
+  <text x="136" y="374" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#555555">HTTP status</text>
+  <text x="136" y="397" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21" font-weight="700" fill="#111111">400</text>
+
+  <rect x="540" y="350" width="360" height="58" fill="#ffffff" stroke="#aaaaaa" stroke-width="1.5" />
+  <text x="564" y="374" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#555555">code</text>
+  <text x="564" y="397" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21" font-weight="700" fill="#111111">INVALID_QUERY</text>
+
+  <rect x="968" y="350" width="360" height="58" fill="#ffffff" stroke="#aaaaaa" stroke-width="1.5" />
+  <text x="992" y="374" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#555555">data</text>
+  <text x="992" y="397" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21" font-weight="700" fill="#111111">null</text>
+
+  <path d="M 720 435 L 720 475" stroke="#444444" stroke-width="2.5" />
+  <path d="M 720 475 L 390 475 L 390 520" fill="none" stroke="#444444" stroke-width="2.5" marker-end="url(#arrow)" />
+  <path d="M 720 475 L 1050 475 L 1050 520" fill="none" stroke="#444444" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="720" y="465" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#444444">same baseline → two response representations</text>
+
+  <!-- Response comparison -->
+  <rect x="80" y="520" width="620" height="385" rx="10" fill="#ffffff" stroke="#222222" stroke-width="2.5" />
+  <rect x="740" y="520" width="620" height="385" rx="10" fill="#ffffff" stroke="#222222" stroke-width="2.5" />
+
+  <text x="112" y="558" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#111111">AI-direct response</text>
+  <text x="772" y="558" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#111111">Project-convention response</text>
+
+  <text x="112" y="588" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#777777">SHARED FIELDS</text>
+  <text x="772" y="588" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#777777">SHARED FIELDS</text>
+
+  <rect x="112" y="603" width="556" height="58" rx="5" fill="#eeeeee" stroke="#b0b0b0" stroke-width="1.5" />
+  <text x="136" y="627" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">HTTP 400</text>
+  <text x="280" y="627" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">code: INVALID_QUERY</text>
+  <text x="136" y="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">data: null</text>
+
+  <rect x="772" y="603" width="556" height="58" rx="5" fill="#eeeeee" stroke="#b0b0b0" stroke-width="1.5" />
+  <text x="796" y="627" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">HTTP 400</text>
+  <text x="940" y="627" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">code: INVALID_QUERY</text>
+  <text x="796" y="650" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" fill="#333333">data: null</text>
+
+  <text x="112" y="695" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#111111">ONLY VARYING FIELD</text>
+  <text x="772" y="695" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#111111">ONLY VARYING FIELD</text>
+
+  <rect x="112" y="710" width="556" height="150" rx="6" fill="#f7f7f7" stroke="#222222" stroke-width="2.5" />
+  <text x="136" y="744" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#111111">message</text>
+  <text x="136" y="782" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#111111">fromDate and toDate must be</text>
+  <text x="136" y="810" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#111111">supplied together</text>
+  <rect x="136" y="826" width="180" height="22" rx="11" fill="#d0d0d0" />
+  <text x="226" y="842" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8" fill="#222222">RAW ERROR DETAIL</text>
+
+  <rect x="772" y="710" width="556" height="150" rx="6" fill="#f7f7f7" stroke="#222222" stroke-width="2.5" />
+  <text x="796" y="744" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#111111">message</text>
+  <text x="796" y="803" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="30" font-weight="700" fill="#111111">m0001</text>
+  <rect x="796" y="826" width="216" height="22" rx="11" fill="#d0d0d0" />
+  <text x="904" y="842" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8" fill="#222222">MESSAGE CATALOG KEY</text>
+
+  <!-- Explicit non-derivation boundary -->
+  <rect x="80" y="945" width="1280" height="48" rx="8" fill="#eeeeee" stroke="#777777" stroke-width="1.5" />
+  <text x="720" y="976" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#222222"><tspan font-weight="700">Separate response fields:</tspan> <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">code: INVALID_QUERY</tspan> does not automatically derive either <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">message</tspan>.</text>
+</svg>
